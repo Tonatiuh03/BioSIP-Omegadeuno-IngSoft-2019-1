@@ -71,18 +71,39 @@ public abstract class AbstractDao<PK extends Serializable, T> {
         return (T) getEntityManager().find(persistentClass, key);
     }
 
+    /**
+     * Método que, a partir de una entidad, la almacena en la base de datos.
+     *
+     * @param entity El objeto que tiene los datos del registro a insertar.
+     */
     public void save(T entity) {
         getEntityManager().persist(entity);
     }
 
+    /**
+     * Método que se aplica para actualizar una entidad en la base de datos.
+     *
+     * @param entity Es el objeto que contiene los nuevos datos actualizados.
+     * @return El objeto con los datos ya actualizados y con el formato
+     * requerido en caso que la base le haya hecho algo al registro.
+     */
     public T update(T entity) {
         return getEntityManager().merge(entity);
     }
 
+    /**
+     * Método que elimina una entidad a partir del objeto que se le pasa como
+     * parámetro.
+     *
+     * @param entity Es el objeto que queremos eliminar de la base.
+     */
     public void delete(T entity) {
         getEntityManager().remove(getEntityManager().contains(entity) ? entity : getEntityManager().merge(entity));
     }
 
+    /**
+     * Método que sincroniza con la base de datos las operaciones pendientes.
+     */
     public void flush() {
         getEntityManager().flush();
     }
@@ -186,6 +207,14 @@ public abstract class AbstractDao<PK extends Serializable, T> {
         return getEntityManager().createQuery(crit).executeUpdate();
     }
 
+    /**
+     * Método que obtiene el conteo de registros de una entidad a partir de un
+     * predicado.
+     *
+     * @param exp Es el predicado que requerimos para hacer el filtro del
+     * conteo.
+     * @return El conteo de registros que se obtuvieron a partir del predicado.
+     */
     public long count(Predicate exp) {
         CriteriaBuilder cb = createCriteriaBuilder();
         CriteriaQuery<Long> cq = cb.createQuery(Long.class);
@@ -196,6 +225,11 @@ public abstract class AbstractDao<PK extends Serializable, T> {
         return getEntityManager().createQuery(cq).getSingleResult();
     }
 
+    /**
+     * Método que obtiene el conteo de registros totales en la entidad.
+     *
+     * @return El número de registros.
+     */
     public long count() {
         return count(null);
     }
