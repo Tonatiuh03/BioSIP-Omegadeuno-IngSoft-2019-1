@@ -50,7 +50,7 @@
         <dependency>
             <groupId>org.primefaces</groupId>
             <artifactId>primefaces</artifactId>
-            <version>6.0</version>
+            <version>6.2</version>
         </dependency>
         <!-- Cosas nuevas para JPA -->
         <dependency>
@@ -84,7 +84,12 @@
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>font-awesome</artifactId>
-            <version>5.0.6</version>
+            <version>4.7.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>popper.js</artifactId>
+            <version>1.14.4</version>
         </dependency>
 
         <!-- Commons upload -->
