@@ -1,0 +1,78 @@
+.encabezado{
+	width: 100%; 
+	background-color: #A8C256;
+}
+
+.encabezado th{
+	text-align: center;
+}
+.btn_cerrarSesion{
+    width: 100%;
+    background-color: #271F30;
+    height: 55px;
+    padding-right: 10px;
+    padding-top: 10px;
+}
+
+.btn_cerrarSesion > button{
+    float: right;
+}
+
+#titulo{
+	 font-size: 50px;
+}
+
+#logoUnam{
+	 width: 150px;
+	 height: 150px;
+}
+
+#logoCiencias{
+	 width: 120px;
+	 height: 140px;
+}
+
+#iconoBuscar{
+    width: 30px;
+}
+
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #1F487E;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 20px;
+    
+}
+
+.sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 15px;
+    color: white;
+    display: block;
+    transition: 0.3s;
+}
+
+.sidenav a:hover {
+    color: black;
+    background-color: white;
+}
+
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    float: left;
+    font-size: 10px;
+    margin-left: 50px;
+}
+
+#main {
+    transition: margin-left .5s;
+}
+
