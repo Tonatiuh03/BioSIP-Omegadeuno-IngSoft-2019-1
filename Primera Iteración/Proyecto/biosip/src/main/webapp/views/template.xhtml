@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <h:head>
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <h:outputStylesheet library="webjars" name="bootstrap/4.1.3/css/bootstrap.min-jsf.css"/>
+        <h:outputStylesheet library="webjars" name="font-awesome/4.7.0/css/font-awesome-jsf.css" />
+        <ui:insert name="head"/>
+        <link rel="stylesheet" type="text/css" href="/css/footer.css"></link>
+        <link rel="stylesheet" type="text/css" href="/css/header.css"></link>
+
+    </h:head>
+
+    <h:body id="main">
+        <script>
+            var open = false;
+            function openNav() {
+                if (open == true) {
+                    document.getElementById("mySidenav").style.width = "0";
+                    document.getElementById("main").style.marginLeft = "0";
+                    open = false;
+                }else{
+                    document.getElementById("mySidenav").style.width = "250px";
+                    document.getElementById("main").style.marginLeft = "250px";
+                    open = true;
+                }
+            }
+        </script>
+        <header>
+            <table class="encabezado">
+                <tr>
+                    <th><img id="logoUnam" src="/imagenes/logoUnam.png" alt="Logo de la UNAM" ></img></th>
+                    <th><div><p id="titulo">BioSIP</p></div></th>
+                    <th><img id="logoCiencias" src="/imagenes/logoFacultadCiencias.png" alt="Logo de la Fac Ciencias"></img></th>
+                </tr>
+            </table>
+            <div class="btn_cerrarSesion">
+                <img id="iconoBuscar" src="/imagenes/iconoBuscar.png" ></img><input  placeholder="Buscar"></input>
+                <button  type="button" class="btn btn-warning">Cerrar Sesión</button>
+            </div>
+            <div><button id="menu" type="button" class="btn btn-info" onclick="openNav()">Menú</button></div>
+
+            <div id="mySidenav" class="sidenav">
+
+                <a href="#">Reservar Material</a>
+                <a href="#">Crear Kits</a>
+                <a href="#">Compartir Kits</a>
+                <a href="#">Crear Categorías o Subcategoría</a>
+                <a href="#">Desbloquear Usuario</a>
+                <a href="#">Bloquear Usuario</a>
+                <a href="#">Cambiar Estado de Material</a>
+            </div>
+        </header>
+
+        <ui:insert name="body"/>
+
+        <footer class="footer">
+            <div>
+                <ul>
+                    <li>Acerca de BioSIP</li>
+                    <li>Sugerencias</li>
+                    <li>Correo: biosip@ciencias.unam.mx</li>
+                    <li>Copyright &#169; Todos los Derechos Reservados </li>
+                </ul>
+            </div>
+
+        </footer>
+
+
+        <h:outputScript library="webjars" name="jquery/3.3.1-1/jquery.min.js" />
+        <h:outputScript library="webjars" name="popper.js/1.14.4/umd/popper.min.js" />
+        <h:outputScript library="webjars" name="bootstrap/4.1.3/js/bootstrap.min.js" />
+    </h:body>
+</html>
