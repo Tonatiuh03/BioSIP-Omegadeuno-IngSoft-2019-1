@@ -1,0 +1,45 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 8/10/2018, 06:41:10 PM
+    Author     : dams_
+*/
+
+.container{
+    width: 100%;
+}
+
+#confirmarRes{
+    background-color: pink;
+}
+
+.material{
+     width: 100%;
+     height: 100px;
+     background-color: #BFADA3;
+     padding: 10px;
+     margin-top: 5px;
+     
+}
+
+.material > img{
+    height: 80%;
+}
+
+.informacion-material{
+    margin-left: 20px;
+    font-size: 10px;
+}
+
+#cnt-disponible{
+    position: relative;
+    left: 50px;
+}
+
+#categoria-info{
+    position: relative;
+    left: 50px;    
+}
