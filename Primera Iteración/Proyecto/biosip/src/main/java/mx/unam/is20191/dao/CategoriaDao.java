@@ -13,4 +13,5 @@ import mx.unam.is20191.models.Categoria;
  */
 
 public class CategoriaDao extends AbstractDao<Integer,Categoria>{
+    
 }
