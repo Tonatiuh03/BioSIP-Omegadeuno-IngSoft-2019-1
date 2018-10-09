@@ -12,44 +12,37 @@
         <ui:insert name="head"/>
         <link rel="stylesheet" type="text/css" href="/css/footer.css"></link>
         <link rel="stylesheet" type="text/css" href="/css/header.css"></link>
-
+        <script src="/scripts/template.js"></script>
     </h:head>
 
     <h:body id="main">
-        <script>
-            var open = false;
-            function openNav() {
-                if (open) {
-                    document.getElementById("mySidenav").style.width = "0";
-                    document.getElementById("main").style.marginLeft = "0";
-                    open = false;
-                } else {
-                    document.getElementById("mySidenav").style.width = "250px";
-                    document.getElementById("main").style.marginLeft = "250px";
-                    open = true;
-                }
-            }
-        </script>
         <header>
             <table class="encabezado">
-                <tr>
-                    <th><img id="logoUnam" src="/imagenes/logoUnam.png" alt="Logo de la UNAM" ></img></th>
+                <tbody><tr>
+                    <th><img id="logoUnam" src="/imagenes/logoUnam.png" alt="Logo de la UNAM"/></th>
                     <th><div><p id="titulo">BioSIP</p></div></th>
-                    <th><img id="logoCiencias" src="/imagenes/logoFacultadCiencias.png" alt="Logo de la Fac Ciencias"></img></th>
+                    <th><img id="logoCiencias" src="/imagenes/logoFacultadCiencias.png" alt="Logo de la Fac Ciencias"/></th>
                 </tr>
-            </table>
-            <div class="btn_cerrarSesion">
-                <img id="iconoBuscar" src="/imagenes/iconoBuscar.png" ></img><input  placeholder="Buscar"></input>
-                <button  type="button" class="btn btn-warning">Cerrar Sesión</button>
+            </tbody></table>
+            
+            <div class="btn_cerrarSesion form-inline">
+                <button id="menu" type="button" class="btn btn-info" onclick="openNav()">Menú</button>
+
+                <form class="md-form form-sm">
+                    <i class="fa fa-search"></i>
+                    <input class="form-control form-control-sm ml-3 w-75" type="text" placeholder="Buscar en Inventario"/>
+                </form>                
+                <button id="cerrar-sesion" type="button" class="btn btn-warning">Cerrar Sesión</button>
+
             </div>
-            <div><button id="menu" type="button" class="btn btn-info" onclick="openNav()">Menú</button></div>
+            <div></div>
 
             <div id="mySidenav" class="sidenav">
 
-                <a href="#">Reservar Material</a>
+                <a href="reservarmaterial.xhtml">Reservar Material</a>
                 <a href="#">Crear Kits</a>
                 <a href="#">Compartir Kits</a>
-                <a href="#">Crear Categorías o Subcategoría</a>
+                <a href="crearcategoria.xhtml">Crear Categorías o Subcategoría</a>
                 <a href="#">Desbloquear Usuario</a>
                 <a href="#">Bloquear Usuario</a>
                 <a href="#">Cambiar Estado de Material</a>
