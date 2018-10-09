@@ -221,5 +221,5 @@ public class Usuario implements Serializable {
     public String toString() {
         return "mx.unam.is20191.models.Usuario[ id=" + id + " ]";
     }
-    
+
 }

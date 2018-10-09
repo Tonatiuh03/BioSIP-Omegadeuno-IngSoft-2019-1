@@ -18,7 +18,10 @@
                                 <strong>Inicia sesión para continuar</strong>
                             </div>
                             <div class="panel-body">
-                                <form role="form" action="#" method="POST">
+                                <div>
+                                    <p:messages id="messages" autoUpdate="true" closable="true" />
+                                </div>
+                                <h:form id="myForm">
                                     <fieldset>
                                         <div class="row justify-content-md-center">
                                             <div class="center-block">
@@ -33,7 +36,7 @@
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i class="fa fa-user-circle-o" aria-hidden="true"></i></span>
                                                         </div>
-                                                        <input class="form-control" placeholder="Usuario o correo" name="loginname" type="text" autofocus=""/>
+                                                        <p:inputText class="form-control"  placeholder="Usuario o correo" value="" required="true" id="userName" size="10"/>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
@@ -41,16 +44,16 @@
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon2"><i class="fa fa-key" aria-hidden="true"></i></span>
                                                         </div>
-                                                        <input class="form-control" placeholder="Contraseña" name="password" type="password" value=""/>
+                                                        <p:inputText class="form-control"  placeholder="Contraseña" value="" required="true" id="password" size="10"/>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <input type="submit" class="btn btn-lg btn-primary btn-block" value="Iniciar sesión"/>
+                                                    <p:commandButton action="#{loginController.loginUser}" class="btn btn-lg btn-primary btn-block" value="Iniciar sesión"/>
                                                 </div>
                                             </div>
                                         </div>
                                     </fieldset>
-                                </form>
+                                </h:form>
                             </div>
                             <div class="panel-footer text-center">
                                 ¿Aún no tienes cuenta? <a href="#" onClick=""> ¡Registrate! </a>
