@@ -38,7 +38,7 @@ public class LoginController {
 
     public String loginUser() {
         this.USUARIO_DAO.searchByUserNameOrEmail("user1");
-        FacesContext.getCurrentInstance().addMessage(null,
+        FacesContext.getCurrentInstance().addMessage("messages",
                 new FacesMessage(FacesMessage.SEVERITY_ERROR, "El usuario y/o la contraseña son inválidos.", ""));
         return null;
     }
