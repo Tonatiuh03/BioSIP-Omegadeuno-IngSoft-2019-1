@@ -19,6 +19,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -27,7 +28,8 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author jrcvd
  */
 @Entity
-@Table(name = "categoria")
+@Table(catalog = "biosip", schema = "public", uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"nombre"})})
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Categoria.findAll", query = "SELECT c FROM Categoria c")
@@ -40,13 +42,13 @@ public class Categoria implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id")
+    @Column(nullable = false)
     private Integer id;
     @Basic(optional = false)
-    @Column(name = "nombre")
+    @Column(nullable = false, length = 45)
     private String nombre;
     @Basic(optional = false)
-    @Column(name = "descripcion")
+    @Column(nullable = false, length = 500)
     private String descripcion;
     @ManyToMany(mappedBy = "categoriaSet", fetch = FetchType.LAZY)
     private Set<Material> materialSet;

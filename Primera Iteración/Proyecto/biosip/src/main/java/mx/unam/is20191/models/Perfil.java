@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author jrcvd
  */
 @Entity
-@Table(name = "perfil")
+@Table(catalog = "biosip", schema = "public")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Perfil.findAll", query = "SELECT p FROM Perfil p")
@@ -41,17 +41,17 @@ public class Perfil implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id")
+    @Column(nullable = false)
     private Short id;
     @Basic(optional = false)
-    @Column(name = "nombre")
+    @Column(nullable = false, length = 45)
     private String nombre;
     @Basic(optional = false)
-    @Column(name = "descripcion")
+    @Column(nullable = false, length = 200)
     private String descripcion;
     @JoinTable(name = "usuario_perfil", joinColumns = {
-        @JoinColumn(name = "perfil_id", referencedColumnName = "id")}, inverseJoinColumns = {
-        @JoinColumn(name = "usuario_id", referencedColumnName = "id")})
+        @JoinColumn(name = "perfil_id", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {
+        @JoinColumn(name = "usuario_id", referencedColumnName = "id", nullable = false)})
     @ManyToMany(fetch = FetchType.LAZY)
     private Set<Usuario> usuarioSet;
 

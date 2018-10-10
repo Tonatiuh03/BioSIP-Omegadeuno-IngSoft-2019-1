@@ -30,7 +30,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author jrcvd
  */
 @Entity
-@Table(name = "material")
+@Table(catalog = "biosip", schema = "public")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Material.findAll", query = "SELECT m FROM Material m")
@@ -45,27 +45,27 @@ public class Material implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id")
+    @Column(nullable = false)
     private Long id;
     @Basic(optional = false)
-    @Column(name = "nombre")
+    @Column(nullable = false, length = 200)
     private String nombre;
     @Basic(optional = false)
-    @Column(name = "disponibles")
+    @Column(nullable = false)
     private int disponibles;
-    @Column(name = "ruta_imagen")
+    @Column(name = "ruta_imagen", length = 100)
     private String rutaImagen;
     @Basic(optional = false)
-    @Column(name = "descripcion")
+    @Column(nullable = false, length = 500)
     private String descripcion;
     @JoinTable(name = "material_subcategoria", joinColumns = {
-        @JoinColumn(name = "material_id", referencedColumnName = "id")}, inverseJoinColumns = {
-        @JoinColumn(name = "subcategoria_id", referencedColumnName = "id")})
+        @JoinColumn(name = "material_id", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {
+        @JoinColumn(name = "subcategoria_id", referencedColumnName = "id", nullable = false)})
     @ManyToMany(fetch = FetchType.LAZY)
     private Set<Subcategoria> subcategoriaSet;
     @JoinTable(name = "material_categoria", joinColumns = {
-        @JoinColumn(name = "material_id", referencedColumnName = "id")}, inverseJoinColumns = {
-        @JoinColumn(name = "categoria_id", referencedColumnName = "id")})
+        @JoinColumn(name = "material_id", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {
+        @JoinColumn(name = "categoria_id", referencedColumnName = "id", nullable = false)})
     @ManyToMany(fetch = FetchType.LAZY)
     private Set<Categoria> categoriaSet;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "material", fetch = FetchType.LAZY)

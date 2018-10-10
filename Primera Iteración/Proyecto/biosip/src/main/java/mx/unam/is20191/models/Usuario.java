@@ -23,6 +23,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -31,7 +32,9 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author jrcvd
  */
 @Entity
-@Table(name = "usuario")
+@Table(catalog = "biosip", schema = "public", uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"correo_ciencias"})
+    , @UniqueConstraint(columnNames = {"user_name"})})
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u")
@@ -48,24 +51,24 @@ public class Usuario implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id")
+    @Column(nullable = false)
     private Long id;
     @Basic(optional = false)
-    @Column(name = "nombre_completo")
+    @Column(name = "nombre_completo", nullable = false, length = 210)
     private String nombreCompleto;
     @Basic(optional = false)
-    @Column(name = "user_name")
+    @Column(name = "user_name", nullable = false, length = 50)
     private String userName;
     @Basic(optional = false)
-    @Column(name = "correo_ciencias")
+    @Column(name = "correo_ciencias", nullable = false, length = 150)
     private String correoCiencias;
     @Basic(optional = false)
-    @Column(name = "password")
+    @Column(nullable = false, length = 100)
     private String password;
     @Column(name = "fecha_de_desbloqueo")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaDeDesbloqueo;
-    @Column(name = "ruta_imagen")
+    @Column(name = "ruta_imagen", length = 100)
     private String rutaImagen;
     @ManyToMany(mappedBy = "usuarioSet", fetch = FetchType.LAZY)
     private Set<Perfil> perfilSet;

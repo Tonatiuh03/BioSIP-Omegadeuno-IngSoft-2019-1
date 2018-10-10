@@ -30,7 +30,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author jrcvd
  */
 @Entity
-@Table(name = "kit")
+@Table(catalog = "biosip", schema = "public")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Kit.findAll", query = "SELECT k FROM Kit k")
@@ -41,13 +41,13 @@ public class Kit implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(name = "id")
+    @Column(nullable = false)
     private Long id;
     @Basic(optional = false)
-    @Column(name = "fecha_de_expiracion")
+    @Column(name = "fecha_de_expiracion", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaDeExpiracion;
-    @JoinColumn(name = "usuario_id_autor", referencedColumnName = "id")
+    @JoinColumn(name = "usuario_id_autor", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Usuario usuarioIdAutor;
     @JoinColumn(name = "administrador_id_aprobador", referencedColumnName = "id")

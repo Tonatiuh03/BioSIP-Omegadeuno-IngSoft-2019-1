@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author jrcvd
  */
 @Entity
-@Table(name = "kit_material")
+@Table(name = "kit_material", catalog = "biosip", schema = "public")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "KitMaterial.findAll", query = "SELECT k FROM KitMaterial k")
@@ -36,12 +36,12 @@ public class KitMaterial implements Serializable {
     @EmbeddedId
     protected KitMaterialPK kitMaterialPK;
     @Basic(optional = false)
-    @Column(name = "num_elementos_requeridos")
+    @Column(name = "num_elementos_requeridos", nullable = false)
     private int numElementosRequeridos;
-    @JoinColumn(name = "kit_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @JoinColumn(name = "kit_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Kit kit;
-    @JoinColumn(name = "material_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @JoinColumn(name = "material_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Material material;
 

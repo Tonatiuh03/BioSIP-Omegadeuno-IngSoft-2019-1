@@ -30,7 +30,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author jrcvd
  */
 @Entity
-@Table(name = "prestamo")
+@Table(catalog = "biosip", schema = "public")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Prestamo.findAll", query = "SELECT p FROM Prestamo p")
@@ -43,10 +43,10 @@ public class Prestamo implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(name = "id")
+    @Column(nullable = false)
     private Long id;
     @Basic(optional = false)
-    @Column(name = "fecha_de_solicitud")
+    @Column(name = "fecha_de_solicitud", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaDeSolicitud;
     @Column(name = "fecha_de_aprobacion")
@@ -57,7 +57,7 @@ public class Prestamo implements Serializable {
     private Date fechaDeDevolucion;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "prestamo", fetch = FetchType.LAZY)
     private Set<PrestamoMaterial> prestamoMaterialSet;
-    @JoinColumn(name = "usuario_id", referencedColumnName = "id")
+    @JoinColumn(name = "usuario_id", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Usuario usuarioId;
     @JoinColumn(name = "administrador_id_aprobador", referencedColumnName = "id")
