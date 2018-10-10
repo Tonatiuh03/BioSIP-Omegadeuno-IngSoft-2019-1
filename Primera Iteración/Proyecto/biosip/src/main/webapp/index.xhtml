@@ -13,16 +13,16 @@
             <br/><br/>
             <div class="container">
                 <div class="row justify-content-md-center">
-                    <div class="col-sm-6 col-md-4 col-md-offset-4">
+                    <div class="col-sm-6 col-md-6 col-md-offset-6">
                         <div class="panel panel-default">
                             <div class="panel-heading text-center">
                                 <strong>Inicia sesión para continuar</strong>
                             </div>
                             <div class="panel-body">
-                                <div>
-                                    <p:messages id="messages" autoUpdate="true" closable="true" />
-                                </div>
                                 <h:form id="myForm">
+                                    <div>
+                                        <p:messages for="messages"  />
+                                    </div>
                                     <fieldset>
                                         <div class="row justify-content-md-center">
                                             <div class="center-block">
@@ -37,19 +37,23 @@
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i class="fa fa-user-circle-o" aria-hidden="true"></i></span>
                                                         </div>
-                                                        <p:inputText class="form-control"  placeholder="Usuario o correo" required="true" id="userName" size="10"/>
+                                                        <p:inputText class="form-control"  placeholder="Usuario o correo" required="true" id="userName" size="10"
+                                                                     requiredMessage="Debe ingresar un usuario o correo" /><br/>
                                                     </div>
+                                                    <p:message for="userName" />
                                                 </div>
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon2"><i class="fa fa-key" aria-hidden="true"></i></span>
                                                         </div>
-                                                        <p:inputText class="form-control"  placeholder="Contraseña" required="true" id="password" size="10"/>
+                                                        <p:inputText class="form-control"  placeholder="Contraseña" required="true" 
+                                                                     requiredMessage="Debe ingresar su contraseña" id="password" size="10"/>
                                                     </div>
+                                                    <p:message for="password" />
                                                 </div>
                                                 <div class="form-group">
-                                                    <p:commandButton action="#{loginController.loginUser}" class="btn btn-lg btn-primary btn-block" value="Iniciar sesión"/>
+                                                    <p:commandButton action="#{loginController.loginUser}" class="btn btn-lg btn-primary btn-block" value="Iniciar sesión" update="myForm"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -57,7 +61,7 @@
                                 </h:form>
                             </div>
                             <div class="panel-footer text-center">
-                                ¿Aún no tienes cuenta? <a href="#" onClick=""> ¡Registrate! </a>
+                                ¿Aún no tienes cuenta? <a href="/views/registro.xhtml" onClick=""> ¡Registrate! </a>
                             </div>
                         </div>
                     </div>
