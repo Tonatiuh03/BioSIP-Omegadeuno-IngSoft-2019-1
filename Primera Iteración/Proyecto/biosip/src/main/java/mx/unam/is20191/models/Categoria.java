@@ -6,17 +6,17 @@
 package mx.unam.is20191.models;
 
 import java.io.Serializable;
-import java.util.Set;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -49,8 +49,10 @@ public class Categoria implements Serializable {
     @Basic(optional = false)
     @Column(name = "descripcion", nullable = false, length = 500)
     private String descripcion;
-    @ManyToMany(mappedBy = "categoriaSet", fetch = FetchType.LAZY)
-    private Set<Material> materialSet;
+    @ManyToMany(mappedBy = "categoriaCollection")
+    private Collection<Material> materialCollection;
+    @OneToMany(mappedBy = "categoriaId")
+    private Collection<Subcategoria> subcategoriaCollection;
 
     public Categoria() {
     }
@@ -90,12 +92,21 @@ public class Categoria implements Serializable {
     }
 
     @XmlTransient
-    public Set<Material> getMaterialSet() {
-        return materialSet;
+    public Collection<Material> getMaterialCollection() {
+        return materialCollection;
     }
 
-    public void setMaterialSet(Set<Material> materialSet) {
-        this.materialSet = materialSet;
+    public void setMaterialCollection(Collection<Material> materialCollection) {
+        this.materialCollection = materialCollection;
+    }
+
+    @XmlTransient
+    public Collection<Subcategoria> getSubcategoriaCollection() {
+        return subcategoriaCollection;
+    }
+
+    public void setSubcategoriaCollection(Collection<Subcategoria> subcategoriaCollection) {
+        this.subcategoriaCollection = subcategoriaCollection;
     }
 
     @Override

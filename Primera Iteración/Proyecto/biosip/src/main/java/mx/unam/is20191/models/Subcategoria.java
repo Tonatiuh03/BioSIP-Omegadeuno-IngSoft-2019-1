@@ -6,15 +6,16 @@
 package mx.unam.is20191.models;
 
 import java.io.Serializable;
-import java.util.Set;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -49,8 +50,11 @@ public class Subcategoria implements Serializable {
     @Basic(optional = false)
     @Column(name = "descripcion", nullable = false, length = 500)
     private String descripcion;
-    @ManyToMany(mappedBy = "subcategoriaSet", fetch = FetchType.LAZY)
-    private Set<Material> materialSet;
+    @ManyToMany(mappedBy = "subcategoriaCollection")
+    private Collection<Material> materialCollection;
+    @JoinColumn(name = "categoria_id", referencedColumnName = "id")
+    @ManyToOne
+    private Categoria categoriaId;
 
     public Subcategoria() {
     }
@@ -90,12 +94,20 @@ public class Subcategoria implements Serializable {
     }
 
     @XmlTransient
-    public Set<Material> getMaterialSet() {
-        return materialSet;
+    public Collection<Material> getMaterialCollection() {
+        return materialCollection;
     }
 
-    public void setMaterialSet(Set<Material> materialSet) {
-        this.materialSet = materialSet;
+    public void setMaterialCollection(Collection<Material> materialCollection) {
+        this.materialCollection = materialCollection;
+    }
+
+    public Categoria getCategoriaId() {
+        return categoriaId;
+    }
+
+    public void setCategoriaId(Categoria categoriaId) {
+        this.categoriaId = categoriaId;
     }
 
     @Override

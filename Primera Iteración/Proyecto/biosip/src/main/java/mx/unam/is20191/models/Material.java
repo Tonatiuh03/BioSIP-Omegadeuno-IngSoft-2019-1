@@ -6,12 +6,11 @@
 package mx.unam.is20191.models;
 
 import java.io.Serializable;
-import java.util.Set;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -61,17 +60,17 @@ public class Material implements Serializable {
     @JoinTable(name = "material_subcategoria", joinColumns = {
         @JoinColumn(name = "material_id", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {
         @JoinColumn(name = "subcategoria_id", referencedColumnName = "id", nullable = false)})
-    @ManyToMany(fetch = FetchType.LAZY)
-    private Set<Subcategoria> subcategoriaSet;
+    @ManyToMany
+    private Collection<Subcategoria> subcategoriaCollection;
     @JoinTable(name = "material_categoria", joinColumns = {
         @JoinColumn(name = "material_id", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {
         @JoinColumn(name = "categoria_id", referencedColumnName = "id", nullable = false)})
-    @ManyToMany(fetch = FetchType.LAZY)
-    private Set<Categoria> categoriaSet;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "material", fetch = FetchType.LAZY)
-    private Set<PrestamoMaterial> prestamoMaterialSet;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "material", fetch = FetchType.LAZY)
-    private Set<KitMaterial> kitMaterialSet;
+    @ManyToMany
+    private Collection<Categoria> categoriaCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "material")
+    private Collection<PrestamoMaterial> prestamoMaterialCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "material")
+    private Collection<KitMaterial> kitMaterialCollection;
 
     public Material() {
     }
@@ -128,39 +127,39 @@ public class Material implements Serializable {
     }
 
     @XmlTransient
-    public Set<Subcategoria> getSubcategoriaSet() {
-        return subcategoriaSet;
+    public Collection<Subcategoria> getSubcategoriaCollection() {
+        return subcategoriaCollection;
     }
 
-    public void setSubcategoriaSet(Set<Subcategoria> subcategoriaSet) {
-        this.subcategoriaSet = subcategoriaSet;
-    }
-
-    @XmlTransient
-    public Set<Categoria> getCategoriaSet() {
-        return categoriaSet;
-    }
-
-    public void setCategoriaSet(Set<Categoria> categoriaSet) {
-        this.categoriaSet = categoriaSet;
+    public void setSubcategoriaCollection(Collection<Subcategoria> subcategoriaCollection) {
+        this.subcategoriaCollection = subcategoriaCollection;
     }
 
     @XmlTransient
-    public Set<PrestamoMaterial> getPrestamoMaterialSet() {
-        return prestamoMaterialSet;
+    public Collection<Categoria> getCategoriaCollection() {
+        return categoriaCollection;
     }
 
-    public void setPrestamoMaterialSet(Set<PrestamoMaterial> prestamoMaterialSet) {
-        this.prestamoMaterialSet = prestamoMaterialSet;
+    public void setCategoriaCollection(Collection<Categoria> categoriaCollection) {
+        this.categoriaCollection = categoriaCollection;
     }
 
     @XmlTransient
-    public Set<KitMaterial> getKitMaterialSet() {
-        return kitMaterialSet;
+    public Collection<PrestamoMaterial> getPrestamoMaterialCollection() {
+        return prestamoMaterialCollection;
     }
 
-    public void setKitMaterialSet(Set<KitMaterial> kitMaterialSet) {
-        this.kitMaterialSet = kitMaterialSet;
+    public void setPrestamoMaterialCollection(Collection<PrestamoMaterial> prestamoMaterialCollection) {
+        this.prestamoMaterialCollection = prestamoMaterialCollection;
+    }
+
+    @XmlTransient
+    public Collection<KitMaterial> getKitMaterialCollection() {
+        return kitMaterialCollection;
+    }
+
+    public void setKitMaterialCollection(Collection<KitMaterial> kitMaterialCollection) {
+        this.kitMaterialCollection = kitMaterialCollection;
     }
 
     @Override

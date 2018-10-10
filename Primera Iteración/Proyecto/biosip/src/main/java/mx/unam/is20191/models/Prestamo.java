@@ -6,13 +6,12 @@
 package mx.unam.is20191.models;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
-import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -55,13 +54,13 @@ public class Prestamo implements Serializable {
     @Column(name = "fecha_de_devolucion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaDeDevolucion;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "prestamo", fetch = FetchType.LAZY)
-    private Set<PrestamoMaterial> prestamoMaterialSet;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "prestamo")
+    private Collection<PrestamoMaterial> prestamoMaterialCollection;
     @JoinColumn(name = "usuario_id", referencedColumnName = "id", nullable = false)
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     private Usuario usuarioId;
     @JoinColumn(name = "administrador_id_aprobador", referencedColumnName = "id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private Usuario administradorIdAprobador;
 
     public Prestamo() {
@@ -109,12 +108,12 @@ public class Prestamo implements Serializable {
     }
 
     @XmlTransient
-    public Set<PrestamoMaterial> getPrestamoMaterialSet() {
-        return prestamoMaterialSet;
+    public Collection<PrestamoMaterial> getPrestamoMaterialCollection() {
+        return prestamoMaterialCollection;
     }
 
-    public void setPrestamoMaterialSet(Set<PrestamoMaterial> prestamoMaterialSet) {
-        this.prestamoMaterialSet = prestamoMaterialSet;
+    public void setPrestamoMaterialCollection(Collection<PrestamoMaterial> prestamoMaterialCollection) {
+        this.prestamoMaterialCollection = prestamoMaterialCollection;
     }
 
     public Usuario getUsuarioId() {

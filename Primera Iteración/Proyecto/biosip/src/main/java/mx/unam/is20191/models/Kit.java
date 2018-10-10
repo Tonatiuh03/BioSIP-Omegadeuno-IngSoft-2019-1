@@ -6,13 +6,12 @@
 package mx.unam.is20191.models;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
-import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -48,13 +47,13 @@ public class Kit implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaDeExpiracion;
     @JoinColumn(name = "usuario_id_autor", referencedColumnName = "id", nullable = false)
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     private Usuario usuarioIdAutor;
     @JoinColumn(name = "administrador_id_aprobador", referencedColumnName = "id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private Usuario administradorIdAprobador;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "kit", fetch = FetchType.LAZY)
-    private Set<KitMaterial> kitMaterialSet;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "kit")
+    private Collection<KitMaterial> kitMaterialCollection;
 
     public Kit() {
     }
@@ -101,12 +100,12 @@ public class Kit implements Serializable {
     }
 
     @XmlTransient
-    public Set<KitMaterial> getKitMaterialSet() {
-        return kitMaterialSet;
+    public Collection<KitMaterial> getKitMaterialCollection() {
+        return kitMaterialCollection;
     }
 
-    public void setKitMaterialSet(Set<KitMaterial> kitMaterialSet) {
-        this.kitMaterialSet = kitMaterialSet;
+    public void setKitMaterialCollection(Collection<KitMaterial> kitMaterialCollection) {
+        this.kitMaterialCollection = kitMaterialCollection;
     }
 
     @Override

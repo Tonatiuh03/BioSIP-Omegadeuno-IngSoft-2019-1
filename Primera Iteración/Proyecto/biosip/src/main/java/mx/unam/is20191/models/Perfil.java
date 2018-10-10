@@ -6,11 +6,10 @@
 package mx.unam.is20191.models;
 
 import java.io.Serializable;
-import java.util.Set;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -52,8 +51,8 @@ public class Perfil implements Serializable {
     @JoinTable(name = "usuario_perfil", joinColumns = {
         @JoinColumn(name = "perfil_id", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {
         @JoinColumn(name = "usuario_id", referencedColumnName = "id", nullable = false)})
-    @ManyToMany(fetch = FetchType.LAZY)
-    private Set<Usuario> usuarioSet;
+    @ManyToMany
+    private Collection<Usuario> usuarioCollection;
 
     public Perfil() {
     }
@@ -93,12 +92,12 @@ public class Perfil implements Serializable {
     }
 
     @XmlTransient
-    public Set<Usuario> getUsuarioSet() {
-        return usuarioSet;
+    public Collection<Usuario> getUsuarioCollection() {
+        return usuarioCollection;
     }
 
-    public void setUsuarioSet(Set<Usuario> usuarioSet) {
-        this.usuarioSet = usuarioSet;
+    public void setUsuarioCollection(Collection<Usuario> usuarioCollection) {
+        this.usuarioCollection = usuarioCollection;
     }
 
     @Override
