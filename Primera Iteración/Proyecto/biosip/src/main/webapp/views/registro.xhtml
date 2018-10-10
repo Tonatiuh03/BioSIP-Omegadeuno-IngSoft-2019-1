@@ -1,0 +1,102 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="template.xhtml">
+        <ui:define name="head">
+            <link rel="stylesheet" type="text/css" href="/css/frm/registro.css"></link>
+            <title>Registro</title>
+        </ui:define>
+        <ui:define name="body">
+            <br/><br/>
+            <div class="container">
+                <h:form id="myForm">
+                    <div class="row justify-content-md-center">
+                        <div class="col-sm-6 col-md-6 col-md-offset-6">
+                            <div class="panel panel-default">
+                                <div class="panel-heading text-center">
+                                    <strong>¡Regístrate en BioSIP!</strong>
+                                </div>
+                                <div class="panel-body">
+                                    <br/>
+                                    <p:messages for="messages"  />
+                                    <br/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-md-center">
+                        <div class="col-sm-6 col-md-6 col-md-offset-6">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <fieldset>
+                                        <div class="row justify-content-md-center">
+                                            <div class="col-sm-12 col-md-10  col-md-offset-1 ">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="basic-addon1"><i class="fa fa-user-circle-o" aria-hidden="true"></i></span>
+                                                        </div>
+                                                        <p:inputText class="form-control"  placeholder="Nombre completo" required="true" id="nombreCompleto" size="10"
+                                                                     requiredMessage="El nombre no puede estar vacío." /><br/>
+                                                    </div>
+                                                    <p:message for="nombreCompleto" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="basic-addon1"><i class="fa fa-user-circle-o" aria-hidden="true"></i></span>
+                                                        </div>
+                                                        <p:inputText class="form-control"  placeholder="Nombre de usuario" required="true" id="userName" size="10"
+                                                                     requiredMessage="El nombre de usuario no puede estar vacío." /><br/>
+                                                    </div>
+                                                    <p:message for="userName" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="basic-addon2"><i class="fa fa-key" aria-hidden="true"></i></span>
+                                                        </div>
+                                                        <p:inputText class="form-control"  placeholder="Contraseña" required="true" 
+                                                                     requiredMessage="Debe ingresar su contraseña" id="password" size="10"/>
+                                                    </div>
+                                                    <p:message for="password" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <p:commandButton action="#{loginController.loginUser}" class="btn btn-lg btn-primary btn-block" value="Iniciar sesión" update="myForm"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                                <div class="panel-footer text-center">
+                                    ¿Aún no tienes cuenta? <a href="#" onClick=""> ¡Registrate! </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-6 col-md-offset-6">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <fieldset>
+                                        <div class="row justify-content-md-center">
+                                            <div class="center-block">
+                                                <img class="profile-img"
+                                                     src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=120" alt=""/>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+
+                                </div>
+                                <div class="panel-footer text-center">
+                                    ¿Aún no tienes cuenta? <a href="#" onClick=""> ¡Registrate! </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </h:form>
+            </div>
+        </ui:define>
+    </ui:composition> 
+</html>
