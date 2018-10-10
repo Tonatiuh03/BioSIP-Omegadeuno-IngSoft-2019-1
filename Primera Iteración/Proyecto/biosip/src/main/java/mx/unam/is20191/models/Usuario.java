@@ -6,12 +6,13 @@
 package mx.unam.is20191.models;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
+import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -22,7 +23,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -31,9 +31,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author jrcvd
  */
 @Entity
-@Table(name = "usuario", catalog = "biosip", schema = "public", uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"correo_ciencias"})
-    , @UniqueConstraint(columnNames = {"user_name"})})
+@Table(name = "usuario")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u")
@@ -50,35 +48,35 @@ public class Usuario implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id", nullable = false)
+    @Column(name = "id")
     private Long id;
     @Basic(optional = false)
-    @Column(name = "nombre_completo", nullable = false, length = 210)
+    @Column(name = "nombre_completo")
     private String nombreCompleto;
     @Basic(optional = false)
-    @Column(name = "user_name", nullable = false, length = 50)
+    @Column(name = "user_name")
     private String userName;
     @Basic(optional = false)
-    @Column(name = "correo_ciencias", nullable = false, length = 150)
+    @Column(name = "correo_ciencias")
     private String correoCiencias;
     @Basic(optional = false)
-    @Column(name = "password", nullable = false, length = 100)
+    @Column(name = "password")
     private String password;
     @Column(name = "fecha_de_desbloqueo")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaDeDesbloqueo;
-    @Column(name = "ruta_imagen", length = 100)
+    @Column(name = "ruta_imagen")
     private String rutaImagen;
-    @ManyToMany(mappedBy = "usuarioCollection")
-    private Collection<Perfil> perfilCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioId")
-    private Collection<Prestamo> prestamoCollection;
-    @OneToMany(mappedBy = "administradorIdAprobador")
-    private Collection<Prestamo> prestamoCollection1;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioIdAutor")
-    private Collection<Kit> kitCollection;
-    @OneToMany(mappedBy = "administradorIdAprobador")
-    private Collection<Kit> kitCollection1;
+    @ManyToMany(mappedBy = "usuarioSet", fetch = FetchType.LAZY)
+    private Set<Perfil> perfilSet;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioId", fetch = FetchType.LAZY)
+    private Set<Prestamo> prestamoSet;
+    @OneToMany(mappedBy = "administradorIdAprobador", fetch = FetchType.LAZY)
+    private Set<Prestamo> prestamoSet1;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioIdAutor", fetch = FetchType.LAZY)
+    private Set<Kit> kitSet;
+    @OneToMany(mappedBy = "administradorIdAprobador", fetch = FetchType.LAZY)
+    private Set<Kit> kitSet1;
 
     public Usuario() {
     }
@@ -152,48 +150,48 @@ public class Usuario implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Perfil> getPerfilCollection() {
-        return perfilCollection;
+    public Set<Perfil> getPerfilSet() {
+        return perfilSet;
     }
 
-    public void setPerfilCollection(Collection<Perfil> perfilCollection) {
-        this.perfilCollection = perfilCollection;
-    }
-
-    @XmlTransient
-    public Collection<Prestamo> getPrestamoCollection() {
-        return prestamoCollection;
-    }
-
-    public void setPrestamoCollection(Collection<Prestamo> prestamoCollection) {
-        this.prestamoCollection = prestamoCollection;
+    public void setPerfilSet(Set<Perfil> perfilSet) {
+        this.perfilSet = perfilSet;
     }
 
     @XmlTransient
-    public Collection<Prestamo> getPrestamoCollection1() {
-        return prestamoCollection1;
+    public Set<Prestamo> getPrestamoSet() {
+        return prestamoSet;
     }
 
-    public void setPrestamoCollection1(Collection<Prestamo> prestamoCollection1) {
-        this.prestamoCollection1 = prestamoCollection1;
-    }
-
-    @XmlTransient
-    public Collection<Kit> getKitCollection() {
-        return kitCollection;
-    }
-
-    public void setKitCollection(Collection<Kit> kitCollection) {
-        this.kitCollection = kitCollection;
+    public void setPrestamoSet(Set<Prestamo> prestamoSet) {
+        this.prestamoSet = prestamoSet;
     }
 
     @XmlTransient
-    public Collection<Kit> getKitCollection1() {
-        return kitCollection1;
+    public Set<Prestamo> getPrestamoSet1() {
+        return prestamoSet1;
     }
 
-    public void setKitCollection1(Collection<Kit> kitCollection1) {
-        this.kitCollection1 = kitCollection1;
+    public void setPrestamoSet1(Set<Prestamo> prestamoSet1) {
+        this.prestamoSet1 = prestamoSet1;
+    }
+
+    @XmlTransient
+    public Set<Kit> getKitSet() {
+        return kitSet;
+    }
+
+    public void setKitSet(Set<Kit> kitSet) {
+        this.kitSet = kitSet;
+    }
+
+    @XmlTransient
+    public Set<Kit> getKitSet1() {
+        return kitSet1;
+    }
+
+    public void setKitSet1(Set<Kit> kitSet1) {
+        this.kitSet1 = kitSet1;
     }
 
     @Override

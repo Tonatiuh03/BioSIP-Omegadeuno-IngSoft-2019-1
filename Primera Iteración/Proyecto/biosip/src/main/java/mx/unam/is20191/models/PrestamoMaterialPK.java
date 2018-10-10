@@ -18,10 +18,10 @@ import javax.persistence.Embeddable;
 public class PrestamoMaterialPK implements Serializable {
 
     @Basic(optional = false)
-    @Column(name = "prestamo_id", nullable = false)
+    @Column(name = "prestamo_id")
     private long prestamoId;
     @Basic(optional = false)
-    @Column(name = "material_id", nullable = false)
+    @Column(name = "material_id")
     private long materialId;
 
     public PrestamoMaterialPK() {

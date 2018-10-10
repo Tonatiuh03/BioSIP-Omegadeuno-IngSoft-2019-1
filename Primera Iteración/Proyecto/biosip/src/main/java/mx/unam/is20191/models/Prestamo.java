@@ -6,12 +6,13 @@
 package mx.unam.is20191.models;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
+import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -29,7 +30,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author jrcvd
  */
 @Entity
-@Table(name = "prestamo", catalog = "biosip", schema = "public")
+@Table(name = "prestamo")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Prestamo.findAll", query = "SELECT p FROM Prestamo p")
@@ -42,10 +43,10 @@ public class Prestamo implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(name = "id", nullable = false)
+    @Column(name = "id")
     private Long id;
     @Basic(optional = false)
-    @Column(name = "fecha_de_solicitud", nullable = false)
+    @Column(name = "fecha_de_solicitud")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaDeSolicitud;
     @Column(name = "fecha_de_aprobacion")
@@ -54,13 +55,13 @@ public class Prestamo implements Serializable {
     @Column(name = "fecha_de_devolucion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaDeDevolucion;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "prestamo")
-    private Collection<PrestamoMaterial> prestamoMaterialCollection;
-    @JoinColumn(name = "usuario_id", referencedColumnName = "id", nullable = false)
-    @ManyToOne(optional = false)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "prestamo", fetch = FetchType.LAZY)
+    private Set<PrestamoMaterial> prestamoMaterialSet;
+    @JoinColumn(name = "usuario_id", referencedColumnName = "id")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Usuario usuarioId;
     @JoinColumn(name = "administrador_id_aprobador", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Usuario administradorIdAprobador;
 
     public Prestamo() {
@@ -108,12 +109,12 @@ public class Prestamo implements Serializable {
     }
 
     @XmlTransient
-    public Collection<PrestamoMaterial> getPrestamoMaterialCollection() {
-        return prestamoMaterialCollection;
+    public Set<PrestamoMaterial> getPrestamoMaterialSet() {
+        return prestamoMaterialSet;
     }
 
-    public void setPrestamoMaterialCollection(Collection<PrestamoMaterial> prestamoMaterialCollection) {
-        this.prestamoMaterialCollection = prestamoMaterialCollection;
+    public void setPrestamoMaterialSet(Set<PrestamoMaterial> prestamoMaterialSet) {
+        this.prestamoMaterialSet = prestamoMaterialSet;
     }
 
     public Usuario getUsuarioId() {

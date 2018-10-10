@@ -6,12 +6,13 @@
 package mx.unam.is20191.models;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
+import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -29,7 +30,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author jrcvd
  */
 @Entity
-@Table(name = "kit", catalog = "biosip", schema = "public")
+@Table(name = "kit")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Kit.findAll", query = "SELECT k FROM Kit k")
@@ -40,20 +41,20 @@ public class Kit implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(name = "id", nullable = false)
+    @Column(name = "id")
     private Long id;
     @Basic(optional = false)
-    @Column(name = "fecha_de_expiracion", nullable = false)
+    @Column(name = "fecha_de_expiracion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaDeExpiracion;
-    @JoinColumn(name = "usuario_id_autor", referencedColumnName = "id", nullable = false)
-    @ManyToOne(optional = false)
+    @JoinColumn(name = "usuario_id_autor", referencedColumnName = "id")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Usuario usuarioIdAutor;
     @JoinColumn(name = "administrador_id_aprobador", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Usuario administradorIdAprobador;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "kit")
-    private Collection<KitMaterial> kitMaterialCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "kit", fetch = FetchType.LAZY)
+    private Set<KitMaterial> kitMaterialSet;
 
     public Kit() {
     }
@@ -100,12 +101,12 @@ public class Kit implements Serializable {
     }
 
     @XmlTransient
-    public Collection<KitMaterial> getKitMaterialCollection() {
-        return kitMaterialCollection;
+    public Set<KitMaterial> getKitMaterialSet() {
+        return kitMaterialSet;
     }
 
-    public void setKitMaterialCollection(Collection<KitMaterial> kitMaterialCollection) {
-        this.kitMaterialCollection = kitMaterialCollection;
+    public void setKitMaterialSet(Set<KitMaterial> kitMaterialSet) {
+        this.kitMaterialSet = kitMaterialSet;
     }
 
     @Override

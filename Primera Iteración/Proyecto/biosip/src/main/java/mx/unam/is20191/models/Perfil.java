@@ -6,10 +6,11 @@
 package mx.unam.is20191.models;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -27,7 +28,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author jrcvd
  */
 @Entity
-@Table(name = "perfil", catalog = "biosip", schema = "public")
+@Table(name = "perfil")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Perfil.findAll", query = "SELECT p FROM Perfil p")
@@ -40,19 +41,19 @@ public class Perfil implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id", nullable = false)
+    @Column(name = "id")
     private Short id;
     @Basic(optional = false)
-    @Column(name = "nombre", nullable = false, length = 45)
+    @Column(name = "nombre")
     private String nombre;
     @Basic(optional = false)
-    @Column(name = "descripcion", nullable = false, length = 200)
+    @Column(name = "descripcion")
     private String descripcion;
     @JoinTable(name = "usuario_perfil", joinColumns = {
-        @JoinColumn(name = "perfil_id", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {
-        @JoinColumn(name = "usuario_id", referencedColumnName = "id", nullable = false)})
-    @ManyToMany
-    private Collection<Usuario> usuarioCollection;
+        @JoinColumn(name = "perfil_id", referencedColumnName = "id")}, inverseJoinColumns = {
+        @JoinColumn(name = "usuario_id", referencedColumnName = "id")})
+    @ManyToMany(fetch = FetchType.LAZY)
+    private Set<Usuario> usuarioSet;
 
     public Perfil() {
     }
@@ -92,12 +93,12 @@ public class Perfil implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Usuario> getUsuarioCollection() {
-        return usuarioCollection;
+    public Set<Usuario> getUsuarioSet() {
+        return usuarioSet;
     }
 
-    public void setUsuarioCollection(Collection<Usuario> usuarioCollection) {
-        this.usuarioCollection = usuarioCollection;
+    public void setUsuarioSet(Set<Usuario> usuarioSet) {
+        this.usuarioSet = usuarioSet;
     }
 
     @Override

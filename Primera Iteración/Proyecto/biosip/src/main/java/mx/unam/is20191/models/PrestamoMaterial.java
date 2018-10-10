@@ -10,6 +10,7 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -22,7 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author jrcvd
  */
 @Entity
-@Table(name = "prestamo_material", catalog = "biosip", schema = "public")
+@Table(name = "prestamo_material")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "PrestamoMaterial.findAll", query = "SELECT p FROM PrestamoMaterial p")
@@ -35,13 +36,13 @@ public class PrestamoMaterial implements Serializable {
     @EmbeddedId
     protected PrestamoMaterialPK prestamoMaterialPK;
     @Basic(optional = false)
-    @Column(name = "elementos_prestados", nullable = false)
+    @Column(name = "elementos_prestados")
     private int elementosPrestados;
-    @JoinColumn(name = "material_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false)
+    @JoinColumn(name = "material_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Material material;
-    @JoinColumn(name = "prestamo_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false)
+    @JoinColumn(name = "prestamo_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Prestamo prestamo;
 
     public PrestamoMaterial() {

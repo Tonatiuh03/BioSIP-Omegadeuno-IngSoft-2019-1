@@ -6,10 +6,11 @@
 package mx.unam.is20191.models;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,7 +20,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -28,8 +28,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author jrcvd
  */
 @Entity
-@Table(name = "subcategoria", catalog = "biosip", schema = "public", uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"nombre"})})
+@Table(name = "subcategoria")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Subcategoria.findAll", query = "SELECT s FROM Subcategoria s")
@@ -42,18 +41,18 @@ public class Subcategoria implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id", nullable = false)
+    @Column(name = "id")
     private Integer id;
     @Basic(optional = false)
-    @Column(name = "nombre", nullable = false, length = 45)
+    @Column(name = "nombre")
     private String nombre;
     @Basic(optional = false)
-    @Column(name = "descripcion", nullable = false, length = 500)
+    @Column(name = "descripcion")
     private String descripcion;
-    @ManyToMany(mappedBy = "subcategoriaCollection")
-    private Collection<Material> materialCollection;
+    @ManyToMany(mappedBy = "subcategoriaSet", fetch = FetchType.LAZY)
+    private Set<Material> materialSet;
     @JoinColumn(name = "categoria_id", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Categoria categoriaId;
 
     public Subcategoria() {
@@ -94,12 +93,12 @@ public class Subcategoria implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Material> getMaterialCollection() {
-        return materialCollection;
+    public Set<Material> getMaterialSet() {
+        return materialSet;
     }
 
-    public void setMaterialCollection(Collection<Material> materialCollection) {
-        this.materialCollection = materialCollection;
+    public void setMaterialSet(Set<Material> materialSet) {
+        this.materialSet = materialSet;
     }
 
     public Categoria getCategoriaId() {

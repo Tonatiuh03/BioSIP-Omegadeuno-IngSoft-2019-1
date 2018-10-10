@@ -18,10 +18,10 @@ import javax.persistence.Embeddable;
 public class KitMaterialPK implements Serializable {
 
     @Basic(optional = false)
-    @Column(name = "kit_id", nullable = false)
+    @Column(name = "kit_id")
     private long kitId;
     @Basic(optional = false)
-    @Column(name = "material_id", nullable = false)
+    @Column(name = "material_id")
     private long materialId;
 
     public KitMaterialPK() {

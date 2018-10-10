@@ -6,11 +6,12 @@
 package mx.unam.is20191.models;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -29,7 +30,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author jrcvd
  */
 @Entity
-@Table(name = "material", catalog = "biosip", schema = "public")
+@Table(name = "material")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Material.findAll", query = "SELECT m FROM Material m")
@@ -44,33 +45,33 @@ public class Material implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id", nullable = false)
+    @Column(name = "id")
     private Long id;
     @Basic(optional = false)
-    @Column(name = "nombre", nullable = false, length = 200)
+    @Column(name = "nombre")
     private String nombre;
     @Basic(optional = false)
-    @Column(name = "disponibles", nullable = false)
+    @Column(name = "disponibles")
     private int disponibles;
-    @Column(name = "ruta_imagen", length = 100)
+    @Column(name = "ruta_imagen")
     private String rutaImagen;
     @Basic(optional = false)
-    @Column(name = "descripcion", nullable = false, length = 500)
+    @Column(name = "descripcion")
     private String descripcion;
     @JoinTable(name = "material_subcategoria", joinColumns = {
-        @JoinColumn(name = "material_id", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {
-        @JoinColumn(name = "subcategoria_id", referencedColumnName = "id", nullable = false)})
-    @ManyToMany
-    private Collection<Subcategoria> subcategoriaCollection;
+        @JoinColumn(name = "material_id", referencedColumnName = "id")}, inverseJoinColumns = {
+        @JoinColumn(name = "subcategoria_id", referencedColumnName = "id")})
+    @ManyToMany(fetch = FetchType.LAZY)
+    private Set<Subcategoria> subcategoriaSet;
     @JoinTable(name = "material_categoria", joinColumns = {
-        @JoinColumn(name = "material_id", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {
-        @JoinColumn(name = "categoria_id", referencedColumnName = "id", nullable = false)})
-    @ManyToMany
-    private Collection<Categoria> categoriaCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "material")
-    private Collection<PrestamoMaterial> prestamoMaterialCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "material")
-    private Collection<KitMaterial> kitMaterialCollection;
+        @JoinColumn(name = "material_id", referencedColumnName = "id")}, inverseJoinColumns = {
+        @JoinColumn(name = "categoria_id", referencedColumnName = "id")})
+    @ManyToMany(fetch = FetchType.LAZY)
+    private Set<Categoria> categoriaSet;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "material", fetch = FetchType.LAZY)
+    private Set<PrestamoMaterial> prestamoMaterialSet;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "material", fetch = FetchType.LAZY)
+    private Set<KitMaterial> kitMaterialSet;
 
     public Material() {
     }
@@ -127,39 +128,39 @@ public class Material implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Subcategoria> getSubcategoriaCollection() {
-        return subcategoriaCollection;
+    public Set<Subcategoria> getSubcategoriaSet() {
+        return subcategoriaSet;
     }
 
-    public void setSubcategoriaCollection(Collection<Subcategoria> subcategoriaCollection) {
-        this.subcategoriaCollection = subcategoriaCollection;
-    }
-
-    @XmlTransient
-    public Collection<Categoria> getCategoriaCollection() {
-        return categoriaCollection;
-    }
-
-    public void setCategoriaCollection(Collection<Categoria> categoriaCollection) {
-        this.categoriaCollection = categoriaCollection;
+    public void setSubcategoriaSet(Set<Subcategoria> subcategoriaSet) {
+        this.subcategoriaSet = subcategoriaSet;
     }
 
     @XmlTransient
-    public Collection<PrestamoMaterial> getPrestamoMaterialCollection() {
-        return prestamoMaterialCollection;
+    public Set<Categoria> getCategoriaSet() {
+        return categoriaSet;
     }
 
-    public void setPrestamoMaterialCollection(Collection<PrestamoMaterial> prestamoMaterialCollection) {
-        this.prestamoMaterialCollection = prestamoMaterialCollection;
+    public void setCategoriaSet(Set<Categoria> categoriaSet) {
+        this.categoriaSet = categoriaSet;
     }
 
     @XmlTransient
-    public Collection<KitMaterial> getKitMaterialCollection() {
-        return kitMaterialCollection;
+    public Set<PrestamoMaterial> getPrestamoMaterialSet() {
+        return prestamoMaterialSet;
     }
 
-    public void setKitMaterialCollection(Collection<KitMaterial> kitMaterialCollection) {
-        this.kitMaterialCollection = kitMaterialCollection;
+    public void setPrestamoMaterialSet(Set<PrestamoMaterial> prestamoMaterialSet) {
+        this.prestamoMaterialSet = prestamoMaterialSet;
+    }
+
+    @XmlTransient
+    public Set<KitMaterial> getKitMaterialSet() {
+        return kitMaterialSet;
+    }
+
+    public void setKitMaterialSet(Set<KitMaterial> kitMaterialSet) {
+        this.kitMaterialSet = kitMaterialSet;
     }
 
     @Override
