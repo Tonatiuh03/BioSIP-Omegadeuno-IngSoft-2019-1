@@ -13,12 +13,13 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -26,7 +27,8 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author sds
  */
 @Entity
-@Table(catalog = "biosip", schema = "public")
+@Table(catalog = "biosip", schema = "public", uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"usuario_id"})})
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Confirmacion.findAll", query = "SELECT c FROM Confirmacion c")
@@ -44,7 +46,7 @@ public class Confirmacion implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaDeAlta;
     @JoinColumn(name = "usuario_id", referencedColumnName = "id", nullable = false)
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @OneToOne(optional = false, fetch = FetchType.LAZY)
     private Usuario usuarioId;
 
     public Confirmacion() {

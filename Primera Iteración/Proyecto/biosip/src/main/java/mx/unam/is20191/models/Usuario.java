@@ -20,6 +20,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -76,8 +77,8 @@ public class Usuario implements Serializable {
     private boolean validado;
     @ManyToMany(mappedBy = "usuarioSet", fetch = FetchType.LAZY)
     private Set<Perfil> perfilSet;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioId", fetch = FetchType.LAZY)
-    private Set<Confirmacion> confirmacionSet;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "usuarioId", fetch = FetchType.LAZY)
+    private Confirmacion confirmacion;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioId", fetch = FetchType.LAZY)
     private Set<Prestamo> prestamoSet;
     @OneToMany(mappedBy = "administradorIdAprobador", fetch = FetchType.LAZY)
@@ -176,13 +177,12 @@ public class Usuario implements Serializable {
         this.perfilSet = perfilSet;
     }
 
-    @XmlTransient
-    public Set<Confirmacion> getConfirmacionSet() {
-        return confirmacionSet;
+    public Confirmacion getConfirmacion() {
+        return confirmacion;
     }
 
-    public void setConfirmacionSet(Set<Confirmacion> confirmacionSet) {
-        this.confirmacionSet = confirmacionSet;
+    public void setConfirmacion(Confirmacion confirmacion) {
+        this.confirmacion = confirmacion;
     }
 
     @XmlTransient
