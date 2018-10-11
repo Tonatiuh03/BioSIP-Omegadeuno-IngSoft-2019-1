@@ -20,6 +20,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -29,7 +30,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author jrcvd
+ * @author sds
  */
 @Entity
 @Table(catalog = "biosip", schema = "public", uniqueConstraints = {
@@ -44,7 +45,8 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Usuario.findByCorreoCiencias", query = "SELECT u FROM Usuario u WHERE u.correoCiencias = :correoCiencias")
     , @NamedQuery(name = "Usuario.findByPassword", query = "SELECT u FROM Usuario u WHERE u.password = :password")
     , @NamedQuery(name = "Usuario.findByFechaDeDesbloqueo", query = "SELECT u FROM Usuario u WHERE u.fechaDeDesbloqueo = :fechaDeDesbloqueo")
-    , @NamedQuery(name = "Usuario.findByRutaImagen", query = "SELECT u FROM Usuario u WHERE u.rutaImagen = :rutaImagen")})
+    , @NamedQuery(name = "Usuario.findByRutaImagen", query = "SELECT u FROM Usuario u WHERE u.rutaImagen = :rutaImagen")
+    , @NamedQuery(name = "Usuario.findByValidado", query = "SELECT u FROM Usuario u WHERE u.validado = :validado")})
 public class Usuario implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -70,8 +72,13 @@ public class Usuario implements Serializable {
     private Date fechaDeDesbloqueo;
     @Column(name = "ruta_imagen", length = 100)
     private String rutaImagen;
+    @Basic(optional = false)
+    @Column(nullable = false)
+    private boolean validado;
     @ManyToMany(mappedBy = "usuarioSet", fetch = FetchType.LAZY)
     private Set<Perfil> perfilSet;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "usuarioId", fetch = FetchType.LAZY)
+    private Confirmacion confirmacion;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioId", fetch = FetchType.LAZY)
     private Set<Prestamo> prestamoSet;
     @OneToMany(mappedBy = "administradorIdAprobador", fetch = FetchType.LAZY)
@@ -88,12 +95,13 @@ public class Usuario implements Serializable {
         this.id = id;
     }
 
-    public Usuario(Long id, String nombreCompleto, String userName, String correoCiencias, String password) {
+    public Usuario(Long id, String nombreCompleto, String userName, String correoCiencias, String password, boolean validado) {
         this.id = id;
         this.nombreCompleto = nombreCompleto;
         this.userName = userName;
         this.correoCiencias = correoCiencias;
         this.password = password;
+        this.validado = validado;
     }
 
     public Long getId() {
@@ -152,6 +160,14 @@ public class Usuario implements Serializable {
         this.rutaImagen = rutaImagen;
     }
 
+    public boolean getValidado() {
+        return validado;
+    }
+
+    public void setValidado(boolean validado) {
+        this.validado = validado;
+    }
+
     @XmlTransient
     public Set<Perfil> getPerfilSet() {
         return perfilSet;
@@ -159,6 +175,14 @@ public class Usuario implements Serializable {
 
     public void setPerfilSet(Set<Perfil> perfilSet) {
         this.perfilSet = perfilSet;
+    }
+
+    public Confirmacion getConfirmacion() {
+        return confirmacion;
+    }
+
+    public void setConfirmacion(Confirmacion confirmacion) {
+        this.confirmacion = confirmacion;
     }
 
     @XmlTransient

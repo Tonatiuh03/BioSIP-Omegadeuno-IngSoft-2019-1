@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author jrcvd
+ * @author sds
  */
 @Entity
 @Table(catalog = "biosip", schema = "public", uniqueConstraints = {
