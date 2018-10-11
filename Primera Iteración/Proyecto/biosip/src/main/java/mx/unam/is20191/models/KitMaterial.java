@@ -20,7 +20,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author jrcvd
+ * @author sds
  */
 @Entity
 @Table(name = "kit_material", catalog = "biosip", schema = "public")

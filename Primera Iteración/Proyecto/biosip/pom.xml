@@ -102,7 +102,20 @@
             <artifactId>commons-io</artifactId>
             <version>2.0</version>
         </dependency>
+        <!--Dependencias para el mail-->
+        <!-- https://mvnrepository.com/artifact/com.sun.mail/javax.mail -->
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>javax.mail</artifactId>
+            <version>1.6.2</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>javax.mail-api</artifactId>
+            <version>1.6.2</version>
+        </dependency>
     </dependencies>
+    
     <build>
         <finalName>BIOSip</finalName>
         <plugins>

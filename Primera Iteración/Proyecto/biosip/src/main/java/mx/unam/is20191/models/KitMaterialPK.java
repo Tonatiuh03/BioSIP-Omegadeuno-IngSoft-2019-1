@@ -12,7 +12,7 @@ import javax.persistence.Embeddable;
 
 /**
  *
- * @author jrcvd
+ * @author sds
  */
 @Embeddable
 public class KitMaterialPK implements Serializable {
