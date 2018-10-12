@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f = "http://java.sun.com/jsf/core">
     <ui:composition template="template.xhtml">
         <ui:define name="head">
             <link rel="stylesheet" type="text/css" href="/css/frm/registro.css"></link>
@@ -28,7 +29,7 @@
                         </div>
                     </div>
                     <div class="row justify-content-md-center">
-                        <div class="col-sm-6 col-md-6 col-md-offset-6">
+                        <div class="col-sm-7 col-md-7 col-md-offset-7">
                             <div class="panel panel-default">
                                 <div class="panel-body">
                                     <fieldset>
@@ -37,7 +38,7 @@
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="basic-addon1"><i class="fa fa-user-circle-o" aria-hidden="true"></i></span>
+                                                            <span class="input-group-text" id="basic-addon1"><i class="fas fa-user-circle"></i></span>
                                                         </div>
                                                         <p:inputText class="form-control"  placeholder="Nombre completo" required="true" id="nombreCompleto" size="10"
                                                                      requiredMessage="El nombre no puede estar vacío." /><br/>
@@ -47,52 +48,82 @@
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="basic-addon1"><i class="fa fa-user-circle-o" aria-hidden="true"></i></span>
+                                                            <span class="input-group-text" id="basic-addon1"><i class="fas fa-user-circle"></i></span>
                                                         </div>
                                                         <p:inputText class="form-control"  placeholder="Nombre de usuario" required="true" id="userName" size="10"
-                                                                     requiredMessage="El nombre de usuario no puede estar vacío." /><br/>
+                                                                     requiredMessage="El nombre de usuario no puede estar vacío." 
+                                                                     validator="${registroController.validateUniqueUserName}" >
+                                                            <p:ajax event="keyup" update="mUserName" process="@this" />
+                                                        </p:inputText>
+                                                        <br/>
                                                     </div>
-                                                    <p:message for="userName" />
+                                                    <p:message for="userName" id="mUserName" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="basic-addon1"><i class="fas fa-envelope-square"></i></span>
+                                                        </div>
+                                                        <p:inputText class="form-control"  placeholder="Correo" required="true" id="correo" size="10"
+                                                                     requiredMessage="El correo no puede estar vacío."
+                                                                     validator="${registroController.validateUniqueEmail}">
+                                                            <p:ajax event="keyup" update="mCorreo" process="@this" />
+                                                        </p:inputText>
+                                                        <br/>
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="basic-addon1">@ciencias.unam.mx</span>
+                                                        </div>
+                                                    </div>
+                                                    <p:message for="correo" id="mCorreo" />
                                                 </div>
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon2"><i class="fa fa-key" aria-hidden="true"></i></span>
                                                         </div>
-                                                        <p:inputText class="form-control"  placeholder="Contraseña" required="true" 
-                                                                     requiredMessage="Debe ingresar su contraseña" id="password" size="10"/>
+                                                        <p:password class="form-control"  placeholder="Contraseña" required="true" 
+                                                                    requiredMessage="Debe ingresar su contraseña" id="password"  size="10"  feedback="true" inline="true" 
+                                                                    promptLabel="Favor de ingresar una contraseña" weakLabel="Debil" goodLabel="Buena" strongLabel="¡Fuerte!" 
+                                                                    match="password2">
+                                                            <f:validateLength minimum="8" ></f:validateLength>
+                                                        </p:password>
                                                     </div>
                                                     <p:message for="password" />
                                                 </div>
                                                 <div class="form-group">
-                                                    <p:commandButton action="#{loginController.loginUser}" class="btn btn-lg btn-primary btn-block" value="Iniciar sesión" update="myForm"/>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="basic-addon2"><i class="fa fa-key" aria-hidden="true"></i></span>
+                                                        </div>
+                                                        <p:password class="form-control"  placeholder="Confirmación de la contraseña" required="true" 
+                                                                      requiredMessage="Debe ingresar la fonfirmación de su contraseña" id="password2" size="10" />
+                                                    </div>
+                                                    <p:message for="password2" />
                                                 </div>
                                             </div>
                                         </div>
                                     </fieldset>
                                 </div>
-                                <div class="panel-footer text-center">
-                                    ¿Aún no tienes cuenta? <a href="#" onClick=""> ¡Registrate! </a>
-                                </div>
                             </div>
                         </div>
-                        <div class="col-sm-6 col-md-6 col-md-offset-6">
+                        <div class="col-sm-4 col-md-4 col-md-offset-4">
                             <div class="panel panel-default">
                                 <div class="panel-body">
                                     <fieldset>
                                         <div class="row justify-content-md-center">
-                                            <div class="center-block">
-                                                <img class="profile-img"
-                                                     src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=120" alt=""/>
+                                            <div class="center-block registro-img align-items-center text-center">
+                                                <i class="fas fa-camera-retro"></i>
                                             </div>
                                         </div>
                                     </fieldset>
 
                                 </div>
-                                <div class="panel-footer text-center">
-                                    ¿Aún no tienes cuenta? <a href="#" onClick=""> ¡Registrate! </a>
-                                </div>
                             </div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-md-center">
+                        <div class="form-group">
+                            <p:commandButton action="#{registroController.loginUser}" class="btn btn-lg btn-primary btn-block" value="Iniciar sesión" update="myForm"/>
                         </div>
                     </div>
                 </h:form>
