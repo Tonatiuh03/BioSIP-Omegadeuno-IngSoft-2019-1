@@ -37,7 +37,7 @@
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="basic-addon1"><i class="fa fa-user-circle-o" aria-hidden="true"></i></span>
+                                                            <span class="input-group-text" id="basic-addon1"><i class="fas fa-user-circle"></i></span>
                                                         </div>
                                                         <p:inputText class="form-control"  placeholder="Nombre completo" required="true" id="nombreCompleto" size="10"
                                                                      requiredMessage="El nombre no puede estar vacío." /><br/>
@@ -47,12 +47,25 @@
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="basic-addon1"><i class="fa fa-user-circle-o" aria-hidden="true"></i></span>
+                                                            <span class="input-group-text" id="basic-addon1"><i class="fas fa-user-circle"></i></span>
                                                         </div>
                                                         <p:inputText class="form-control"  placeholder="Nombre de usuario" required="true" id="userName" size="10"
                                                                      requiredMessage="El nombre de usuario no puede estar vacío." /><br/>
                                                     </div>
                                                     <p:message for="userName" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="basic-addon1"><i class="fas fa-envelope-square"></i></span>
+                                                        </div>
+                                                        <p:inputText class="form-control"  placeholder="Correo" required="true" id="correo" size="10"
+                                                                     requiredMessage="El correo no puede estar vacío." /><br/>
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="basic-addon1">@ciencias.unam.mx</span>
+                                                        </div>
+                                                    </div>
+                                                    <p:message for="correo" />
                                                 </div>
                                                 <div class="form-group">
                                                     <div class="input-group">
@@ -64,15 +77,9 @@
                                                     </div>
                                                     <p:message for="password" />
                                                 </div>
-                                                <div class="form-group">
-                                                    <p:commandButton action="#{loginController.loginUser}" class="btn btn-lg btn-primary btn-block" value="Iniciar sesión" update="myForm"/>
-                                                </div>
                                             </div>
                                         </div>
                                     </fieldset>
-                                </div>
-                                <div class="panel-footer text-center">
-                                    ¿Aún no tienes cuenta? <a href="#" onClick=""> ¡Registrate! </a>
                                 </div>
                             </div>
                         </div>
@@ -89,10 +96,12 @@
                                     </fieldset>
 
                                 </div>
-                                <div class="panel-footer text-center">
-                                    ¿Aún no tienes cuenta? <a href="#" onClick=""> ¡Registrate! </a>
-                                </div>
                             </div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-md-center">
+                        <div class="form-group">
+                            <p:commandButton action="#{registroController.loginUser}" class="btn btn-lg btn-primary btn-block" value="Iniciar sesión" update="myForm"/>
                         </div>
                     </div>
                 </h:form>
