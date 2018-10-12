@@ -11,12 +11,12 @@
     color: #A0A0A0;
 }
 
-.profile-img {
-    width: 96px;
-    height: 96px;
-    margin: 0 auto 10px;
-    display: block;
-    -moz-border-radius: 50%;
-    -webkit-border-radius: 50%;
-    border-radius: 50%;
+.registro-img{
+    width: 160px;
+    height:160px;
+    font-size: 100px;
+    border: 3px solid #5672c2!important;
+    border-radius: 100px;
+    margin: 10px;
+    color: #a8c256;
 }

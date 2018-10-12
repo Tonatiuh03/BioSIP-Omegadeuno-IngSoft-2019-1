@@ -28,7 +28,7 @@
                         </div>
                     </div>
                     <div class="row justify-content-md-center">
-                        <div class="col-sm-6 col-md-6 col-md-offset-6">
+                        <div class="col-sm-7 col-md-7 col-md-offset-7">
                             <div class="panel panel-default">
                                 <div class="panel-body">
                                     <fieldset>
@@ -72,10 +72,21 @@
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon2"><i class="fa fa-key" aria-hidden="true"></i></span>
                                                         </div>
-                                                        <p:inputText class="form-control"  placeholder="Contraseña" required="true" 
-                                                                     requiredMessage="Debe ingresar su contraseña" id="password" size="10"/>
+                                                        <p:password class="form-control"  placeholder="Contraseña" required="true" 
+                                                                     requiredMessage="Debe ingresar su contraseña" id="password"  size="10"  feedback="true" inline="true" 
+                                                                     promptLabel="Favor de ingresar una contraseña" weakLabel="Debil" goodLabel="Buena" strongLabel="¡Fuerte!"/>
                                                     </div>
                                                     <p:message for="password" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="basic-addon2"><i class="fa fa-key" aria-hidden="true"></i></span>
+                                                        </div>
+                                                        <p:password class="form-control"  placeholder="Confirmación de la contraseña" required="true" 
+                                                                    validator="#{registroController.validatePassword}"  requiredMessage="Debe ingresar la fonfirmación de su contraseña" id="password2" size="10" />
+                                                    </div>
+                                                    <p:message for="password2" />
                                                 </div>
                                             </div>
                                         </div>
@@ -83,14 +94,13 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-6 col-md-6 col-md-offset-6">
+                        <div class="col-sm-4 col-md-4 col-md-offset-4">
                             <div class="panel panel-default">
                                 <div class="panel-body">
                                     <fieldset>
                                         <div class="row justify-content-md-center">
-                                            <div class="center-block">
-                                                <img class="profile-img"
-                                                     src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=120" alt=""/>
+                                            <div class="center-block registro-img align-items-center text-center">
+                                                <i class="fas fa-camera-retro"></i>
                                             </div>
                                         </div>
                                     </fieldset>
