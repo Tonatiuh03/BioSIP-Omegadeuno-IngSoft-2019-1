@@ -21,4 +21,18 @@ public class UsuarioDao extends AbstractDao<Integer, Usuario> {
                 cb.equal(r.get("userName"), userOrEmail)));
     }
 
+    public boolean mailExist(String email) {
+        CriteriaBuilder cb = createCriteriaBuilder();
+        CriteriaQuery<Usuario> crit = createCriteriaQuery(cb);
+        Root<Usuario> r = createRoot(crit);
+        return this.count(cb.equal(r.get("correoCiencias"), email)) > 0;
+    }
+
+    public boolean userExist(String user) {
+        CriteriaBuilder cb = createCriteriaBuilder();
+        CriteriaQuery<Usuario> crit = createCriteriaQuery(cb);
+        Root<Usuario> r = createRoot(crit);
+        return this.count(cb.equal(r.get("userName"), user)) > 0;
+    }
+
 }

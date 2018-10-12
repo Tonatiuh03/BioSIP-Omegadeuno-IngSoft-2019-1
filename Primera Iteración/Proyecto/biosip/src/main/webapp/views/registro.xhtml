@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f = "http://java.sun.com/jsf/core">
     <ui:composition template="template.xhtml">
         <ui:define name="head">
             <link rel="stylesheet" type="text/css" href="/css/frm/registro.css"></link>
@@ -50,9 +51,13 @@
                                                             <span class="input-group-text" id="basic-addon1"><i class="fas fa-user-circle"></i></span>
                                                         </div>
                                                         <p:inputText class="form-control"  placeholder="Nombre de usuario" required="true" id="userName" size="10"
-                                                                     requiredMessage="El nombre de usuario no puede estar vacío." /><br/>
+                                                                     requiredMessage="El nombre de usuario no puede estar vacío." 
+                                                                     validator="${registroController.validateUniqueUserName}" >
+                                                            <p:ajax event="keyup" update="mUserName" process="@this" />
+                                                        </p:inputText>
+                                                        <br/>
                                                     </div>
-                                                    <p:message for="userName" />
+                                                    <p:message for="userName" id="mUserName" />
                                                 </div>
                                                 <div class="form-group">
                                                     <div class="input-group">
@@ -60,12 +65,16 @@
                                                             <span class="input-group-text" id="basic-addon1"><i class="fas fa-envelope-square"></i></span>
                                                         </div>
                                                         <p:inputText class="form-control"  placeholder="Correo" required="true" id="correo" size="10"
-                                                                     requiredMessage="El correo no puede estar vacío." /><br/>
+                                                                     requiredMessage="El correo no puede estar vacío."
+                                                                     validator="${registroController.validateUniqueEmail}">
+                                                            <p:ajax event="keyup" update="mCorreo" process="@this" />
+                                                        </p:inputText>
+                                                        <br/>
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1">@ciencias.unam.mx</span>
                                                         </div>
                                                     </div>
-                                                    <p:message for="correo" />
+                                                    <p:message for="correo" id="mCorreo" />
                                                 </div>
                                                 <div class="form-group">
                                                     <div class="input-group">
@@ -73,8 +82,11 @@
                                                             <span class="input-group-text" id="basic-addon2"><i class="fa fa-key" aria-hidden="true"></i></span>
                                                         </div>
                                                         <p:password class="form-control"  placeholder="Contraseña" required="true" 
-                                                                     requiredMessage="Debe ingresar su contraseña" id="password"  size="10"  feedback="true" inline="true" 
-                                                                     promptLabel="Favor de ingresar una contraseña" weakLabel="Debil" goodLabel="Buena" strongLabel="¡Fuerte!"/>
+                                                                    requiredMessage="Debe ingresar su contraseña" id="password"  size="10"  feedback="true" inline="true" 
+                                                                    promptLabel="Favor de ingresar una contraseña" weakLabel="Debil" goodLabel="Buena" strongLabel="¡Fuerte!" 
+                                                                    match="password2">
+                                                            <f:validateLength minimum="8" ></f:validateLength>
+                                                        </p:password>
                                                     </div>
                                                     <p:message for="password" />
                                                 </div>
@@ -84,7 +96,7 @@
                                                             <span class="input-group-text" id="basic-addon2"><i class="fa fa-key" aria-hidden="true"></i></span>
                                                         </div>
                                                         <p:password class="form-control"  placeholder="Confirmación de la contraseña" required="true" 
-                                                                    validator="#{registroController.validatePassword}"  requiredMessage="Debe ingresar la fonfirmación de su contraseña" id="password2" size="10" />
+                                                                      requiredMessage="Debe ingresar la fonfirmación de su contraseña" id="password2" size="10" />
                                                     </div>
                                                     <p:message for="password2" />
                                                 </div>

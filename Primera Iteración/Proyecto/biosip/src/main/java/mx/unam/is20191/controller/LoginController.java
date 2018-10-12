@@ -34,7 +34,6 @@ public class LoginController {
     }
 
     public LoginController() {
-        FacesContext.getCurrentInstance().getViewRoot().setLocale(new Locale("es-Mx"));
         USUARIO_DAO = new UsuarioDao();
     }
 
