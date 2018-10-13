@@ -121,13 +121,8 @@
                                             </div>
                                         </div>
                                         <div  class="row justify-content-md-center">
-                                            <p:growl id="msg"></p:growl>
-                                            <p:fileUpload value="#{registroControler.file}" mode="advanced"
-                                                          fileUploadListener="#{registroController.uploadImg}"
-                                                          allowTypes="/(\.|\/)(jpe?g|png)$/"
-                                                          auto="true"
-                                                          update="msg">
-                                            </p:fileUpload>
+                                            <p:fileUpload value="#{registroController.file}" mode="advanced" multiple="true" auto="true"
+                                                          fileUploadListener="#{registroController.uploadImg}"></p:fileUpload>
                                         </div>
                                     </fieldset>
                                 </div>
