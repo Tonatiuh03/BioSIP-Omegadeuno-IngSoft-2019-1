@@ -13,7 +13,7 @@
         <ui:define name="body">
             <br/><br/>
             <div class="container">
-                <h:form id="myForm">
+                <h:form id="myForm" enctype="multipart/form-data">
                     <div class="row justify-content-md-center">
                         <div class="col-sm-6 col-md-6 col-md-offset-6">
                             <div class="panel panel-default">
@@ -41,9 +41,12 @@
                                                             <span class="input-group-text" id="basic-addon1"><i class="fas fa-user-circle"></i></span>
                                                         </div>
                                                         <p:inputText class="form-control"  placeholder="Nombre completo" required="true" id="nombreCompleto" size="10"
-                                                                     requiredMessage="El nombre no puede estar vacío." /><br/>
+                                                                     requiredMessage="El nombre no puede estar vacío." >
+                                                            <p:ajax event="blur" update="mNombreCompleto" process="@this" /> 
+                                                            <p:ajax event="keyup" update="mNombreCompleto" process="@this" /> 
+                                                        </p:inputText><br/>
                                                     </div>
-                                                    <p:message for="nombreCompleto" />
+                                                    <p:message for="nombreCompleto" id="mNombreCompleto"/>
                                                 </div>
                                                 <div class="form-group">
                                                     <div class="input-group">
@@ -83,12 +86,11 @@
                                                         </div>
                                                         <p:password class="form-control"  placeholder="Contraseña" required="true" 
                                                                     requiredMessage="Debe ingresar su contraseña" id="password"  size="10"  feedback="true" inline="true" 
-                                                                    promptLabel="Favor de ingresar una contraseña" weakLabel="Debil" goodLabel="Buena" strongLabel="¡Fuerte!" 
-                                                                    match="password2">
+                                                                    promptLabel="Favor de ingresar una contraseña" weakLabel="Debil" goodLabel="Buena" strongLabel="¡Fuerte!" match="password2">
                                                             <f:validateLength minimum="8" ></f:validateLength>
                                                         </p:password>
                                                     </div>
-                                                    <p:message for="password" />
+                                                    <p:message for="password" id="mPassword"/>
                                                 </div>
                                                 <div class="form-group">
                                                     <div class="input-group">
@@ -96,9 +98,12 @@
                                                             <span class="input-group-text" id="basic-addon2"><i class="fa fa-key" aria-hidden="true"></i></span>
                                                         </div>
                                                         <p:password class="form-control"  placeholder="Confirmación de la contraseña" required="true" 
-                                                                      requiredMessage="Debe ingresar la fonfirmación de su contraseña" id="password2" size="10" />
+                                                                    requiredMessage="Debe ingresar la fonfirmación de su contraseña" id="password2" size="10"  >
+                                                            <p:ajax event="blur" update="mPassword,mPassword2" process="password, password2" />
+
+                                                        </p:password>
                                                     </div>
-                                                    <p:message for="password2" />
+                                                    <p:message for="password2" id="mPassword2"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -115,8 +120,16 @@
                                                 <i class="fas fa-camera-retro"></i>
                                             </div>
                                         </div>
+                                        <div  class="row justify-content-md-center">
+                                            <p:growl id="msg"></p:growl>
+                                            <p:fileUpload value="#{registroControler.file}" mode="advanced"
+                                                          fileUploadListener="#{registroController.uploadImg}"
+                                                          allowTypes="/(\.|\/)(jpe?g|png)$/"
+                                                          auto="true"
+                                                          update="msg">
+                                            </p:fileUpload>
+                                        </div>
                                     </fieldset>
-
                                 </div>
                             </div>
                         </div>

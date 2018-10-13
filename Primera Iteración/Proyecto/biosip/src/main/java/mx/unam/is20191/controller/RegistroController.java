@@ -8,6 +8,7 @@ import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 import mx.unam.is20191.dao.UsuarioDao;
+import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 
 @ManagedBean
@@ -16,7 +17,7 @@ public class RegistroController {
 
     private final static String DOMINIO_CORREO = "@ciencias.unam.mx";
 
-    private String userName, password;
+    private String userName, password, password2;
 
     private final UsuarioDao USUARIO_DAO;
 
@@ -102,6 +103,13 @@ public class RegistroController {
                     "El correo que intenta dar ya está registrado, escriba otro.");
             throw new ValidatorException(msg);
         }
+    }
+
+    public void uploadImg(FileUploadEvent e) {
+        // Get uploaded file from the FileUploadEvent
+        this.file = e.getFile();
+        // Print out the information of the file
+        System.out.println("Uploaded File Name Is :: " + file.getFileName() + " :: Uploaded File Size :: " + file.getSize());
     }
 
 }
