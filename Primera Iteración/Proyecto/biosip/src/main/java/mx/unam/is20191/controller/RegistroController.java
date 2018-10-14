@@ -1,5 +1,9 @@
 package mx.unam.is20191.controller;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -9,6 +13,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 import mx.unam.is20191.dao.UsuarioDao;
 import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 
 @ManagedBean
@@ -110,6 +116,15 @@ public class RegistroController {
         this.file = e.getFile();
         // Print out the information of the file
         System.out.println("Uploaded File Name Is :: " + file.getFileName() + " :: Uploaded File Size :: " + file.getSize());
+    }
+
+    public StreamedContent getImagestream() throws FileNotFoundException, Exception {
+        if (file != null) {
+            System.err.println("AAAAA");
+            return new DefaultStreamedContent(file.getInputstream(),file.getContentType());
+        } else {
+            return new DefaultStreamedContent(new FileInputStream(new File("c:\\biosip-img\\profile\\default.png")), "png");
+        }
     }
 
 }
