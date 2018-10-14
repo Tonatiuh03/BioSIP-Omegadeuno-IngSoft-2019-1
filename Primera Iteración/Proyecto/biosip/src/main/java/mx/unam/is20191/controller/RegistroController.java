@@ -4,6 +4,9 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -66,15 +69,7 @@ public class RegistroController {
         USUARIO_DAO = new UsuarioDao();
     }
 
-    public String loginUser() {
-        /*try {
-            Mail.mandarLinkDeRegistro("rodrigo.cardns@ciencias.unam.mx");
-        } catch (MessagingException ex) {
-            FacesContext.getCurrentInstance().addMessage("messages",
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Por el momento no se pueden registrar nuevas cuentas. Inténtalo más tarde.", ""));
-            System.err.println(ex);
-            return null;
-        }*/
+    public String registerUser() {
         this.USUARIO_DAO.searchByUserNameOrEmail("user1");
         FacesContext.getCurrentInstance().addMessage("messages",
                 new FacesMessage(FacesMessage.SEVERITY_ERROR, "El usuario y/o la contraseña son inválidos.", ""));
@@ -98,9 +93,10 @@ public class RegistroController {
      * Método que valida si un usuario ya está registrado en la base de datos,
      * manda error si se escribe un usuario que ya esté registrado.
      *
-     * @param context
-     * @param component
-     * @param value Es el valor obtenido del componente que llama al validador.
+     * @param context Es el contexto del jsf.
+     * @param component Es el componente que contiene el user name.
+     * @param value Es el valor obtenido del componente que llama al validador,
+     * es decir, el user name.
      */
     public void validateUniqueUserName(FacesContext context, UIComponent component, Object value) {
         if (USUARIO_DAO.userExist(value.toString())) {
@@ -111,6 +107,13 @@ public class RegistroController {
         }
     }
 
+    /**
+     * Método que verifica si un email es único.
+     *
+     * @param context Es el contexto del jsf.
+     * @param component Es el componente que contiene el email.
+     * @param value Es el valor del mail que se tiene.
+     */
     public void validateUniqueEmail(FacesContext context, UIComponent component, Object value) {
         if (USUARIO_DAO.mailExist(value + DOMINIO_CORREO)) {
             FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,
@@ -120,25 +123,39 @@ public class RegistroController {
         }
     }
 
-    public void uploadImg(FileUploadEvent e) throws FileNotFoundException {
-        // Get uploaded file from the FileUploadEvent
+    /**
+     * Método que obtiene la imagen que el usuario subió.
+     *
+     * @param e Es el objeto donde se encuentra la imagen que el usuario subió.
+     */
+    public void uploadImg(FileUploadEvent e) {
         this.file = e.getFile();
-        // Print out the information of the file
-        System.out.println("Uploaded File Name Is :: " + file.getFileName() + " :: Uploaded File Size :: " + file.getSize());
     }
 
-    public StreamedContent getImagestream() throws FileNotFoundException, Exception {
-        if (file != null) {
-            System.err.println("AAAAA");
-            return new DefaultStreamedContent(file.getInputstream(), file.getContentType());
-        } else {
-            System.err.println("BBBBBBB");
-            return new DefaultStreamedContent(new FileInputStream(new File("c:\\biosip-img\\profile\\default.png")), "png");
+    /**
+     * Método para obtener la imagen del usuario en el formulario, muetra la
+     * default si no sube alguna o se muestra la que el usuario pase como
+     * parámetro.
+     *
+     * @return La imagen que se despliega
+     */
+    public StreamedContent getImagestream() {
+        try {
+            if (file != null) {
+                return new DefaultStreamedContent(file.getInputstream(), file.getContentType());
+            } else {
+                return new DefaultStreamedContent(new FileInputStream(new File("c:\\biosip-img\\profile\\default.png")), "png");
+            }
+        } catch (IOException ex) {
+            return null;
         }
     }
 
+    /**
+     * Método que elimina el archivo subido cuando se ingresa en la página de
+     * regitro.
+     */
     public void clear() {
-        System.err.println("duifhdiuk");
         this.file = null;
     }
 
