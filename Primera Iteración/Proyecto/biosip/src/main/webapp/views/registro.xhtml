@@ -14,6 +14,9 @@
             <br/><br/>
             <div class="container">
                 <h:form id="myForm" enctype="multipart/form-data">
+                    <f:metadata>
+                        <f:viewAction action="#{registroController.clear}" />
+                    </f:metadata>
                     <div class="row justify-content-md-center">
                         <div class="col-sm-6 col-md-6 col-md-offset-6">
                             <div class="panel panel-default">
@@ -115,8 +118,9 @@
                             <div class="panel panel-default">
                                 <div class="panel-body">
                                     <fieldset class="text-center">
-                                        <p:graphicImage id="imgPreview" value="#{registroController.imagestream}" 
-                                                         cache="false" width="200px" height="200px" rendered="true"/>
+                                        <p:panel id="imgPreview" header="Basic" footer="Movie Details" style="margin-bottom:20px">
+                                            <p:graphicImage value="#{registroController.imagestream}" cache="false" width="200px" height="200px"    />
+                                        </p:panel>
                                         <div  class="row justify-content-md-center">
                                             <div class="input-group">
                                                 <div class="input-group-prepend">

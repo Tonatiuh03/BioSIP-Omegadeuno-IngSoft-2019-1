@@ -6,7 +6,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
@@ -18,7 +19,7 @@ import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 
 @ManagedBean
-@RequestScoped
+@SessionScoped
 public class RegistroController {
 
     private final static String DOMINIO_CORREO = "@ciencias.unam.mx";
@@ -28,6 +29,14 @@ public class RegistroController {
     private final UsuarioDao USUARIO_DAO;
 
     private UploadedFile file;
+
+    public String getPassword2() {
+        return password2;
+    }
+
+    public void setPassword2(String password2) {
+        this.password2 = password2;
+    }
 
     public String getUserName() {
         return userName;
@@ -111,7 +120,7 @@ public class RegistroController {
         }
     }
 
-    public void uploadImg(FileUploadEvent e) {
+    public void uploadImg(FileUploadEvent e) throws FileNotFoundException {
         // Get uploaded file from the FileUploadEvent
         this.file = e.getFile();
         // Print out the information of the file
@@ -121,10 +130,16 @@ public class RegistroController {
     public StreamedContent getImagestream() throws FileNotFoundException, Exception {
         if (file != null) {
             System.err.println("AAAAA");
-            return new DefaultStreamedContent(file.getInputstream(),file.getContentType());
+            return new DefaultStreamedContent(file.getInputstream(), file.getContentType());
         } else {
+            System.err.println("BBBBBBB");
             return new DefaultStreamedContent(new FileInputStream(new File("c:\\biosip-img\\profile\\default.png")), "png");
         }
+    }
+
+    public void clear() {
+        System.err.println("duifhdiuk");
+        this.file = null;
     }
 
 }
