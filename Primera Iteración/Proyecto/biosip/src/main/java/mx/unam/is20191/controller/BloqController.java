@@ -22,7 +22,7 @@ import org.primefaces.model.UploadedFile;
 
 @ManagedBean
 @SessionScoped
-public class KitController {
+public class BloqController {
 
     private String nombre, categoria, descripcion, material;
 
