@@ -42,7 +42,7 @@ public class Confirmacion implements Serializable {
     @Column(nullable = false, length = 100)
     private String token;
     @Basic(optional = false)
-    @Column(name = "fecha_de_alta", nullable = false)
+    @Column(name = "fecha_de_alta",insertable=false, nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaDeAlta;
     @JoinColumn(name = "usuario_id", referencedColumnName = "id", nullable = false)
