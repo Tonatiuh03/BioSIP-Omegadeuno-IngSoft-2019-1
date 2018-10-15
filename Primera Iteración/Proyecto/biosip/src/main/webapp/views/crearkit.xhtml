@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:composition template="template.xhtml">
+        <ui:define name="head">
+            <title>Crear Kit</title>
+            <link rel="stylesheet" type="text/css" href="/css/crearcategoria.css"></link>
+        </ui:define>
+        <ui:define name="body">
+            <div class="container">
+                <h2>Crear Categoría </h2>
+                <form class="form-group">
+                    <div class="form-group">
+                        <label>Nombre del Kit</label>
+                        <input class="form-control" type="text" placeholder="Escribir nombre"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Pertenece a la Categoría: </label>
+                        <select class="form-control" id="selec-categoria">
+                            <option value="null">Elegir Categoría ...</option>
+                            <option>Categoria 1</option>
+                            <option>Categoria 2</option>
+                            <option>Categoria 3</option>
+                            <option>Categoria 4</option>
+                            <option>Categoria 5</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Descripción</span>
+                        </div>
+                        <textarea class="form-control" placeholder="Breve descripción de la nueva (Sub)Categoría ..."></textarea>
+                    </div>
+
+
+                    <button id="btn-crear" class="btn d-inline" type="button">Crear</button>
+                    <button id="btn-cancelar" class="btn d-inline" type="reset" value="reset">Cancelar</button>
+                </form>
+            </div>
+        </ui:define>
+    </ui:composition> 
+</html>
