@@ -1,18 +1,20 @@
 package mx.unam.is20191.controller;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
+import javax.persistence.EntityManager;
 import mx.unam.is20191.dao.UsuarioDao;
+import mx.unam.is20191.models.Usuario;
+import mx.unam.is20191.utils.Config;
+import mx.unam.is20191.utils.Password;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
@@ -22,20 +24,26 @@ import org.primefaces.model.UploadedFile;
 @SessionScoped
 public class RegistroController {
 
-    private final static String DOMINIO_CORREO = "@ciencias.unam.mx";
-
-    private String userName, password, password2;
+    private String nombreCompleto, userName, password, correo;
 
     private final UsuarioDao USUARIO_DAO;
 
     private UploadedFile file;
 
-    public String getPassword2() {
-        return password2;
+    public String getCorreo() {
+        return correo;
     }
 
-    public void setPassword2(String password2) {
-        this.password2 = password2;
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
+    public String getNombreCompleto() {
+        return nombreCompleto;
+    }
+
+    public void setNombreCompleto(String nombreCompleto) {
+        this.nombreCompleto = nombreCompleto;
     }
 
     public String getUserName() {
@@ -66,19 +74,43 @@ public class RegistroController {
         USUARIO_DAO = new UsuarioDao();
     }
 
-    public String loginUser() {
-        /*try {
-            Mail.mandarLinkDeRegistro("rodrigo.cardns@ciencias.unam.mx");
-        } catch (MessagingException ex) {
+    /**
+     * Método que registra al usuario con el formulario ya validado.
+     *
+     * @return La página a la que vamos a redireccionar.
+     */
+    public String registerUser() throws Exception {
+
+        try {
+            Usuario nuevoUsuario = new Usuario();
+            nuevoUsuario.setNombreCompleto(nombreCompleto);
+            nuevoUsuario.setCorreoCiencias(correo+Config.DOMINIO_CORREO);
+            nuevoUsuario.setUserName(userName);
+            nuevoUsuario.setPassword(Password.encryptPassword(password));
+            if (this.file == null) {
+                nuevoUsuario.setRutaImagen(Config.IMG_PROFILE_REPO_DEFAULT_FILE_NAME);
+            } else {
+                do {
+                    nuevoUsuario.setRutaImagen(Password.randomString(20) + ".jpg");
+                } while (new File(Config.IMG_PROFILE_REPO + nuevoUsuario.getRutaImagen()).exists());
+                file.write(Config.IMG_PROFILE_REPO + nuevoUsuario.getRutaImagen());
+            }
+            this.USUARIO_DAO.getEntityManager().getTransaction().begin();
+            this.USUARIO_DAO.save(nuevoUsuario);
+            this.USUARIO_DAO.getEntityManager().getTransaction().commit();
             FacesContext.getCurrentInstance().addMessage("messages",
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Por el momento no se pueden registrar nuevas cuentas. Inténtalo más tarde.", ""));
-            System.err.println(ex);
+                    new FacesMessage(FacesMessage.SEVERITY_INFO,
+                            "Se ha registrado el usuario con éxito, favor de revisar su correo para activarlo.",
+                            "Se ha registrado el usuario con éxito, favor de revisar su correo para activarlo."));
+        } catch (IllegalArgumentException ex) {
+            FacesContext.getCurrentInstance().addMessage("messages",
+                    new FacesMessage(FacesMessage.SEVERITY_FATAL,
+                            "Por el momento no podemos agregar su registro al sistema, inténtelo más tarde.",
+                            "Por el momento no podemos agregar su registro al sistema, inténtelo más tarde."));
+
             return null;
-        }*/
-        this.USUARIO_DAO.searchByUserNameOrEmail("user1");
-        FacesContext.getCurrentInstance().addMessage("messages",
-                new FacesMessage(FacesMessage.SEVERITY_ERROR, "El usuario y/o la contraseña son inválidos.", ""));
-        return null;
+        }
+        return "/index.xhtml";
     }
 
     //Ejemplo para algunos casos que se necesitaran para validar.
@@ -98,9 +130,10 @@ public class RegistroController {
      * Método que valida si un usuario ya está registrado en la base de datos,
      * manda error si se escribe un usuario que ya esté registrado.
      *
-     * @param context
-     * @param component
-     * @param value Es el valor obtenido del componente que llama al validador.
+     * @param context Es el contexto del jsf.
+     * @param component Es el componente que contiene el user name.
+     * @param value Es el valor obtenido del componente que llama al validador,
+     * es decir, el user name.
      */
     public void validateUniqueUserName(FacesContext context, UIComponent component, Object value) {
         if (USUARIO_DAO.userExist(value.toString())) {
@@ -111,8 +144,15 @@ public class RegistroController {
         }
     }
 
+    /**
+     * Método que verifica si un email es único.
+     *
+     * @param context Es el contexto del jsf.
+     * @param component Es el componente que contiene el email.
+     * @param value Es el valor del mail que se tiene.
+     */
     public void validateUniqueEmail(FacesContext context, UIComponent component, Object value) {
-        if (USUARIO_DAO.mailExist(value + DOMINIO_CORREO)) {
+        if (USUARIO_DAO.mailExist(value + Config.DOMINIO_CORREO)) {
             FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,
                     "El correo que intenta dar ya está registrado, escriba otro.",
                     "El correo que intenta dar ya está registrado, escriba otro.");
@@ -120,26 +160,44 @@ public class RegistroController {
         }
     }
 
-    public void uploadImg(FileUploadEvent e) throws FileNotFoundException {
-        // Get uploaded file from the FileUploadEvent
+    /**
+     * Método que obtiene la imagen que el usuario subió.
+     *
+     * @param e Es el objeto donde se encuentra la imagen que el usuario subió.
+     */
+    public void uploadImg(FileUploadEvent e) {
         this.file = e.getFile();
-        // Print out the information of the file
-        System.out.println("Uploaded File Name Is :: " + file.getFileName() + " :: Uploaded File Size :: " + file.getSize());
     }
 
-    public StreamedContent getImagestream() throws FileNotFoundException, Exception {
-        if (file != null) {
-            System.err.println("AAAAA");
-            return new DefaultStreamedContent(file.getInputstream(), file.getContentType());
-        } else {
-            System.err.println("BBBBBBB");
-            return new DefaultStreamedContent(new FileInputStream(new File("c:\\biosip-img\\profile\\default.png")), "png");
+    /**
+     * Método para obtener la imagen del usuario en el formulario, muetra la
+     * default si no sube alguna o se muestra la que el usuario pase como
+     * parámetro.
+     *
+     * @return La imagen que se despliega
+     */
+    public StreamedContent getImagestream() {
+        try {
+            if (file != null) {
+                return new DefaultStreamedContent(file.getInputstream(), file.getContentType());
+            } else {
+                return new DefaultStreamedContent(new FileInputStream(new File(Config.IMG_PROFILE_REPO_DEFAULT)), "png");
+            }
+        } catch (IOException ex) {
+            return null;
         }
     }
 
+    /**
+     * Método que elimina el archivo subido cuando se ingresa en la página de
+     * regitro.
+     */
     public void clear() {
-        System.err.println("duifhdiuk");
         this.file = null;
+        this.nombreCompleto = null;
+        this.correo = null;
+        this.password = null;
+        this.userName = null;
     }
 
 }

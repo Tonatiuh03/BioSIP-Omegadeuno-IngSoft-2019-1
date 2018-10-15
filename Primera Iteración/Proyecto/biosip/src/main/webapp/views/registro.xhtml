@@ -38,12 +38,13 @@
                                     <fieldset>
                                         <div class="row justify-content-md-center">
                                             <div class="col-sm-12 col-md-10  col-md-offset-1 ">
+                                                <br/>
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i class="fas fa-user-circle"></i></span>
                                                         </div>
-                                                        <p:inputText class="form-control"  placeholder="Nombre completo" required="true" id="nombreCompleto" size="10"
+                                                        <p:inputText class="form-control" value="${registroController.nombreCompleto}"  placeholder="Nombre completo" required="true" id="nombreCompleto" size="10"
                                                                      requiredMessage="El nombre no puede estar vacío." >
                                                             <p:ajax event="blur" update="mNombreCompleto" process="@this" /> 
                                                             <p:ajax event="keyup" update="mNombreCompleto" process="@this" /> 
@@ -57,6 +58,7 @@
                                                             <span class="input-group-text" id="basic-addon1"><i class="fas fa-user-circle"></i></span>
                                                         </div>
                                                         <p:inputText class="form-control"  placeholder="Nombre de usuario" required="true" id="userName" size="10"
+                                                                     value="${registroController.userName}" 
                                                                      requiredMessage="El nombre de usuario no puede estar vacío." 
                                                                      validator="${registroController.validateUniqueUserName}" >
                                                             <p:ajax event="keyup" update="mUserName" process="@this" />
@@ -72,6 +74,7 @@
                                                         </div>
                                                         <p:inputText class="form-control"  placeholder="Correo" required="true" id="correo" size="10"
                                                                      requiredMessage="El correo no puede estar vacío."
+                                                                     value="${registroController.correo}" 
                                                                      validator="${registroController.validateUniqueEmail}">
                                                             <p:ajax event="keyup" update="mCorreo" process="@this" />
                                                         </p:inputText>
@@ -88,7 +91,8 @@
                                                             <span class="input-group-text" id="basic-addon2"><i class="fa fa-key" aria-hidden="true"></i></span>
                                                         </div>
                                                         <p:password class="form-control"  placeholder="Contraseña" required="true" 
-                                                                    requiredMessage="Debe ingresar su contraseña" id="password"  size="10"  feedback="true" inline="true" 
+                                                                    value="${registroController.password}" 
+                                                                    requiredMessage="Debe ingresar su contraseña" id="password"  size="30"  feedback="true" inline="true" 
                                                                     promptLabel="Favor de ingresar una contraseña" weakLabel="Debil" goodLabel="Buena" strongLabel="¡Fuerte!" match="password2">
                                                             <f:validateLength minimum="8" ></f:validateLength>
                                                         </p:password>
@@ -116,24 +120,22 @@
                         </div>
                         <div class="col-sm-4 col-md-4 col-md-offset-4">
                             <div class="panel panel-default">
-                                <div class="panel-body">
+                                <div class="panel-body text-center">
                                     <fieldset class="text-center">
-                                        <p:panel id="imgPreview" header="Basic" footer="Movie Details" style="margin-bottom:20px">
+                                        <p:panel id="imgPreview" style="margin-bottom:20px">
                                             <p:graphicImage value="#{registroController.imagestream}" cache="false" width="200px" height="200px"    />
                                         </p:panel>
-                                        <div  class="row justify-content-md-center">
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
+                                        <div  class="row justify-content-md-center text-center">
+                                            <div class="input-group-prepend">
                                                     <span class="input-group-text" id="basic-addon1"><i class="fas fa-camera-retro"></i></span>
                                                 </div>
-
-                                                <p:fileUpload allowTypes="/(\.|\/)(png|jpeg|JPEG|jpg|JPG)$/"
-                                                              invalidFileMessage="El archivo no es una imagen válida."
-                                                              class="btn btn-sm btn-primary btn-block" label="Subir imagen"
-                                                              value="#{registroController.file}" mode="advanced"  auto="true"
-                                                              fileUploadListener="#{registroController.uploadImg}"
-                                                              update="imgPreview" ></p:fileUpload><br/>
-                                            </div>
+                                            <p:fileUpload 
+                                                allowTypes="/(\.|\/)(png|jpeg|JPEG|jpg|JPG)$/"
+                                                invalidFileMessage="El archivo no es una imagen válida."
+                                                class="btn btn-sm btn-primary" label="Seleccionar imagen de perfil"
+                                                value="#{registroController.file}" mode="advanced"  auto="true"
+                                                fileUploadListener="#{registroController.uploadImg}"
+                                                update="imgPreview" ></p:fileUpload><br/>
                                         </div>
                                     </fieldset>
                                 </div>
@@ -142,7 +144,8 @@
                     </div>
                     <div class="row justify-content-md-center">
                         <div class="form-group">
-                            <p:commandButton action="#{registroController.loginUser}" class="btn btn-lg btn-primary btn-block" value="Iniciar sesión" update="myForm"/>
+                            <br/>
+                            <p:commandButton action="#{registroController.registerUser}" class="btn btn-lg btn-primary btn-block" value="Registrarse" update="myForm"/>
                         </div>
                     </div>
                 </h:form>

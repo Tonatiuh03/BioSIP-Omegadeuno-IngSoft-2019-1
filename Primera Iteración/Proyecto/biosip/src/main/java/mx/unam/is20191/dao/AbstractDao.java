@@ -37,6 +37,11 @@ public abstract class AbstractDao<PK extends Serializable, T> {
     protected Class<T> persistentClass;
 
     /**
+     * Entity manager de la sesión en curso.
+     */
+    protected EntityManager em;
+
+    /**
      * Variable a la cuál se enlazará el entityManagerFactory especificado en la
      * configuración de la base de datos.
      */
@@ -61,7 +66,10 @@ public abstract class AbstractDao<PK extends Serializable, T> {
      * @return El EntityManager asociado a la sesión.
      */
     public EntityManager getEntityManager() {
-        return FACTORY.createEntityManager();
+        if (em == null) {
+            em = FACTORY.createEntityManager();
+        }
+        return em;
     }
 
     /**
