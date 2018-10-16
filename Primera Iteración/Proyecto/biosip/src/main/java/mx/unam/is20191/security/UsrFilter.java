@@ -15,14 +15,13 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import mx.unam.is20191.models.Usuario;
+import mx.unam.is20191.utils.Config;
 
 /**
  *
  * @author jrcvd
  */
-public class AppFilter implements Filter {
-
-    public static final String LOGIN_PAGE = "/index.xhtml";
+public class UsrFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest,
@@ -46,7 +45,7 @@ public class AppFilter implements Filter {
             System.err.println("userManager not found");
             // user is not logged in, redirect to login page
             httpServletResponse.sendRedirect(
-                    httpServletRequest.getContextPath() + LOGIN_PAGE);
+                    httpServletRequest.getContextPath() + Config.LOGIN_PAGE);
         }
     }
 
