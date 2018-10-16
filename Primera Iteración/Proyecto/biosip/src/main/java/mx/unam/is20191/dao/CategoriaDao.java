@@ -6,12 +6,23 @@
 package mx.unam.is20191.dao;
 
 import mx.unam.is20191.models.Categoria;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 /**
  *
  * @author jrcvd
  */
+public class CategoriaDao extends AbstractDao<Integer, Categoria> {
 
-public class CategoriaDao extends AbstractDao<Integer,Categoria>{
-    
+    public boolean categoriaExist(String categoria) {
+        CriteriaBuilder cb = createCriteriaBuilder();
+        CriteriaQuery<Categoria> crit = createCriteriaQuery(cb);
+        Root<Categoria> r = createRoot(crit);
+        
+        categoria = categoria.trim();
+        return this.count(cb.equal(r.get("nombre"), categoria)) > 0;
+    }
+
 }

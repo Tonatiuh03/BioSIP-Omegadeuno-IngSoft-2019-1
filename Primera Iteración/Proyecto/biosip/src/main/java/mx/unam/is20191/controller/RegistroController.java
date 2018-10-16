@@ -219,7 +219,6 @@ public class RegistroController {
             this.CONFIRMACION_DAO.getEntityManager().getTransaction().begin();
             this.CONFIRMACION_DAO.delete(u.getConfirmacion());
             this.CONFIRMACION_DAO.getEntityManager().getTransaction().commit();
-            u.setConfirmacion(null);
             this.USUARIO_DAO.update(u);
             FacesContext.getCurrentInstance().addMessage("messages",
                     new FacesMessage(FacesMessage.SEVERITY_INFO,
