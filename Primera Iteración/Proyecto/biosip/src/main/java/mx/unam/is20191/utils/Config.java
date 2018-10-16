@@ -15,6 +15,9 @@ public class Config {
             IMG_REPO = "c:\\biosip-img\\",
             IMG_PROFILE_REPO = IMG_REPO + "profile\\",
             IMG_PROFILE_REPO_DEFAULT_FILE_NAME = "default.png",
-            IMG_PROFILE_REPO_DEFAULT = IMG_PROFILE_REPO + IMG_PROFILE_REPO_DEFAULT_FILE_NAME;
+            IMG_PROFILE_REPO_DEFAULT = IMG_PROFILE_REPO + IMG_PROFILE_REPO_DEFAULT_FILE_NAME,
+            DOMINIO = "http://localhost:8084/",
+            VISTA_CORREO = "views/confirmacion_correo.xhtml?idc=",
+            URL_CORREO = DOMINIO + VISTA_CORREO;
 
 }
