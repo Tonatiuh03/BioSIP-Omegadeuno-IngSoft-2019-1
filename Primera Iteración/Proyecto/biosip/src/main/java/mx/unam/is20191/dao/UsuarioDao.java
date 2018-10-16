@@ -3,6 +3,7 @@ package mx.unam.is20191.dao;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import mx.unam.is20191.models.Perfil;
 import mx.unam.is20191.models.Usuario;
 
 /**
@@ -40,6 +41,15 @@ public class UsuarioDao extends AbstractDao<Integer, Usuario> {
         CriteriaQuery<Usuario> crit = createCriteriaQuery(cb);
         Root<Usuario> r = createRoot(crit);
         return this.count(cb.equal(r.get("userName"), user)) > 0;
+    }
+
+    public static boolean isAdmin(Usuario u) {
+        for (Perfil p : u.getPerfilSet()) {
+            if (p.getNombre().equals("ADMIN")) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

@@ -115,7 +115,7 @@ public class RegistroController {
             FacesContext context = FacesContext.getCurrentInstance();
             context.getExternalContext().getFlash().setKeepMessages(true);
             ExternalContext eContext = context.getExternalContext();
-            eContext.redirect(eContext.getRequestContextPath() + "/index.xhtml");
+            eContext.redirect(eContext.getRequestContextPath() + Config.LOGIN_PAGE);
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage("messages",
                     new FacesMessage(FacesMessage.SEVERITY_FATAL,
@@ -219,7 +219,6 @@ public class RegistroController {
             this.CONFIRMACION_DAO.getEntityManager().getTransaction().begin();
             this.CONFIRMACION_DAO.delete(u.getConfirmacion());
             this.CONFIRMACION_DAO.getEntityManager().getTransaction().commit();
-            u.setConfirmacion(null);
             this.USUARIO_DAO.update(u);
             FacesContext.getCurrentInstance().addMessage("messages",
                     new FacesMessage(FacesMessage.SEVERITY_INFO,

@@ -17,7 +17,11 @@ public class Config {
             IMG_PROFILE_REPO_DEFAULT_FILE_NAME = "default.png",
             IMG_PROFILE_REPO_DEFAULT = IMG_PROFILE_REPO + IMG_PROFILE_REPO_DEFAULT_FILE_NAME,
             DOMINIO = "http://localhost:8084/",
-            VISTA_CORREO = "views/confirmacion_correo.xhtml?idc=",
+            VISTA_CORREO = "views/pub/confirmacion_correo.xhtml?idc=",
+            LOGIN_PAGE = "/index.xhtml",
+            REGISTRO_PAGE = "/views/pub/registro.xhtml",
+            USR_PRINCIPAL_PAGE = "/views/usr/navegacion.xhtml",
+            ADM_PRINCIPAL_PAGE = "/views/adm/admin.xhtml",
             URL_CORREO = DOMINIO + VISTA_CORREO;
 
 }

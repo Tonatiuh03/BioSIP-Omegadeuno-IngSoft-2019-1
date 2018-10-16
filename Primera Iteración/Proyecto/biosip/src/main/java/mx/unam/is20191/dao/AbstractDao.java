@@ -56,6 +56,7 @@ public abstract class AbstractDao<PK extends Serializable, T> {
      * del DAO que implemente esta clase.
      */
     public AbstractDao() {
+        FACTORY.getCache().evictAll();
         this.persistentClass = (Class<T>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[1];
     }
 
