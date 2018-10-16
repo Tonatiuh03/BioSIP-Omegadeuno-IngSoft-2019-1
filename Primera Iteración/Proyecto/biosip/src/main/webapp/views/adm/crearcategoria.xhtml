@@ -6,7 +6,7 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
-    <ui:composition template="template.xhtml">
+    <ui:composition template="/views/template.xhtml">
         <ui:define name="head">
             <title>Crear (Sub)Categoría </title>
             <link rel="stylesheet" type="text/css" href="/css/crearcategoria.css"></link>
@@ -69,7 +69,7 @@
                     </div>
                     <p:message for="descripcion" id="messDescripcion" display="text"/>
 
-                    <p:commandButton action="#{crearCategoria.agregarCategoria}" class="btn" value="Crear"/>
+                    <p:commandButton action="#{categoriaController.agregarCategoria}" class="btn" value="Crear"/>
                     <button id="btn-cancelar" class="btn d-inline" type="reset" value="reset">Cancelar</button>
                 </h:form>
             </div>

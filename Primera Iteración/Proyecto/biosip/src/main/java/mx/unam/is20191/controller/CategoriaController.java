@@ -27,7 +27,7 @@ import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 
-@ManagedBean(name="categoriaController")
+@ManagedBean
 @SessionScoped
 public class CategoriaController{
     
@@ -65,7 +65,7 @@ public class CategoriaController{
         this.esSubCategoria = esSubCategoria;
     }
     
-    public void AgregarCategoria()throws Exception{
+    public void agregarCategoria()throws Exception{
         try{
             Categoria cat = new Categoria();
             cat.setNombre(nombre);
