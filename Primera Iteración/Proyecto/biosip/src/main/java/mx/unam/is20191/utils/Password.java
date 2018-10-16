@@ -17,6 +17,14 @@ import org.apache.commons.lang3.RandomStringUtils;
  */
 public class Password {
 
+    /**
+     * Método que encripta un password.
+     *
+     * @param password Es el password a encriptar.
+     * @return El password encriptado.
+     * @throws NoSuchAlgorithmException Si no se puede obtener una instancia del
+     * MD5 se lanza una exception de este tipo.
+     */
     public static String encryptPassword(String password) throws NoSuchAlgorithmException {
         // Create MessageDigest instance for MD5
         MessageDigest md = MessageDigest.getInstance("MD5");
