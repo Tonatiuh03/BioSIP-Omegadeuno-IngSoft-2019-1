@@ -115,7 +115,7 @@ public class RegistroController {
             FacesContext context = FacesContext.getCurrentInstance();
             context.getExternalContext().getFlash().setKeepMessages(true);
             ExternalContext eContext = context.getExternalContext();
-            eContext.redirect(eContext.getRequestContextPath() + "/index.xhtml");
+            eContext.redirect(eContext.getRequestContextPath() + Config.LOGIN_PAGE);
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage("messages",
                     new FacesMessage(FacesMessage.SEVERITY_FATAL,
