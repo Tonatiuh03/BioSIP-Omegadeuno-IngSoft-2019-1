@@ -4,22 +4,37 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:composition template="template.xhtml">
         <ui:define name="head">
             <title>Crear (Sub)Categoría </title>
             <link rel="stylesheet" type="text/css" href="/css/crearcategoria.css"></link>
+            <script src="/scripts/CrearCategoria.js"></script>
         </ui:define>
         <ui:define name="body">
             <div class="container">
                 <h2>Crear Categoría o Subcategoría</h2>
-                <form class="form-group">
-                    <div class="form-group">
-                        <label>Nombre de Categoría(Subcategoría)</label>
-                        <input class="form-control" type="text" placeholder="Escribir nombre"></input>
-                    </div>
+                <h:form class="form-group">
 
-                    <label>¿Es Subcategoría?</label>
+
+                    <h:panelGrid columns="2" >
+                        <p:outputLabel for="esSubcategoria" value="¿Es Subcategoría?" />
+                        <p:selectBooleanButton id="esSubcategoria" value="${categoriaController.esSubCategoria}" 
+                                               class="btn-sm btn-light esSubcategoria" onLabel="Sí" offLabel="No" onchange="esconder()" />
+                    </h:panelGrid>
+
+
+
+                    <label>Nombre de Categoría(Subcategoría): </label>
+                    <p:inputText id="nombre" class="form-control" placeholder="Escribir nombre" required="true" requiredMessage="El nombre es necesario."
+                                 value="${categoriaController.categoria}" 
+                                 validator="${categoriaController.validateCategoriaExist}">
+                        <p:ajax event="keyup" update="messCategoria" process="@this" />    
+                    </p:inputText>
+                    <p:message for="nombre" id="messCategoria" display="text"/>                            
+
+                    <!-- Version antes del ultimo commit
                     <div class="form-check form-check-inline">
                         <label class="form-check-label d-inline" for="inlineRadio1">Sí</label>
                         <input class="form-check-input d-inline" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"></input>
@@ -28,30 +43,35 @@
                         <label class="form-check-label" for="inlineRadio2">No</label>
                         <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2" checked=""></input>
                     </div>
-
-                    <div class="form-group">
+                    -->
+                    <div id="escogerCategoria" class="escogerCategoria" style="display: none" required="false">
                         <label>Pertenece a la Categoría: </label>
-                        <select class="form-control" id="selec-categoria">
-                            <option value="null">Elegir Categoría ...</option>
+                        <select class="form-control selec-categoria" id="selec-categoria">
+                            <option value="null" ></option>
                             <option>Categoria 1</option>
                             <option>Categoria 2</option>
                             <option>Categoria 3</option>
                             <option>Categoria 4</option>
                             <option>Categoria 5</option>
                         </select>
+
                     </div>
+
 
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text">Descripción</span>
                         </div>
-                        <textarea class="form-control" placeholder="Breve descripción de la nueva (Sub)Categoría ..."></textarea>
+                        <p:inputTextarea id="descripcion" class="form-control" placeholder="Escribe aquí ..." required="true" requiredMessage="La descripcion es necesaria."
+                                         value="${categoriaController.descripcion}">
+                            <p:ajax event="keyup" update="messDescripcion" process="@this" />
+                        </p:inputTextarea>
                     </div>
+                    <p:message for="descripcion" id="messDescripcion" display="text"/>
 
-
-                    <button id="btn-crear" class="btn d-inline" type="button">Crear</button>
+                    <p:commandButton action="${crearCategoria.agregarCategoria}" class="btn btn-lg btn-primary btn-block" value="Crear"/>
                     <button id="btn-cancelar" class="btn d-inline" type="reset" value="reset">Cancelar</button>
-                </form>
+                </h:form>
             </div>
         </ui:define>
     </ui:composition> 
