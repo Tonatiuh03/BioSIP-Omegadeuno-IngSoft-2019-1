@@ -8,12 +8,15 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
-import javax.persistence.EntityManager;
+import mx.unam.is20191.dao.ConfirmacionDao;
 import mx.unam.is20191.dao.UsuarioDao;
+import mx.unam.is20191.models.Confirmacion;
 import mx.unam.is20191.models.Usuario;
 import mx.unam.is20191.utils.Config;
+import mx.unam.is20191.utils.Mail;
 import mx.unam.is20191.utils.Password;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
@@ -27,6 +30,7 @@ public class RegistroController {
     private String nombreCompleto, userName, password, correo;
 
     private final UsuarioDao USUARIO_DAO;
+    private final ConfirmacionDao CONFIRMACION_DAO;
 
     private UploadedFile file;
 
@@ -72,19 +76,18 @@ public class RegistroController {
 
     public RegistroController() {
         USUARIO_DAO = new UsuarioDao();
+        CONFIRMACION_DAO = new ConfirmacionDao();
     }
 
     /**
      * Método que registra al usuario con el formulario ya validado.
      *
-     * @return La página a la que vamos a redireccionar.
      */
-    public String registerUser() throws Exception {
-
+    public void registerUser() {
         try {
             Usuario nuevoUsuario = new Usuario();
             nuevoUsuario.setNombreCompleto(nombreCompleto);
-            nuevoUsuario.setCorreoCiencias(correo+Config.DOMINIO_CORREO);
+            nuevoUsuario.setCorreoCiencias(correo + Config.DOMINIO_CORREO);
             nuevoUsuario.setUserName(userName);
             nuevoUsuario.setPassword(Password.encryptPassword(password));
             if (this.file == null) {
@@ -92,25 +95,33 @@ public class RegistroController {
             } else {
                 do {
                     nuevoUsuario.setRutaImagen(Password.randomString(20) + ".jpg");
+                    System.err.println(Password.randomString(20) + ".jpg");
                 } while (new File(Config.IMG_PROFILE_REPO + nuevoUsuario.getRutaImagen()).exists());
                 file.write(Config.IMG_PROFILE_REPO + nuevoUsuario.getRutaImagen());
             }
             this.USUARIO_DAO.getEntityManager().getTransaction().begin();
-            this.USUARIO_DAO.save(nuevoUsuario);
+            nuevoUsuario = this.USUARIO_DAO.update(nuevoUsuario);
+            Confirmacion confirm = new Confirmacion();
+            confirm.setToken(Password.randomString(100));
+            confirm.setUsuarioId(nuevoUsuario);
+            nuevoUsuario.setConfirmacion(confirm);
+            this.USUARIO_DAO.update(nuevoUsuario);
             this.USUARIO_DAO.getEntityManager().getTransaction().commit();
+            Mail.mandarLinkDeRegistro(nuevoUsuario.getCorreoCiencias(), nuevoUsuario.getNombreCompleto(), confirm.getToken());
             FacesContext.getCurrentInstance().addMessage("messages",
                     new FacesMessage(FacesMessage.SEVERITY_INFO,
                             "Se ha registrado el usuario con éxito, favor de revisar su correo para activarlo.",
                             "Se ha registrado el usuario con éxito, favor de revisar su correo para activarlo."));
-        } catch (IllegalArgumentException ex) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.getExternalContext().getFlash().setKeepMessages(true);
+            ExternalContext eContext = context.getExternalContext();
+            eContext.redirect(eContext.getRequestContextPath() + "/index.xhtml");
+        } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage("messages",
                     new FacesMessage(FacesMessage.SEVERITY_FATAL,
                             "Por el momento no podemos agregar su registro al sistema, inténtelo más tarde.",
                             "Por el momento no podemos agregar su registro al sistema, inténtelo más tarde."));
-
-            return null;
         }
-        return "/index.xhtml";
     }
 
     //Ejemplo para algunos casos que se necesitaran para validar.
@@ -198,6 +209,25 @@ public class RegistroController {
         this.correo = null;
         this.password = null;
         this.userName = null;
+    }
+
+    public String confirmEmail(String id) {
+        this.USUARIO_DAO.getEntityManager().getTransaction().begin();
+        Usuario u = USUARIO_DAO.searchByConfirmacion(id);
+        if (u != null) {
+            u.setValidado(true);
+            this.CONFIRMACION_DAO.getEntityManager().getTransaction().begin();
+            this.CONFIRMACION_DAO.delete(u.getConfirmacion());
+            this.CONFIRMACION_DAO.getEntityManager().getTransaction().commit();
+            u.setConfirmacion(null);
+            this.USUARIO_DAO.update(u);
+            FacesContext.getCurrentInstance().addMessage("messages",
+                    new FacesMessage(FacesMessage.SEVERITY_INFO,
+                            "Su correo se ha confirmado, puede iniciar sesión.",
+                            "Su correo se ha confirmado, puede iniciar sesión."));
+        }
+        this.USUARIO_DAO.getEntityManager().getTransaction().commit();
+        return "/index.xhtml";
     }
 
 }

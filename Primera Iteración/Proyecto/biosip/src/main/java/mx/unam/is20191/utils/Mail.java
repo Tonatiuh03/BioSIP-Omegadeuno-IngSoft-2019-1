@@ -21,7 +21,10 @@ import javax.mail.internet.MimeMessage;
 public class Mail {
 
     private final static String EMAIL = "biosip.ciencias@gmail.com", PASSWORD = "SDv3We34gre5is$fdLk5erdGwq&#",
-            MAIL_DE_REGISTRO = "Dale click al siguiente enlace para <br><br> Regards, <br>Crunchify Admin";
+            MAIL_DE_REGISTRO = "Estimado %s:"
+            + "<br>Dale click al siguiente enlace para concluir tu registro<br>"
+            + "%s<br><br>"
+            + "Saludos por parte del equipo de BioSIP";
 
     private final static Properties MAIL_SERVER_PROPERTIES;
     private static Session getMailSession;
@@ -38,7 +41,7 @@ public class Mail {
         System.out.println("Mail Server Properties have been setup successfully..");
     }
 
-    public static void mandarLinkDeRegistro(String mailDestinatario) throws AddressException, MessagingException {
+    public static void mandarLinkDeRegistro(String mailDestinatario, String nombreCompletoUsuario, String token) throws AddressException, MessagingException {
         // Step2
         System.out.println("\n\n 2nd ===> get Mail Session..");
         getMailSession = Session.getDefaultInstance(MAIL_SERVER_PROPERTIES, null);
@@ -46,7 +49,7 @@ public class Mail {
         generateMailMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(mailDestinatario));
         //generateMailMessage.addRecipient(Message.RecipientType.CC, new InternetAddress(""));
         generateMailMessage.setSubject("Registro a BioSIP");
-        generateMailMessage.setContent(MAIL_DE_REGISTRO, "text/html");
+        generateMailMessage.setContent(String.format(MAIL_DE_REGISTRO, nombreCompletoUsuario, Config.URL_CORREO + token), "text/html");
         System.out.println("Mail Session has been created successfully..");
         // Step3
         System.out.println("\n\n 3rd ===> Get Session and Send mail");

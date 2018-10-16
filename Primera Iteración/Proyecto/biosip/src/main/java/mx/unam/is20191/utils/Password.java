@@ -5,14 +5,15 @@
  */
 package mx.unam.is20191.utils;
 
-import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Random;
+import org.apache.commons.lang3.RandomStringUtils;
 
 /**
+ * Clase de donde se obtiene algunas utilerias para encriptado y para generar
+ * cadenas aleatorias.
  *
- * @author jrcvd
+ * @author Josué Rodrigo Cárdenas Vallarta
  */
 public class Password {
 
@@ -33,10 +34,17 @@ public class Password {
         return sb.toString();
     }
 
+    /**
+     * Método que obtiene una cadena aleatoria.
+     *
+     * @param noCharacters Es el número de caracteres alfanuméricos que
+     * requerimos.
+     * @return La cadena generada.
+     */
     public static String randomString(int noCharacters) {
-        byte[] array = new byte[7]; // length is bounded by 7
-        new Random().nextBytes(array);
-        return new String(array, Charset.forName("UTF-8"));
+        boolean useLetters = true;
+        boolean useNumbers = true;
+        return RandomStringUtils.random(noCharacters, useLetters, useNumbers);
     }
 
 }

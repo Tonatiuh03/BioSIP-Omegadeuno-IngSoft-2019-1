@@ -21,6 +21,13 @@ public class UsuarioDao extends AbstractDao<Integer, Usuario> {
                 cb.equal(r.get("userName"), userOrEmail)));
     }
 
+    public Usuario searchByConfirmacion(String confirmacion) {
+        CriteriaBuilder cb = createCriteriaBuilder();
+        CriteriaQuery<Usuario> crit = createCriteriaQuery(cb);
+        Root<Usuario> r = createRoot(crit);
+        return searchByExpressionUnique(crit, r, cb.equal(r.get("confirmacion").get("token"), confirmacion));
+    }
+
     public boolean mailExist(String email) {
         CriteriaBuilder cb = createCriteriaBuilder();
         CriteriaQuery<Usuario> crit = createCriteriaQuery(cb);
