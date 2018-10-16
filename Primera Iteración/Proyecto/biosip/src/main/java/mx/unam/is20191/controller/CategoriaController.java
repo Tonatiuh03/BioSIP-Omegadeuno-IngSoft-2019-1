@@ -11,6 +11,7 @@ package mx.unam.is20191.controller;
  */
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -26,9 +27,9 @@ import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 
-@ManagedBean
+@ManagedBean(name="categoriaController")
 @SessionScoped
-public class CategoriaController {
+public class CategoriaController{
     
     private String nombre;
     private String descripcion;
@@ -64,26 +65,27 @@ public class CategoriaController {
         this.esSubCategoria = esSubCategoria;
     }
     
-    public boolean agregarCategoria()throws Exception{
+    public void AgregarCategoria()throws Exception{
         try{
             Categoria cat = new Categoria();
             cat.setNombre(nombre);
             cat.setDescripcion(descripcion);
             this.CATEGORIA_DAO.getEntityManager().getTransaction().begin();
-            this.CATEGORIA_DAO.save(cat);
+            cat = this.CATEGORIA_DAO.update(cat);
+            this.CATEGORIA_DAO.update(cat);
+            //this.CATEGORIA_DAO.save(cat);
             this.CATEGORIA_DAO.getEntityManager().getTransaction().commit();
             FacesContext.getCurrentInstance().addMessage("messages",
-                    new FacesMessage(FacesMessage.SEVERITY_WARN,
+                    new FacesMessage(FacesMessage.SEVERITY_INFO,
                             "Se ha creado la Categoria: "+cat.getNombre()+".",
                             "Se ha creado la Categoria: "+cat.getNombre()+"."));
-            return true;
         }catch (IllegalArgumentException ex) {
             FacesContext.getCurrentInstance().addMessage("messages",
                     new FacesMessage(FacesMessage.SEVERITY_FATAL,
                             "Por el momento no podemos agregar una nueva Categoria al sistema, inténtelo más tarde.",
                             "Por el momento no podemos agregar una nueva Categoria al sistema, inténtelo más tarde."));
 
-            return false;
+            
         }
     }
     
