@@ -47,16 +47,12 @@
         <url-pattern>/index.xhtml</url-pattern>
     </filter-mapping>
     <filter-mapping>
-        <filter-name>PublicFilter</filter-name>
-        <url-pattern>/views/pub/*</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
         <filter-name>UsrFilter</filter-name>
         <url-pattern>/views/usr/*</url-pattern>
     </filter-mapping>
     <filter-mapping>
         <filter-name>AdminFilter</filter-name>
-        <url-pattern>/views/admin/*</url-pattern>
+        <url-pattern>/views/adm/*</url-pattern>
     </filter-mapping>
 
 </web-app>
