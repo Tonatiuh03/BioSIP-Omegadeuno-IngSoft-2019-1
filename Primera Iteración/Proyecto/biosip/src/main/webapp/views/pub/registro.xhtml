@@ -47,7 +47,6 @@
                                                         <p:inputText class="form-control" value="${registroController.nombreCompleto}"  placeholder="Nombre completo" required="true" id="nombreCompleto" size="10"
                                                                      requiredMessage="El nombre no puede estar vacío." >
                                                             <p:ajax event="blur" update="mNombreCompleto" process="@this" /> 
-                                                            <p:ajax event="keyup" update="mNombreCompleto" process="@this" /> 
                                                         </p:inputText><br/>
                                                     </div>
                                                     <p:message for="nombreCompleto" id="mNombreCompleto"/>
@@ -61,7 +60,7 @@
                                                                      value="${registroController.userName}" 
                                                                      requiredMessage="El nombre de usuario no puede estar vacío." 
                                                                      validator="${registroController.validateUniqueUserName}" >
-                                                            <p:ajax event="keyup" update="mUserName" process="@this" />
+                                                            <p:ajax event="blur" update="mUserName" process="@this" />
                                                         </p:inputText>
                                                         <br/>
                                                     </div>
@@ -76,7 +75,7 @@
                                                                      requiredMessage="El correo no puede estar vacío."
                                                                      value="${registroController.correo}" 
                                                                      validator="${registroController.validateUniqueEmail}">
-                                                            <p:ajax event="keyup" update="mCorreo" process="@this" />
+                                                            <p:ajax event="blur" update="mCorreo" process="@this" />
                                                         </p:inputText>
                                                         <br/>
                                                         <div class="input-group-prepend">
