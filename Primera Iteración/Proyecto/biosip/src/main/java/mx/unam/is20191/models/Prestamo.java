@@ -46,7 +46,7 @@ public class Prestamo implements Serializable {
     @Column(nullable = false)
     private Long id;
     @Basic(optional = false)
-    @Column(name = "fecha_de_solicitud", nullable = false)
+    @Column(name = "fecha_de_solicitud", nullable = false, insertable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaDeSolicitud;
     @Column(name = "fecha_de_aprobacion")
@@ -157,5 +157,5 @@ public class Prestamo implements Serializable {
     public String toString() {
         return "mx.unam.is20191.models.Prestamo[ id=" + id + " ]";
     }
-    
+
 }

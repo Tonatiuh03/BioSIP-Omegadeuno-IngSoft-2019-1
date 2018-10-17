@@ -29,9 +29,6 @@ public class RegistroController {
 
     private String nombreCompleto, userName, password, correo;
 
-    private final UsuarioDao USUARIO_DAO;
-    private final ConfirmacionDao CONFIRMACION_DAO;
-
     private UploadedFile file;
 
     public String getCorreo() {
@@ -75,8 +72,6 @@ public class RegistroController {
     }
 
     public RegistroController() {
-        USUARIO_DAO = new UsuarioDao();
-        CONFIRMACION_DAO = new ConfirmacionDao();
     }
 
     /**
@@ -99,14 +94,16 @@ public class RegistroController {
                 } while (new File(Config.IMG_PROFILE_REPO + nuevoUsuario.getRutaImagen()).exists());
                 file.write(Config.IMG_PROFILE_REPO + nuevoUsuario.getRutaImagen());
             }
-            this.USUARIO_DAO.getEntityManager().getTransaction().begin();
-            nuevoUsuario = this.USUARIO_DAO.update(nuevoUsuario);
+            UsuarioDao usuarioDao=new UsuarioDao();
+            usuarioDao.getEntityManager().getTransaction().begin();
+            nuevoUsuario = usuarioDao.update(nuevoUsuario);
             Confirmacion confirm = new Confirmacion();
             confirm.setToken(Password.randomString(100));
             confirm.setUsuarioId(nuevoUsuario);
             nuevoUsuario.setConfirmacion(confirm);
-            this.USUARIO_DAO.update(nuevoUsuario);
-            this.USUARIO_DAO.getEntityManager().getTransaction().commit();
+
+            usuarioDao.save(nuevoUsuario);
+            usuarioDao.getEntityManager().getTransaction().commit();
             Mail.mandarLinkDeRegistro(nuevoUsuario.getCorreoCiencias(), nuevoUsuario.getNombreCompleto(), confirm.getToken());
             FacesContext.getCurrentInstance().addMessage("messages",
                     new FacesMessage(FacesMessage.SEVERITY_INFO,
@@ -147,7 +144,8 @@ public class RegistroController {
      * es decir, el user name.
      */
     public void validateUniqueUserName(FacesContext context, UIComponent component, Object value) {
-        if (USUARIO_DAO.userExist(value.toString())) {
+        UsuarioDao usuarioDao=new UsuarioDao();
+        if (usuarioDao.userExist(value.toString())) {
             FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,
                     "El usuario ya existe, escriba otro.",
                     "El usuario ya existe, escriba otro.");
@@ -163,7 +161,8 @@ public class RegistroController {
      * @param value Es el valor del mail que se tiene.
      */
     public void validateUniqueEmail(FacesContext context, UIComponent component, Object value) {
-        if (USUARIO_DAO.mailExist(value + Config.DOMINIO_CORREO)) {
+        UsuarioDao usuarioDao=new UsuarioDao();
+        if (usuarioDao.mailExist(value + Config.DOMINIO_CORREO)) {
             FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,
                     "El correo que intenta dar ya está registrado, escriba otro.",
                     "El correo que intenta dar ya está registrado, escriba otro.");
@@ -211,21 +210,34 @@ public class RegistroController {
         this.userName = null;
     }
 
+    /**
+     * Método que ayuda a confirmar el correo si el id de la confirmación
+     * conduerda con el de la base de datos.
+     *
+     * @param id Es el identificador que se buscara en la entidad confirmacion.
+     * @return La página a donde se redirijirá después de aplicar este proceso.
+     */
     public String confirmEmail(String id) {
-        this.USUARIO_DAO.getEntityManager().getTransaction().begin();
-        Usuario u = USUARIO_DAO.searchByConfirmacion(id);
+        UsuarioDao usuarioDao=new UsuarioDao();
+        Usuario u = usuarioDao.searchByConfirmacion(id);
         if (u != null) {
+            ConfirmacionDao confirmacionDao =new ConfirmacionDao();
+            confirmacionDao.getEntityManager().getTransaction().begin();
+            confirmacionDao.delete(u.getConfirmacion());
+            confirmacionDao.getEntityManager().getTransaction().commit();
+            
+            u.setConfirmacion(null);
+            
+            usuarioDao.getEntityManager().getTransaction().begin();
             u.setValidado(true);
-            this.CONFIRMACION_DAO.getEntityManager().getTransaction().begin();
-            this.CONFIRMACION_DAO.delete(u.getConfirmacion());
-            this.CONFIRMACION_DAO.getEntityManager().getTransaction().commit();
-            this.USUARIO_DAO.update(u);
+            usuarioDao.save(u);
+            usuarioDao.getEntityManager().getTransaction().commit();
+            
             FacesContext.getCurrentInstance().addMessage("messages",
                     new FacesMessage(FacesMessage.SEVERITY_INFO,
                             "Su correo se ha confirmado, puede iniciar sesión.",
                             "Su correo se ha confirmado, puede iniciar sesión."));
         }
-        this.USUARIO_DAO.getEntityManager().getTransaction().commit();
         return "/index.xhtml";
     }
 
