@@ -5,6 +5,7 @@
  */
 package mx.unam.is20191.dao;
 
+import java.util.List;
 import mx.unam.is20191.models.Categoria;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -20,9 +21,16 @@ public class CategoriaDao extends AbstractDao<Integer, Categoria> {
         CriteriaBuilder cb = createCriteriaBuilder();
         CriteriaQuery<Categoria> crit = createCriteriaQuery(cb);
         Root<Categoria> r = createRoot(crit);
-        
+
         categoria = categoria.trim();
         return this.count(cb.equal(r.get("nombre"), categoria)) > 0;
     }
 
+    public List<Categoria> getCategorias() {
+        CriteriaBuilder cb = createCriteriaBuilder();
+        CriteriaQuery<Categoria> crit = createCriteriaQuery(cb);
+        Root<Categoria> r = createRoot(crit);
+
+        return this.findAll(crit, r, cb.asc(r.get("id")));
+    }
 }
