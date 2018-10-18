@@ -30,7 +30,7 @@
                 </tbody></table>
 
             <div class="btn_cerrarSesion form-inline">
-                <p:graphicImage url="${sessionController.imageUrl}"  rendered="${not empty user}" alt="user.nombreCompleto" title="Perfil"/>
+                <p:graphicImage url="${sessionController.imageUrl}"  rendered="${not empty user}" title="${user.nombreCompleto}"/>
                 <p:commandButton  id="menu" class="btn btn-info" onclick="openNav()" rendered="${not empty user}" value="Menú"  />
                 <form class="md-form form-sm">
                     <i class="fa fa-search"></i>

@@ -16,18 +16,13 @@
             <div class="container">
                 <h2>Crear Categoría o Subcategoría</h2>
                 <h:form class="form-group" id="formulario">
-                    <f:metadata>
-                        <f:viewAction action="#{categoriaController.clear}" />
-                    </f:metadata>
-                    <p:messages id="messages" showDetail="true" closable="true">
-                        <p:autoUpdate />
-                    </p:messages>
+                    <p:messages for="messages" showDetail="true" closable="true"/>
 
                     <h:panelGrid columns="2" >
                         <p:outputLabel for="esSubcategoria" value="¿Es Subcategoría?" />
-                        <p:selectBooleanButton id="esSubcategoria" value="#{categoriaController.esSubCategoria}" 
+                        <p:selectBooleanButton id="esSubcategoria" value="#{categoriaController.esSubcategoria}" 
                                                class="btn-sm btn-light esSubcategoria" onLabel="Sí" offLabel="No" >
-                            <p:ajax update="basic" />
+                            <p:ajax event="change" update="@form"  />
                         </p:selectBooleanButton>
                     </h:panelGrid>
 
@@ -40,7 +35,7 @@
                         <!--<p:ajax event="keyup" update="messCategoria" process="@this" />    -->
                     </p:inputText>
                     <!--<p:message for="nombre" id="messCategoria" display="text"/>                            -->
-                    <p:panel id="basic" header="Basic" footer="Movie Details" rendered="#{categoriaController.esSubCategoria}" style="margin-bottom:20px">
+                    <p:outputPanel id="basic"   rendered="#{categoriaController.esSubcategoria}" style="margin-bottom:20px">
                         <p:outputLabel for="advanced" value="Seleccione categoria"  id="escogerCategoria"/>
                         <p:selectOneMenu id="advanced" value="#{categoriaController.categoria}" converter="categoriaConverter" panelStyle="width:180px"
                                          effect="fade" var="c" style="width:160px" filter="true" filterMatchMode="startsWith">
@@ -51,22 +46,7 @@
                                 <h:outputText value="#{c.nombre}" />
                             </p:column>
                         </p:selectOneMenu>   
-                    </p:panel>
-
-
-
-                    <div id="escogerCategoria" class="escogerCategoria" style="display: none" required="false">
-                        <label>Pertenece a la Categoría: </label>
-                        <select class="form-control selec-categoria" id="selec-categoria">
-                            <option value="null" ></option>
-                            <option>Categoria 1</option>
-                            <option>Categoria 2</option>
-                            <option>Categoria 3</option>
-                            <option>Categoria 4</option>
-                            <option>Categoria 5</option>
-                        </select>
-
-                    </div>
+                    </p:outputPanel>
 
 
                     <div class="input-group">

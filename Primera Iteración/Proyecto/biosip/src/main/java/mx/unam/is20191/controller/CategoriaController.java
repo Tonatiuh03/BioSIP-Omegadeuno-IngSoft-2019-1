@@ -12,7 +12,7 @@ package mx.unam.is20191.controller;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
@@ -22,13 +22,13 @@ import mx.unam.is20191.models.Categoria;
 import mx.unam.is20191.models.Subcategoria;
 
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class CategoriaController {
 
     private String nombre;
     private String descripcion;
-    private boolean esSubCategoria;
-    private Categoria categoria; 
+    private boolean esSubcategoria;
+    private Categoria categoria;
 
     public CategoriaController() {
     }
@@ -48,7 +48,6 @@ public class CategoriaController {
     public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
     }
-    
 
     public String getDescripcion() {
         return descripcion;
@@ -58,21 +57,19 @@ public class CategoriaController {
         this.descripcion = des;
     }
 
-    public boolean isEsSubCategoria() {
-        return esSubCategoria;
+    public boolean isEsSubcategoria() {
+        return esSubcategoria;
     }
 
-    public void setEsSubCategoria(boolean esSubCategoria) {
-        this.esSubCategoria = esSubCategoria;
+    public void setEsSubcategoria(boolean esSubcategoria) {
+        this.esSubcategoria = esSubcategoria;
     }
 
-    
-
-    public List<Categoria> getCategorias(){
-        CategoriaDao catdao = new CategoriaDao(); 
+    public List<Categoria> getCategorias() {
+        CategoriaDao catdao = new CategoriaDao();
         return catdao.getCategorias();
     }
-    
+
     /**
      * Méotodo que agrega una nueva Ctagoería a la base de datos. Y además
      * genera un mensaje informativo para notar al usuario que proceso se
@@ -148,14 +145,14 @@ public class CategoriaController {
         SubcategoriaDao subcatdao = new SubcategoriaDao();
         FacesMessage msg1;
         FacesMessage msg2;
-        if (this.esSubCategoria == false) {
+        if (this.esSubcategoria == false) {
             if (catdao.categoriaExist((String) value)) {
                 msg1 = new FacesMessage(FacesMessage.SEVERITY_WARN,
                         "La Categoría: " + value + " ya existe.",
                         "La Categoría: " + value + "  ya existe.");
                 throw new ValidatorException(msg1);
             }
-        } else if (this.esSubCategoria == true) {
+        } else if (this.esSubcategoria == true) {
             if (subcatdao.categoriaExist((String) value)) {
                 msg2 = new FacesMessage(FacesMessage.SEVERITY_WARN,
                         "La Subcategoria: " + value + " ya existe.",
@@ -166,24 +163,16 @@ public class CategoriaController {
 
     }
 
-    /**
-     * Mpetodo para eleminar todo valor previo de la instancia de una categoria.
-     */
-    public void clear() {
-        this.nombre = null;
-        this.descripcion = null;
-        this.esSubCategoria = false;
 
-    }
 
     /*
     * Método que agrega una Categoria o una Subcategoria,
     * dependiendo de la bandera "esSubcategoria".
      */
     public void crear() throws Exception {
-        if (this.esSubCategoria == false) {
+        if (this.esSubcategoria == false) {
             this.agregarCategoria();
-        } else if (this.esSubCategoria == true) {
+        } else if (this.esSubcategoria == true) {
             this.agregarSubcategoria();
         }
     }
