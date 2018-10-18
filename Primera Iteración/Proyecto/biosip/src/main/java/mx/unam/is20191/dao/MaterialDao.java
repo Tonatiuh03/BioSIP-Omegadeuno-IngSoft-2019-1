@@ -5,9 +5,11 @@
  */
 package mx.unam.is20191.dao;
 
-import mx.unam.is20191.models.Categoria;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import mx.unam.is20191.models.Material;
 
@@ -25,20 +27,31 @@ public class MaterialDao extends AbstractDao<Long, Material> {
         boolean porMaterial = nombreMaterial.isEmpty(),
                 porCategoria = idCategoria > -1,
                 porSubcategoria = idSubcategoria > -1;
-        int criterios=0;
-        if(!porMaterial && !porCategoria && !porSubcategoria){
-            
+        Predicate busqueda = null;
+        ArrayList<Predicate> busquedasOr = new ArrayList<>();
+        if (porMaterial) {
+            busqueda = cb.like(r.get(nombreMaterial), "%" + nombreMaterial + "%");
+            busquedasOr.add(busqueda);
         }
-        if(!porMaterial && !porCategoria && !porSubcategoria){
-            
+        if (porCategoria) {
+            busqueda = cb.isMember(idCategoria, r.get("categoriaSet"));
+            busquedasOr.add(busqueda);
         }
-        if(!porMaterial && !porCategoria && !porSubcategoria){
-            
+        if (porSubcategoria) {
+            busqueda = cb.isMember(idSubcategoria, r.get("subcategoriaSet"));
+            busquedasOr.add(busqueda);
         }
-        if (true) {
+        if (busquedasOr.isEmpty()) {
             return this.findAll(crit, r, cb.asc(r.get("id")));
+        } else {
+            if (busquedasOr.size() < 2) {
+                return this.searchByExpression(crit, r, busqueda, cb.asc(r.get("id")));
+            } else {
+                return this.searchByExpression(crit, r,
+                        cb.or(busquedasOr.toArray(new Predicate[busquedasOr.size()])), cb.asc(r.get("id")));
+            }
         }
-        
+
     }
 
 }
