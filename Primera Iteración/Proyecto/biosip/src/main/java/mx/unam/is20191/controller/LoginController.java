@@ -52,9 +52,13 @@ public class LoginController {
             } else {
                 if (u.getValidado()) {
                     if (u.getFechaDeDesbloqueo() == null) {
-                        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("user", u);
-                        return UsuarioDao.isAdmin(u) ? Config.ADM_PRINCIPAL_PAGE
-                                : (UsuarioDao.isProfesor(u) ? Config.PROF_PRINCIPAL_PAGE : Config.USR_PRINCIPAL_PAGE);
+                        FacesContext context = FacesContext.getCurrentInstance();
+                        context.getExternalContext().getSessionMap().put("user", u);
+                        ExternalContext eContext = context.getExternalContext();
+                        String redirect = (UsuarioDao.isAdmin(u) ? Config.ADM_PRINCIPAL_PAGE
+                                : (UsuarioDao.isProfesor(u) ? Config.PROF_PRINCIPAL_PAGE : Config.USR_PRINCIPAL_PAGE));
+                        eContext.redirect(eContext.getRequestContextPath() + redirect);
+                        return redirect;
                     }
                     FacesContext.getCurrentInstance().addMessage("messages",
                             new FacesMessage(FacesMessage.SEVERITY_ERROR,
@@ -65,7 +69,7 @@ public class LoginController {
                 FacesContext.getCurrentInstance().addMessage("messages",
                         new FacesMessage(FacesMessage.SEVERITY_ERROR, "El usuario no está validado, ingrese en su correo y de click en el enlace de confirmaciòn.", ""));
             }
-        } catch (NoSuchAlgorithmException  ex) {
+        } catch (NoSuchAlgorithmException | IOException ex) {
             FacesContext.getCurrentInstance().addMessage("messages",
                     new FacesMessage(FacesMessage.SEVERITY_FATAL, "Por el momento no se puede iniciar sesiòn en el sistema, intèntelo màs tarde.", ""));
         }
