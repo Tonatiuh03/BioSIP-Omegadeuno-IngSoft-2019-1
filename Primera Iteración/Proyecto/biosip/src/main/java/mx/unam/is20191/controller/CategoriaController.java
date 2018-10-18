@@ -9,27 +9,17 @@ package mx.unam.is20191.controller;
  *
  * @author dams_
  */
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
-import javax.persistence.EntityManager;
 import mx.unam.is20191.dao.CategoriaDao;
 import mx.unam.is20191.dao.SubcategoriaDao;
 import mx.unam.is20191.models.Categoria;
 import mx.unam.is20191.models.Subcategoria;
-import static org.primefaces.component.focus.Focus.PropertyKeys.context;
-import org.primefaces.model.DefaultStreamedContent;
-import org.primefaces.model.StreamedContent;
-import org.primefaces.model.UploadedFile;
 
 @ManagedBean
 @SessionScoped

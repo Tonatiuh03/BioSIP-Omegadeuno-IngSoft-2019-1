@@ -5,14 +5,11 @@
  */
 package mx.unam.is20191.dao;
 
-import java.util.ArrayList;
 import java.util.List;
 import mx.unam.is20191.models.Subcategoria;
-import mx.unam.is20191.models.Categoria;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import javax.persistence.Query;
 
 /**
  *
