@@ -14,20 +14,14 @@
         </ui:define>
         <ui:define name="body">
             <div class="container">
-
-                <f:metadata>
-                    <f:viewAction action="#{categoriaController.clear}" />
-                </f:metadata>
-
                 <h2>Crear Categoría o Subcategoría</h2>
-
-                <p:messages id="messages" showDetail="true" closable="true">
-                    <p:autoUpdate />
-                </p:messages>
-
-
                 <h:form class="form-group" id="formulario">
-
+                    <f:metadata>
+                        <f:viewAction action="#{categoriaController.clear}" />
+                    </f:metadata>
+                    <p:messages id="messages" showDetail="true" closable="true">
+                        <p:autoUpdate />
+                    </p:messages>
 
                     <h:panelGrid columns="2" >
                         <p:outputLabel for="esSubcategoria" value="¿Es Subcategoría?" />
