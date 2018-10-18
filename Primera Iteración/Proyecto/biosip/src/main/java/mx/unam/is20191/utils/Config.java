@@ -21,6 +21,7 @@ public class Config {
             LOGIN_PAGE = "/index.xhtml",
             REGISTRO_PAGE = "/views/pub/registro.xhtml",
             USR_PRINCIPAL_PAGE = "/views/usr/navegacion.xhtml",
+            PROF_PRINCIPAL_PAGE="/views/prof/prof.xhtml",
             ADM_PRINCIPAL_PAGE = "/views/adm/admin.xhtml",
             URL_CORREO = DOMINIO + VISTA_CORREO;
 
