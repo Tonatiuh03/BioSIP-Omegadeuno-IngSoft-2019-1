@@ -3,8 +3,8 @@ package mx.unam.is20191.dao;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import mx.unam.is20191.models.Perfil;
 import mx.unam.is20191.models.Usuario;
+import mx.unam.is20191.utils.Rol;
 
 /**
  * Clase que implementa las operaciones con la base de datos en lo que respecta
@@ -43,13 +43,12 @@ public class UsuarioDao extends AbstractDao<Integer, Usuario> {
         return this.count(cb.equal(r.get("userName"), user)) > 0;
     }
 
-    public static boolean isAdmin(Usuario u) {
-        for (Perfil p : u.getPerfilSet()) {
-            if (p.getNombre().equals("ADMIN")) {
-                return true;
-            }
-        }
-        return false;
+    public static boolean isAdmin(Usuario userManager) {
+        return userManager.getPerfilSet().stream().anyMatch((p) -> (p.getNombre().equals(Rol.ADMINISTRADOR)));
+    }
+
+    public static boolean isProfesor(Usuario userManager) {
+        return userManager.getPerfilSet().stream().anyMatch((p) -> (p.getNombre().equals(Rol.PROFESOR)));
     }
 
 }

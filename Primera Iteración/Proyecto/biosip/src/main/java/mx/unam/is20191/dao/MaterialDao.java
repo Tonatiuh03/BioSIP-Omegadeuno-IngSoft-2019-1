@@ -11,7 +11,9 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import mx.unam.is20191.models.Categoria;
 import mx.unam.is20191.models.Material;
+import mx.unam.is20191.models.Subcategoria;
 
 /**
  *
@@ -34,12 +36,21 @@ public class MaterialDao extends AbstractDao<Long, Material> {
             busquedasOr.add(busqueda);
         }
         if (porCategoria) {
-            busqueda = cb.isMember(idCategoria, r.get("categoriaSet"));
-            busquedasOr.add(busqueda);
+            CategoriaDao categoriaDao = new CategoriaDao();
+            Categoria cat = categoriaDao.getByKey(idCategoria);
+            if (cat != null) {
+                busqueda = cb.isMember(categoriaDao.getByKey(idCategoria), r.get("categoriaSet"));
+                busquedasOr.add(busqueda);
+            }
         }
         if (porSubcategoria) {
-            busqueda = cb.isMember(idSubcategoria, r.get("subcategoriaSet"));
-            busquedasOr.add(busqueda);
+            SubcategoriaDao subcategoriaDao = new SubcategoriaDao();
+            Subcategoria scat = subcategoriaDao.getByKey(idSubcategoria);
+            if (scat != null) {
+                busqueda = cb.isMember(scat, r.get("subcategoriaSet"));
+                busquedasOr.add(busqueda);
+            }
+
         }
         if (busquedasOr.isEmpty()) {
             return this.findAll(crit, r, cb.asc(r.get("id")));

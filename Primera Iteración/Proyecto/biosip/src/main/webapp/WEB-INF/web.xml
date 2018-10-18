@@ -37,6 +37,10 @@
         <filter-class>mx.unam.is20191.security.UsrFilter</filter-class>
     </filter>
     <filter>
+        <filter-name>ProfFilter</filter-name>
+        <filter-class>mx.unam.is20191.security.ProfFilter</filter-class>
+    </filter>
+    <filter>
         <filter-name>AdminFilter</filter-name>
         <filter-class>mx.unam.is20191.security.AdminFilter</filter-class>
     </filter>
@@ -49,6 +53,10 @@
     <filter-mapping>
         <filter-name>UsrFilter</filter-name>
         <url-pattern>/views/usr/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>ProfFilter</filter-name>
+        <url-pattern>/views/prof/*</url-pattern>
     </filter-mapping>
     <filter-mapping>
         <filter-name>AdminFilter</filter-name>
