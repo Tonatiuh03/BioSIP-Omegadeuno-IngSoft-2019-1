@@ -29,10 +29,25 @@ public class CategoriaController {
     private String descripcion;
     private boolean esSubcategoria;
     private Categoria categoria;
-
+    private String tipo; 
+    
     public CategoriaController() {
     }
 
+    public String getTipo() {
+        if(esSubcategoria == false){
+            return "Categoría";
+        }else{
+            return "Subcategoría";
+        }
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
+    
+    
     public String getNombre() {
         return nombre;
     }
@@ -77,16 +92,16 @@ public class CategoriaController {
      *
      * @throws Exception
      */
-    public void agregarCategoria() throws Exception {
+    public void agregarCategoria(CategoriaDao categoriaDao) throws Exception {
         try {
             Categoria cat = new Categoria();
             cat.setNombre(nombre);
             cat.setDescripcion(descripcion);
-            //this.CATEGORIA_DAO.getEntityManager().getTransaction().begin();
+            categoriaDao.getEntityManager().getTransaction().begin();
             //cat = this.CATEGORIA_DAO.update(cat);
-            //this.CATEGORIA_DAO.update(cat);
-            //this.CATEGORIA_DAO.save(cat);
-            //this.CATEGORIA_DAO.getEntityManager().getTransaction().commit();
+            //categoriaDao.update(cat);
+            categoriaDao.save(cat);
+            categoriaDao.getEntityManager().getTransaction().commit();
             FacesContext.getCurrentInstance().addMessage("messages",
                     new FacesMessage(FacesMessage.SEVERITY_INFO,
                             "Se ha creado la Categoria: " + cat.getNombre() + ".",
@@ -108,18 +123,18 @@ public class CategoriaController {
      *
      * @throws Exception
      */
-    public void agregarSubcategoria() throws Exception {
+    public void agregarSubcategoria(SubcategoriaDao subdao) throws Exception {
         try {
 
             Subcategoria subcat = new Subcategoria();
             subcat.setNombre(nombre);
             subcat.setDescripcion(descripcion);
-            subcat.setCategoriaId(new Categoria());
-            //this.SUBCAT_DAO.getEntityManager().getTransaction().begin();
+            subcat.setCategoriaId(categoria);
+            subdao.getEntityManager().getTransaction().begin();
             //cat = this.SUBCAT_DAO.update(cat);
-            //this.SUBCAT_DAO.update(cat);
-            //this.SUBCAT_DAO.save(cat);
-            //this.SUBCAT_DAO.getEntityManager().getTransaction().commit();
+            //subdao.update(cat);
+            subdao.save(subcat);
+            subdao.getEntityManager().getTransaction().commit();
             FacesContext.getCurrentInstance().addMessage("messages",
                     new FacesMessage(FacesMessage.SEVERITY_INFO,
                             "Se ha creado la Subcategoria: " + subcat.getNombre() + ".",
@@ -141,11 +156,9 @@ public class CategoriaController {
      * @param value Es el valor del mail que se tiene.
      */
     public void validateCategoriaExist(FacesContext context, UIComponent component, Object value) {
-        CategoriaDao catdao = new CategoriaDao();
-        SubcategoriaDao subcatdao = new SubcategoriaDao();
-        FacesMessage msg1;
-        FacesMessage msg2;
         if (this.esSubcategoria == false) {
+            CategoriaDao catdao = new CategoriaDao();
+            FacesMessage msg1;
             if (catdao.categoriaExist((String) value)) {
                 msg1 = new FacesMessage(FacesMessage.SEVERITY_WARN,
                         "La Categoría: " + value + " ya existe.",
@@ -153,6 +166,8 @@ public class CategoriaController {
                 throw new ValidatorException(msg1);
             }
         } else if (this.esSubcategoria == true) {
+            SubcategoriaDao subcatdao = new SubcategoriaDao();
+            FacesMessage msg2;
             if (subcatdao.categoriaExist((String) value)) {
                 msg2 = new FacesMessage(FacesMessage.SEVERITY_WARN,
                         "La Subcategoria: " + value + " ya existe.",
@@ -171,9 +186,11 @@ public class CategoriaController {
      */
     public void crear() throws Exception {
         if (this.esSubcategoria == false) {
-            this.agregarCategoria();
+            CategoriaDao cd = new CategoriaDao();
+            this.agregarCategoria(cd);
         } else if (this.esSubcategoria == true) {
-            this.agregarSubcategoria();
+            SubcategoriaDao sd = new SubcategoriaDao();
+            this.agregarSubcategoria(sd);
         }
     }
 }

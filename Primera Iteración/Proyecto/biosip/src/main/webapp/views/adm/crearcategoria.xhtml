@@ -10,58 +10,59 @@
         <ui:define name="head">
             <title>Crear (Sub)Categoría </title>
             <link rel="stylesheet" type="text/css" href="/css/crearcategoria.css"></link>
-            <script src="/scripts/CrearCategoria.js"></script>
         </ui:define>
         <ui:define name="body">
             <div class="container">
                 <h2>Crear Categoría o Subcategoría</h2>
                 <h:form class="form-group" id="formulario">
-                    <p:messages for="messages" showDetail="true" closable="true"/>
+                    <p:messages for="messages" showDetail="true" closable="true"><p:autoUpdate/></p:messages>
 
                     <h:panelGrid columns="2" >
                         <p:outputLabel for="esSubcategoria" value="¿Es Subcategoría?" />
                         <p:selectBooleanButton id="esSubcategoria" value="#{categoriaController.esSubcategoria}" 
-                                               class="btn-sm btn-light esSubcategoria" onLabel="Sí" offLabel="No" >
+                                               class="btn btn-sm" onLabel="Sí" offLabel="No" style="background-color: silver">
                             <p:ajax event="change" update="@form"  />
                         </p:selectBooleanButton>
                     </h:panelGrid>
 
 
 
-                    <label>Nombre de Categoría(Subcategoría): </label>
+                    <p:outputLabel value="Nombre de la #{categoriaController.tipo}:"/>
                     <p:inputText id="nombre" class="form-control" placeholder="Escribir nombre" required="true" requiredMessage="El nombre es necesario."
                                  value="${categoriaController.nombre}" 
                                  validator="${categoriaController.validateCategoriaExist}">
-                        <!--<p:ajax event="keyup" update="messCategoria" process="@this" />    -->
+                        <p:ajax event="blur" update="messCategoria"/>
                     </p:inputText>
-                    <!--<p:message for="nombre" id="messCategoria" display="text"/>                            -->
-                    <p:outputPanel id="basic"   rendered="#{categoriaController.esSubcategoria}" style="margin-bottom:20px">
-                        <p:outputLabel for="advanced" value="Seleccione categoria"  id="escogerCategoria"/>
-                        <p:selectOneMenu id="advanced" value="#{categoriaController.categoria}" converter="categoriaConverter" panelStyle="width:180px"
-                                         effect="fade" var="c" style="width:160px" filter="true" filterMatchMode="startsWith">
+                    <p:message for="nombre" id="messCategoria"/>
+                    <p:outputPanel id="basic" rendered="#{categoriaController.esSubcategoria}">
+                        <p:outputLabel id="escogerCategoria" for="advanced" value="Seleccione una Categoría:"/>
+                        <p:selectOneMenu id="advanced" value="#{categoriaController.categoria}" converter="categoriaConverter" 
+                                         effect="fade" var="c" filter="true" filterMatchMode="contains"
+                                         class="form-control form-sm">
 
-                            <f:selectItems value="#{categoriaController.categorias}" var="categoria" itemLabel="#{categoria.nombre}" itemValue="#{categoria}" />
-
-                            <p:column>
-                                <h:outputText value="#{c.nombre}" />
+                            <f:selectItems value="#{categoriaController.categorias}" var="categoria" 
+                                           itemLabel="#{categoria.nombre}" itemValue="#{categoria}"/>
+                            
+                            <p:column class="form-control" style="background-color: white; border: 0;">
+                                <h:outputText value="#{c.nombre}"/>
                             </p:column>
+                            
                         </p:selectOneMenu>   
                     </p:outputPanel>
 
 
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">Descripción</span>
-                        </div>
-                        <p:inputTextarea id="descripcion" class="form-control" placeholder="Escribe aquí ..." required="true" requiredMessage="La descripcion es necesaria."
+                    <p:outputPanel class="">
+                        <p:outputLabel value="Descripción de la #{categoriaController.tipo}:"/>
+                        <p:inputTextarea id="descripcion" class="form-control" required="true" 
+                                         placeholder="Escribir la descripción" requiredMessage="La descripcion es necesaria."
                                          value="${categoriaController.descripcion}">
-                            <!--<p:ajax event="keyup" update="messDescripcion" process="@this" />-->
+                            <p:ajax event="blur" update="messDescripcion"/>
                         </p:inputTextarea>
-                    </div>
-                    <!--<p:message for="descripcion" id="messDescripcion" display="text"/>-->
+                    </p:outputPanel>
+                    <p:message for="descripcion" id="messDescripcion" />
 
-                    <p:commandButton action="#{categoriaController.crear}" class="btn btn-primary" value="Crear"/>
-                    <button id="btn-cancelar" class="btn btn-sm btn-dark" type="reset" value="reset" >Cancelar</button>
+                    <p:commandButton action="#{categoriaController.crear}" class="btn btn-sm btn-outline-info" value="Crear"/>
+                    <p:commandButton id="btn-cancelar" class="btn btn-sm btn-outline-secondary" type="reset" value="Cancelar" />
 
                 </h:form>
             </div>
