@@ -1,23 +1,23 @@
 .encabezado{
-	width: 100%; 
-	background-color: #A8C256;
+    width: 100%; 
+    background-color: #A8C256;
 }
 
 .encabezado th{
-	text-align: center;
+    text-align: center;
 }
 #titulo{
-	 font-size: 50px;
+    font-size: 50px;
 }
 
 #logoUnam{
-	 width: 100px;
-	 height: 100px;
+    width: 100px;
+    height: 100px;
 }
 
 #logoCiencias{
-	 width: 95px;
-	 height: 95px;
+    width: 95px;
+    height: 95px;
 }
 
 .btn_cerrarSesion{
@@ -59,11 +59,11 @@
     z-index: 1;
     top: 0;
     left: 0;
-    background-color: #1F487E;
+    background-color: #8ea83d;
     overflow-x: hidden;
     transition: 0.5s;
     padding-top: 20px;
-    
+
 }
 
 .sidenav a {
@@ -93,5 +93,24 @@
 }
 
 .user-data-header{
-    background-color: red;
+    background-color: #cfdda1;
+}
+
+.profile-picture{
+    width: 50px;
+    height: 50px;
+    border-radius: 30px;
+}
+
+.profile-picture-normal{
+    width: 150px;
+    height: 150px;
+    border-radius: 20px;
+}
+
+.user-name-style{
+    margin: 10px;
+    background-color: #bbd07b;
+    position: relative;
+    width: 100%;
 }

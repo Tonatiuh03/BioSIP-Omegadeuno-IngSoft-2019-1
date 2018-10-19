@@ -14,6 +14,7 @@
         <link rel="stylesheet" type="text/css" href="/css/header.css"></link>
         <link rel="stylesheet" type="text/css" href="/css/loading.css"></link>
         <link rel="stylesheet" type="text/css" href="/css/selectOneMenu.css"></link>
+        <link rel="stylesheet" type="text/css" href="/css/grass.css"></link>
         <script src="/scripts/template.js"></script>
         <p:ajaxStatus onstart="$('#loadingDivAjax').show();" onsuccess="$('#loadingDivAjax').hide();" />
         <ui:insert name="head"/>
@@ -30,43 +31,153 @@
                 </tbody></table>
 
             <div class="btn_cerrarSesion form-inline">
-                <p:graphicImage url="${sessionController.imageUrl}"  rendered="${not empty user}" title="${user.nombreCompleto}"/>
-                <p:commandButton  id="menu" class="btn btn-info" onclick="openNav()" rendered="${not empty user}" value="Menú"  />
-                <form class="md-form form-sm">
-                    <i class="fa fa-search"></i>
-                    <input class="form-control form-control-sm ml-3 w-75" type="text" placeholder="Buscar en Inventario"/>
-                </form>      
-                <h:button class="btn btn-warning" id="cerrar-sesion" rendered="${not empty user}" value="Cerrar sesión"  outcome="/views/usr/cerrar_sesion.xhtml" />
+                <p:outputPanel class="btn_cerrarSesion form-inline" rendered="${not empty user}" >
+                    <p:graphicImage class="profile-picture" value="${sessionController.image}"   title="${user.nombreCompleto}"/>
+                    <p:commandButton  id="menu" class="btn btn-info" onclick="openNav()" value="Menú"  />
 
+                    <form class="md-form form-sm">
+                        <i class="fa fa-search"></i>
+                        <input class="form-control form-control-sm ml-3 w-75" type="text" placeholder="Buscar en Inventario"/>
+                    </form>      
+                    <h:button class="btn btn-warning" id="cerrar-sesion" value="Cerrar sesión"  outcome="/views/usr/cerrar_sesion.xhtml" />
+                </p:outputPanel>
             </div>
             <div></div>
+            <p:outputPanel  rendered="${not empty user}" >
+                <div id="mySidenav" class="sidenav">
 
-            <div id="mySidenav" class="sidenav">
-                <p:outputPanel id="basic" rendered="${not empty user}" class="user-data-header">
-                    <a href="reservarmaterial.xhtml">
-                        <p:outputLabel value="${user.nombreCompleto}"  id="nombreUsuarioCompleto"/>
-                    </a>
-                </p:outputPanel>
-                <a href="reservarmaterial.xhtml">Reservar Material</a>
-                <a href="#">Crear Kits</a>
-                <a href="#">Compartir Kits</a>
-                <a href="crearcategoria.xhtml">Crear Categorías o Subcategoría</a>
-                <a href="#">Desbloquear Usuario</a>
-                <a href="#">Bloquear Usuario</a>
-                <a href="#">Cambiar Estado de Material</a>
-            </div>
+                    <div class="user-data-header text-center">
+                        <br/>
+                        <p:graphicImage class="profile-picture-normal" value="${sessionController.image}"   title="${user.nombreCompleto}"/><br/>
+                        <p:outputLabel value="${user.nombreCompleto}" class="user-name-style"  id="nombreUsuarioCompleto"/>
+                    </div>
+                    <br/>
+                    <p:outputPanel  rendered="${sessionController.admin}" >
+                        <button type="button" class="list-group-item list-group-item-action" disabled="true">Administrador</button>
+                        <a href="crearcategoria.xhtml">Crear Categorías o Subcategoría</a>
+                        <a href="#">Desbloquear Usuario</a>
+                        <a href="#">Bloquear Usuario</a>
+                        <a href="#">Cambiar Estado de Material</a>
+                    </p:outputPanel>
+                    <p:outputPanel  rendered="#{sessionController.profesor}" >
+                        <button type="button" class="list-group-item list-group-item-action" disabled="true">Profesor</button>
+                        <a href="#">Crear Kits</a>
+                        <a href="#">Compartir Kits</a>
+                    </p:outputPanel>
+                    <button type="button" class="list-group-item list-group-item-action" disabled="true">Alumno</button>
+                </div>
+            </p:outputPanel>
         </header>
         <ui:insert name="body"/>
         <br/>
-        <footer class="footer align-middle">
-            <br/>
-            <ul>
-                <li>Acerca de BioSIP</li>
-                <li>Sugerencias</li>
-                <li>Correo: biosip@ciencias.unam.mx</li>
-                <li>Copyright &#169; Todos los Derechos Reservados </li>
-            </ul>
-        </footer>
+        <div style="height: 40px;"></div>
+        <div class="footer align-middle">
+            <div class="grass">
+                <div class="blade1"></div>
+                <div class="blade2"></div>
+                <div class="blade3"></div>
+                <div class="blade4"></div>
+                <div class="blade5"></div>
+                <div class="blade6"></div>
+                <div class="blade7"></div>
+                <div class="blade8"></div>
+                <div class="blade9"></div>
+                <div class="blade10"></div>
+                <div class="blade11"></div>
+                <div class="blade12"></div>
+                <div class="blade13"></div>
+                <div class="blade14"></div>
+                <div class="blade15"></div>
+                <div class="blade16"></div>
+                <div class="blade17"></div>
+                <div class="blade18"></div>
+                <div class="blade19"></div>
+                <div class="blade20"></div>
+                <div class="blade21"></div>
+                <div class="blade22"></div>
+                <div class="blade23"></div>
+                <div class="blade24"></div>
+                <div class="blade25"></div>
+                <div class="blade26"></div>
+                <div class="blade27"></div>
+                <div class="blade28"></div>
+                <div class="blade29"></div>
+                <div class="blade30"></div>
+                <div class="blade31"></div>
+                <div class="blade32"></div>
+                <div class="blade33"></div>
+                <div class="blade34"></div>
+                <div class="blade35"></div>
+                <div class="blade36"></div>
+                <div class="blade37"></div>
+                <div class="blade38"></div>
+                <div class="blade39"></div>
+                <div class="blade40"></div>
+                <div class="blade41"></div>
+                <div class="blade42"></div>
+                <div class="blade43"></div>
+                <div class="blade44"></div>
+                <div class="blade45"></div>
+                <!--Back Row-->
+                <div class="blade1b"></div>
+                <div class="blade2b"></div>
+                <div class="blade3b"></div>
+                <div class="blade4b"></div>
+                <div class="blade5b"></div>
+                <div class="blade6b"></div>
+                <div class="blade7b"></div>
+                <div class="blade8b"></div>
+                <div class="blade9b"></div>
+                <div class="blade10b"></div>
+                <div class="blade11b"></div>
+                <div class="blade12b"></div>
+                <div class="blade13b"></div>
+                <div class="blade14b"></div>
+                <div class="blade15b"></div>
+                <div class="blade16b"></div>
+                <div class="blade17b"></div>
+                <div class="blade18b"></div>
+                <div class="blade19b"></div>
+                <div class="blade20b"></div>
+                <div class="blade21b"></div>
+                <div class="blade22b"></div>
+                <div class="blade23b"></div>
+                <div class="blade24b"></div>
+                <div class="blade25b"></div>
+                <div class="blade26b"></div>
+                <div class="blade27b"></div>
+                <div class="blade28b"></div>
+                <div class="blade29b"></div>
+                <div class="blade30b"></div>
+                <div class="blade31b"></div>
+                <div class="blade32b"></div>
+                <div class="blade33b"></div>
+                <div class="blade34b"></div>
+                <div class="blade35b"></div>
+                <div class="blade36b"></div>
+                <div class="blade37b"></div>
+                <div class="blade38b"></div>
+                <div class="blade39b"></div>
+                <div class="blade40b"></div>
+                <div class="blade41b"></div>
+                <div class="blade42b"></div>
+                <div class="blade43b"></div>
+                <div class="blade44b"></div>
+                <div class="blade45b"></div>
+
+                <div class="sand"></div>
+            </div>
+            <div class="footer-datos">
+                <br/>
+                <ul>
+                    <li>Acerca de BioSIP</li>
+                    <li>Sugerencias</li>
+                    <li>Correo: biosip@ciencias.unam.mx</li>
+                    <li>Copyright &#169; Todos los Derechos Reservados </li>
+                </ul>
+            </div>
+        </div>
+
         <div id="loadingDivAjax" style='display:none;' >
             <div id="loader"></div>
             <div id="loader"></div>
