@@ -30,9 +30,9 @@
 
 #cerrar-sesion{
     font-size: 12px;
-    position: fixed;
     right: 10px;
     height: 30px;
+    position: absolute;
 }
 
 #menu{
@@ -55,14 +55,14 @@
 .sidenav {
     height: 100%;
     width: 0;
-    position: fixed;
-    z-index: 1;
+    z-index: 1000;
     top: 0;
     left: 0;
     background-color: #8ea83d;
     overflow-x: hidden;
     transition: 0.5s;
     padding-top: 20px;
+    position: fixed;
 
 }
 
@@ -113,4 +113,8 @@
     background-color: #bbd07b;
     position: relative;
     width: 100%;
+}
+
+.nav-tit-rol:disabled{
+    background-color: #c2c156;
 }

@@ -2,6 +2,8 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    
+    overflow-x: hidden;
 }
 .footer{
     max-height:  100px;
@@ -21,5 +23,3 @@ body {
     text-align: left;
 }
 
-.grass{
-}

@@ -21,6 +21,31 @@
     </h:head>
 
     <h:body id="main">
+        <div></div>
+        <p:outputPanel  rendered="${not empty user}" >
+            <div id="mySidenav" class="sidenav">
+
+                <div class="user-data-header text-center">
+                    <br/>
+                    <p:graphicImage class="profile-picture-normal" value="${sessionController.image}"   title="${user.nombreCompleto}"/><br/>
+                    <p:outputLabel value="${user.nombreCompleto}" class="user-name-style"  id="nombreUsuarioCompleto"/>
+                </div>
+                <br/>
+                <p:outputPanel  rendered="${sessionController.admin}" >
+                    <button type="button" class="list-group-item list-group-item-action nav-tit-rol" disabled="true">Administrador</button>
+                    <a href="crearcategoria.xhtml">Crear Categorías o Subcategoría</a>
+                    <a href="#">Desbloquear Usuario</a>
+                    <a href="#">Bloquear Usuario</a>
+                    <a href="#">Cambiar Estado de Material</a>
+                </p:outputPanel>
+                <p:outputPanel  rendered="#{sessionController.profesor}" >
+                    <button type="button" class="list-group-item list-group-item-action nav-tit-rol" disabled="true">Profesor</button>
+                    <a href="#">Crear Kits</a>
+                    <a href="#">Compartir Kits</a>
+                </p:outputPanel>
+                <button type="button" class="list-group-item list-group-item-action nav-tit-rol" disabled="true">Alumno</button>
+            </div>
+        </p:outputPanel>
         <header>
             <table class="encabezado">
                 <tbody><tr>
@@ -39,34 +64,9 @@
                         <i class="fa fa-search"></i>
                         <input class="form-control form-control-sm ml-3 w-75" type="text" placeholder="Buscar en Inventario"/>
                     </form>      
-                    <h:button class="btn btn-warning" id="cerrar-sesion" value="Cerrar sesión"  outcome="/views/usr/cerrar_sesion.xhtml" />
+                    <h:button class="btn btn-warning float-right" id="cerrar-sesion" value="Cerrar sesión"  outcome="/views/usr/cerrar_sesion.xhtml" />
                 </p:outputPanel>
             </div>
-            <div></div>
-            <p:outputPanel  rendered="${not empty user}" >
-                <div id="mySidenav" class="sidenav">
-
-                    <div class="user-data-header text-center">
-                        <br/>
-                        <p:graphicImage class="profile-picture-normal" value="${sessionController.image}"   title="${user.nombreCompleto}"/><br/>
-                        <p:outputLabel value="${user.nombreCompleto}" class="user-name-style"  id="nombreUsuarioCompleto"/>
-                    </div>
-                    <br/>
-                    <p:outputPanel  rendered="${sessionController.admin}" >
-                        <button type="button" class="list-group-item list-group-item-action" disabled="true">Administrador</button>
-                        <a href="crearcategoria.xhtml">Crear Categorías o Subcategoría</a>
-                        <a href="#">Desbloquear Usuario</a>
-                        <a href="#">Bloquear Usuario</a>
-                        <a href="#">Cambiar Estado de Material</a>
-                    </p:outputPanel>
-                    <p:outputPanel  rendered="#{sessionController.profesor}" >
-                        <button type="button" class="list-group-item list-group-item-action" disabled="true">Profesor</button>
-                        <a href="#">Crear Kits</a>
-                        <a href="#">Compartir Kits</a>
-                    </p:outputPanel>
-                    <button type="button" class="list-group-item list-group-item-action" disabled="true">Alumno</button>
-                </div>
-            </p:outputPanel>
         </header>
         <ui:insert name="body"/>
         <br/>
