@@ -12,34 +12,33 @@ and open the template in the editor.
     width: 100%;
 }
 
-#confirmarRes{
-    background-color: pink;
+.confirmarRes{
+    background-color: #7F5A83;
+    position: fixed;
+    right: 0px;
 }
 
-.material{
+.materiales{
      width: 100%;
-     height: 100px;
-     background-color: #BFADA3;
-     padding: 10px;
-     margin-top: 5px;
      
 }
 
-.material > img{
-    height: 80%;
+.panelGrid{
+    width:100%;
+    background-color: #8D99AE;
+    font-size: 12px;
+    margin-bottom: 10px;
 }
 
-.informacion-material{
-    margin-left: 20px;
-    font-size: 10px;
+.info{
+    font-weight: bold;
 }
 
-#cnt-disponible{
-    position: relative;
-    left: 50px;
+.btnreservar{
+    background-color: #0D324D; color: white
 }
 
-#categoria-info{
-    position: relative;
-    left: 50px;    
+.imgMaterial{
+    display: block;
+    margin: 0px auto;
 }
