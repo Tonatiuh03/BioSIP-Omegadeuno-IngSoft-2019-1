@@ -65,4 +65,12 @@ public class MaterialDao extends AbstractDao<Long, Material> {
 
     }
 
+    public List<Material> getMateriales() {
+        CriteriaBuilder cb = createCriteriaBuilder();
+        CriteriaQuery<Material> crit = createCriteriaQuery(cb);
+        Root<Material> r = createRoot(crit);
+
+        return this.findAll(crit, r, cb.asc(r.get("id")));
+    }
+
 }

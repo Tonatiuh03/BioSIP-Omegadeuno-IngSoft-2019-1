@@ -3,55 +3,47 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
-    <ui:composition template="template.xhtml">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/views/template.xhtml">
         <ui:define name="head">
             <title>Reservar Material</title>
             <link rel="stylesheet" type="text/css" href="/css/reservarmaterial.css"></link>
         </ui:define>
         <ui:define name="body">
             <div class="container">
-                <div>
-                    <h2>Reservar Material</h2>
-                    <button id="confirmarRes" class="btn" disabled="">Confirmar Reservación</button>
-                </div>
-                <!-- Content here -->
-                
+                <h2>Reservar Material</h2>
+                <p:commandButton class="btn confirmarRes" value="Confirmar Reservación" 
+                                 rendered="#{!reservarMaterialController.vacia}"/>
+
                 <!-- Estructura para la presentaciónde un material-->
-                <div class="material form-inline"> 
-                    <img src="/respositorioImagenes/materialgenerico.png"></img>
 
-                    <div class="informacion-material"> 
-                        <span>Material: De la naturaleza física de la realidad o relacionado con ella, en contraposición a lo espiritual.</span>
-                        <span id="cnt-disponible">Cantidad disponible: #####</span>
-                        <br></br>
-                        <span>Descripción: Discurso oral o escrito en el que se explica cómo es una cosa, una persona o un lugar para ofrecer una imagen o una idea completa de ellos.</span>
-                        <span id="categoria-info">Categoria: Exteriores</span>
-                        <div>
-                            <label class="d-inline">Cantidad : </label>
-                            <input class="input-sm d-inline" type="number" min="0" max="10" value="1" id="cantidad"></input>                            
-                        </div>
-                        <button class="btn-primary" type="button">Reservar</button><button class="btn-primary" type="button">Quitar</button>
-                    </div>
-                </div>
-                
-                <div class="material form-inline"> 
-                    <img src="/respositorioImagenes/materialgenerico.png"></img>
+                <h:form> 
+                    <p:dataScroller value="#{reservarMaterialController.materiales}" var="material" chunkSize="3">
+                        <h:panelGrid class="panelGrid" columns="4" cellpadding = "15">
 
-                    <div class="informacion-material"> 
-                        <span>Material: De la naturaleza física de la realidad o relacionado con ella, en contraposición a lo espiritual.</span>
-                        <span id="cnt-disponible">Cantidad disponible: #####</span>
-                        <br></br>
-                        <span>Descripción: Discurso oral o escrito en el que se explica cómo es una cosa, una persona o un lugar para ofrecer una imagen o una idea completa de ellos.</span>
-                        <span id="categoria-info">Categoria: Exteriores</span>
-                        <div>
-                            <label class="d-inline">Cantidad : </label>
-                            <input class="input-sm d-inline" type="number" min="0" max="10" value="1" id="cantidad"></input>                            
-                        </div>
-                        <button class="btn btn-primary" type="button">Reservar</button><button class="btn-primary" type="button">Quitar</button>
-                    </div>
-                </div>
-                
+                            <p:graphicImage class="imgMaterial" url="/imagenesPublicas/materialGenerico.png" height="20%"/>
+                            <p:outputPanel>
+                                <h:panelGrid columns="2" cellpadding="2px">
+                                    <h:outputText value="Nombre" />
+                                    <h:outputText value="#{material.nombre}" class="info"/>
+                                    <h:outputText value="Descripción:" />
+                                    <h:outputText value="#{material.descripcion}" class="info"/>
+                                    <h:outputText value="Categoría:" />
+                                    <h:outputText value="#{material.categoriaSet}" class="info"/>
+                                    <h:outputText value="Subcategoría:" />
+                                    <h:outputText value="#{material.subcategoriaSet}" class="info"/>
+                                    <h:outputText value="Disponible:" />
+                                    <h:outputText value="#{material.disponibles}" class="info"/>
+                                    <h:outputLabel value="Cantidad: "/>
+                                    <p:inputNumber type="number" minValue="1" maxValue="10" value="1"/>
+                                </h:panelGrid>
+                            </p:outputPanel>
+                            <p:commandButton  class="btn btn-sm btnreservar" value="Reservar" action="${reservarMaterialController.agregarALista(material)}"/>
+                            <p:commandButton id="btn-cancelar" class="btn btn-sm btn-secondary" type="reset" value="Quitar"/>
+                        </h:panelGrid>
+                    </p:dataScroller>
+                </h:form>
             </div>
         </ui:define>
     </ui:composition> 
