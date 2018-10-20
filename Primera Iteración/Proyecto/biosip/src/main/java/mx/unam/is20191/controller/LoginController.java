@@ -40,9 +40,8 @@ public class LoginController {
     /**
      * Método que inicia sesión a un usuario.
      *
-     * @return La página a redirigir.
      */
-    public String loginUser() {
+    public void loginUser() {
         UsuarioDao usuarioDao = new UsuarioDao();
         Usuario u = usuarioDao.searchByUserNameOrEmail(userName);
         try {
@@ -58,7 +57,6 @@ public class LoginController {
                         String redirect = (UsuarioDao.isAdmin(u) ? Config.ADM_PRINCIPAL_PAGE
                                 : (UsuarioDao.isProfesor(u) ? Config.PROF_PRINCIPAL_PAGE : Config.USR_PRINCIPAL_PAGE));
                         eContext.redirect(eContext.getRequestContextPath() + redirect);
-                        return redirect;
                     }
                     FacesContext.getCurrentInstance().addMessage("messages",
                             new FacesMessage(FacesMessage.SEVERITY_ERROR,
@@ -73,7 +71,6 @@ public class LoginController {
             FacesContext.getCurrentInstance().addMessage("messages",
                     new FacesMessage(FacesMessage.SEVERITY_FATAL, "Por el momento no se puede iniciar sesiòn en el sistema, intèntelo màs tarde.", ""));
         }
-        return null;
     }
 
     /**

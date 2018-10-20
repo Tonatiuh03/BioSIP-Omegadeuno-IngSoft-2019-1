@@ -39,7 +39,6 @@
                                                         <p:inputText class="form-control"  placeholder="Usuario o correo" required="true" id="userName" size="10"
                                                                      value="${loginController.userName}"
                                                                      requiredMessage="Debe ingresar un usuario o correo" >
-                                                              <p:ajax event="blur" update="mUserName" process="@this" />
                                                         </p:inputText>
                                                         <br/>
                                                     </div>
@@ -52,7 +51,6 @@
                                                         </div>
                                                         <p:password class="form-control"  placeholder="Contraseña" required="true" 
                                                                     requiredMessage="Debe ingresar su contraseña" id="password" value="${loginController.password}"  size="10">
-                                                            <p:ajax event="blur" update="mPassword" process="@this" />
                                                         </p:password>
                                                     </div>
                                                     <p:message for="password" id="mPassword"/>
