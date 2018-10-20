@@ -44,7 +44,7 @@
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i class="fas fa-user-circle"></i></span>
                                                         </div>
-                                                        <p:inputText class="form-control" value="${registroController.nombreCompleto}"  placeholder="Nombre completo" required="true" id="nombreCompleto" size="10"
+                                                        <p:inputText class="form-control" value="${registroController.nombreCompleto}"  placeholder="Nombre completo" required="true" id="nombreCompleto" size="210"
                                                                      requiredMessage="El nombre no puede estar vacío." >
                                                             <p:ajax event="blur" update="mNombreCompleto" process="@this" /> 
                                                         </p:inputText><br/>
@@ -56,7 +56,7 @@
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i class="fas fa-user-circle"></i></span>
                                                         </div>
-                                                        <p:inputText class="form-control"  placeholder="Nombre de usuario" required="true" id="userName" size="10"
+                                                        <p:inputText class="form-control"  placeholder="Nombre de usuario" required="true" id="userName" size="50"
                                                                      value="${registroController.userName}" 
                                                                      requiredMessage="El nombre de usuario no puede estar vacío." 
                                                                      validator="${registroController.validateUniqueUserName}" >
@@ -71,7 +71,7 @@
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i class="fas fa-envelope-square"></i></span>
                                                         </div>
-                                                        <p:inputText class="form-control"  placeholder="Correo" required="true" id="correo" size="10"
+                                                        <p:inputText class="form-control"  placeholder="Correo" required="true" id="correo" size="133"
                                                                      requiredMessage="El correo no puede estar vacío."
                                                                      value="${registroController.correo}" 
                                                                      validator="${registroController.validateUniqueEmail}">
@@ -104,7 +104,7 @@
                                                             <span class="input-group-text" id="basic-addon2"><i class="fa fa-key" aria-hidden="true"></i></span>
                                                         </div>
                                                         <p:password class="form-control"  placeholder="Confirmación de la contraseña" required="true" 
-                                                                    requiredMessage="Debe ingresar la fonfirmación de su contraseña" id="password2" size="10"  >
+                                                                    requiredMessage="Debe ingresar la confirmación de su contraseña" id="password2" size="30"  >
                                                             <p:ajax event="blur" update="mPassword,mPassword2" process="password, password2" />
 
                                                         </p:password>
