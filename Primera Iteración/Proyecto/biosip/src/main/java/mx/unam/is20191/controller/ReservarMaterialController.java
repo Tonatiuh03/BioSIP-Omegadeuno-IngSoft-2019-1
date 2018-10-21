@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package mx.unam.is20191.controller;
+
 /**
  *
  * @author dams_
@@ -27,13 +28,15 @@ import mx.unam.is20191.models.Subcategoria;
 @ManagedBean
 @SessionScoped
 public class ReservarMaterialController {
-    private List<Material> listaPrestamo = new ArrayList<Material>();
-    private boolean vacia;
-    
-    public ReservarMaterialController(){
-        listaPrestamo.add(new Material());
+
+    private List<Material> listaPrestamo;
+    private boolean confirmarPrestamo;
+
+    public ReservarMaterialController() {
+        this.listaPrestamo = new ArrayList<Material>();
+        this.confirmarPrestamo = false;
     }
-    
+
     public List<Material> getListaPrestamo() {
         return listaPrestamo;
     }
@@ -41,28 +44,27 @@ public class ReservarMaterialController {
     public void setListaPrestamo(List<Material> listaPrestamo) {
         this.listaPrestamo = listaPrestamo;
     }
-    
+
     public List<Material> getMateriales() {
         MaterialDao matdao = new MaterialDao();
         return matdao.getMateriales();
     }
-    
-    public void agregarALista(Material material){
-        listaPrestamo.add(material);
-    }
-    
-    public boolean isEmpty(){
-        return listaPrestamo.isEmpty();
+
+    public boolean isConfirmarPrestamo() {
+        return confirmarPrestamo;
     }
 
-    public boolean isVacia() {
-        listaPrestamo.add(new Material());
-        return listaPrestamo.isEmpty();
+    public void setConfirmarPrestamo(boolean confirmarPrestamo) throws Exception {
+        this.confirmarPrestamo = confirmarPrestamo;
     }
-
-    public void setVacia(boolean vacia) {
-        this.vacia = vacia;
-    }
-
     
+    public int contarMateriales(Material m) throws Exception {
+        int cont = 0;
+        for(Material material: listaPrestamo){
+            if(material==m){
+                cont++;
+            }
+        }
+        return cont;
+    }
 }
