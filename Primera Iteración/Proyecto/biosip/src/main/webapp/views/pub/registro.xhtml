@@ -5,7 +5,7 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f = "http://java.sun.com/jsf/core">
-    <ui:composition template="template.xhtml">
+    <ui:composition template="/views/template.xhtml">
         <ui:define name="head">
             <link rel="stylesheet" type="text/css" href="/css/frm/registro.css"></link>
             <title>Registro</title>
@@ -44,10 +44,9 @@
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i class="fas fa-user-circle"></i></span>
                                                         </div>
-                                                        <p:inputText class="form-control" value="${registroController.nombreCompleto}"  placeholder="Nombre completo" required="true" id="nombreCompleto" size="10"
+                                                        <p:inputText class="form-control" value="${registroController.nombreCompleto}"  placeholder="Nombre completo" required="true" id="nombreCompleto" size="210"
                                                                      requiredMessage="El nombre no puede estar vacío." >
                                                             <p:ajax event="blur" update="mNombreCompleto" process="@this" /> 
-                                                            <p:ajax event="keyup" update="mNombreCompleto" process="@this" /> 
                                                         </p:inputText><br/>
                                                     </div>
                                                     <p:message for="nombreCompleto" id="mNombreCompleto"/>
@@ -57,11 +56,11 @@
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i class="fas fa-user-circle"></i></span>
                                                         </div>
-                                                        <p:inputText class="form-control"  placeholder="Nombre de usuario" required="true" id="userName" size="10"
+                                                        <p:inputText class="form-control"  placeholder="Nombre de usuario" required="true" id="userName" size="50"
                                                                      value="${registroController.userName}" 
                                                                      requiredMessage="El nombre de usuario no puede estar vacío." 
                                                                      validator="${registroController.validateUniqueUserName}" >
-                                                            <p:ajax event="keyup" update="mUserName" process="@this" />
+                                                            <p:ajax event="blur" update="mUserName" process="@this" />
                                                         </p:inputText>
                                                         <br/>
                                                     </div>
@@ -72,11 +71,11 @@
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i class="fas fa-envelope-square"></i></span>
                                                         </div>
-                                                        <p:inputText class="form-control"  placeholder="Correo" required="true" id="correo" size="10"
+                                                        <p:inputText class="form-control"  placeholder="Correo" required="true" id="correo" size="133"
                                                                      requiredMessage="El correo no puede estar vacío."
                                                                      value="${registroController.correo}" 
                                                                      validator="${registroController.validateUniqueEmail}">
-                                                            <p:ajax event="keyup" update="mCorreo" process="@this" />
+                                                            <p:ajax event="blur" update="mCorreo" process="@this" />
                                                         </p:inputText>
                                                         <br/>
                                                         <div class="input-group-prepend">
@@ -105,7 +104,7 @@
                                                             <span class="input-group-text" id="basic-addon2"><i class="fa fa-key" aria-hidden="true"></i></span>
                                                         </div>
                                                         <p:password class="form-control"  placeholder="Confirmación de la contraseña" required="true" 
-                                                                    requiredMessage="Debe ingresar la fonfirmación de su contraseña" id="password2" size="10"  >
+                                                                    requiredMessage="Debe ingresar la confirmación de su contraseña" id="password2" size="30"  >
                                                             <p:ajax event="blur" update="mPassword,mPassword2" process="password, password2" />
 
                                                         </p:password>
@@ -145,7 +144,7 @@
                     <div class="row justify-content-md-center">
                         <div class="form-group">
                             <br/>
-                            <p:commandButton action="#{registroController.registerUser}" class="btn btn-lg btn-primary btn-block" value="Registrarse" update="myForm"/>
+                            <p:commandButton action="#{registroController.registerUser}" class="btn btn-lg btn-primary btn-block" value="Registrarse"  update="myForm"/>
                         </div>
                     </div>
                 </h:form>
