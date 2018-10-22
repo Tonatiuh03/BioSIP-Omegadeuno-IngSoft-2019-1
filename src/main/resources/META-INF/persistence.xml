@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+  <persistence-unit name="biosip_PU" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>mx.unam.is20191.models.Categoria</class>
+    <class>mx.unam.is20191.models.Perfil</class>
+    <class>mx.unam.is20191.models.Material</class>
+    <class>mx.unam.is20191.models.Subcategoria</class>
+    <class>mx.unam.is20191.models.Kit</class>
+    <class>mx.unam.is20191.models.KitMaterial</class>
+    <class>mx.unam.is20191.models.PrestamoMaterial</class>
+    <class>mx.unam.is20191.models.Usuario</class>
+    <class>mx.unam.is20191.models.Prestamo</class>
+    <class>mx.unam.is20191.models.Confirmacion</class>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/biosip"/>
+      <property name="javax.persistence.jdbc.user" value="postgres"/>
+      <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+      <property name="javax.persistence.jdbc.password" value="postgres"/>
+    </properties>
+  </persistence-unit>
+</persistence>

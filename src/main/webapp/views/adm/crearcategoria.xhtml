@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/views/template.xhtml">
+        <ui:define name="head">
+            <title>Crear (Sub)Categoría </title>
+            <link rel="stylesheet" type="text/css" href="/css/crearcategoria.css"></link>
+        </ui:define>
+        <ui:define name="body">
+            <div class="container">
+                <h2>Crear Categoría o Subcategoría</h2>
+                <h:form class="form-group" id="formulario">
+                    <p:messages for="messages" showDetail="true" closable="true"><p:autoUpdate/></p:messages>
+
+                    <h:panelGrid columns="2" >
+                        <p:outputLabel for="esSubcategoria" value="¿Es Subcategoría?" />
+                        <p:selectBooleanButton id="esSubcategoria" value="#{categoriaController.esSubcategoria}" 
+                                               class="btn btn-sm" onLabel="Sí" offLabel="No" style="background-color: silver">
+                            <p:ajax event="change" update="@form"  />
+                        </p:selectBooleanButton>
+                    </h:panelGrid>
+
+
+
+                    <p:outputLabel value="Nombre de la #{categoriaController.tipo}:"/>
+                    <p:inputText id="nombre" class="form-control" placeholder="Escribir nombre" required="true" requiredMessage="El nombre es necesario."
+                                 value="${categoriaController.nombre}" 
+                                 validator="${categoriaController.validateCategoriaExist}">
+                        <p:ajax event="blur" update="messCategoria"/>
+                    </p:inputText>
+                    <p:message for="nombre" id="messCategoria"/>
+                    <p:outputPanel id="basic" rendered="#{categoriaController.esSubcategoria}">
+                        <p:outputLabel id="escogerCategoria" for="advanced" value="Seleccione una Categoría:"/>
+                        <p:selectOneMenu id="advanced" value="#{categoriaController.categoria}" converter="categoriaConverter" 
+                                         effect="fade" var="c" filter="true" filterMatchMode="contains"
+                                         class="form-control form-sm">
+
+                            <f:selectItems value="#{categoriaController.categorias}" var="categoria" 
+                                           itemLabel="#{categoria.nombre}" itemValue="#{categoria}"/>
+                            
+                            <p:column class="form-control" style="background-color: white; border: 0;">
+                                <h:outputText value="#{c.nombre}"/>
+                            </p:column>
+                            
+                        </p:selectOneMenu>   
+                    </p:outputPanel>
+
+
+                    <p:outputPanel class="">
+                        <p:outputLabel value="Descripción de la #{categoriaController.tipo}:"/>
+                        <p:inputTextarea id="descripcion" class="form-control" required="true" 
+                                         placeholder="Escribir la descripción" requiredMessage="La descripcion es necesaria."
+                                         value="${categoriaController.descripcion}">
+                            <p:ajax event="blur" update="messDescripcion"/>
+                        </p:inputTextarea>
+                    </p:outputPanel>
+                    <p:message for="descripcion" id="messDescripcion" />
+
+                    <p:commandButton action="#{categoriaController.crear}" class="btn btn-sm btn-outline-info" value="Crear"/>
+                    <p:commandButton id="btn-cancelar" class="btn btn-sm btn-outline-secondary" type="reset" value="Cancelar" />
+
+                </h:form>
+            </div>
+        </ui:define>
+    </ui:composition> 
+</html>
