@@ -13,7 +13,7 @@ import javax.persistence.criteria.Root;
 
 /**
  *
- * @author jrcvd
+ * @author Josué Rodrigo Cárdenas Vallarta
  */
 public class CategoriaDao extends AbstractDao<Integer, Categoria> {
 
