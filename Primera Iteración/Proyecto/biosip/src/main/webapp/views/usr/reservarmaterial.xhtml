@@ -9,71 +9,77 @@
         <ui:define name="head">
             <title>Reservar Material</title>
             <link rel="stylesheet" type="text/css" href="/css/reservarmaterial.css"></link>
+            <script src="/scripts/confirmarMateriales.js" />
         </ui:define>
         <ui:define name="body">
             <div class="container">
                 <h2>Reservar Material</h2>                
-                <p:commandButton class="btn confirmarRes prestar" 
-                                 value="Confirmar Reservación #{reservarMaterialController.confirmarPrestamo} #{reservarMaterialController.listaPrestamo.size()}" 
-                                 disabled="#{reservarMaterialController.listaPrestamo.isEmpty()}" 
-                                 action="${reservarMaterialController.confirmarPrestamo(!confirmarPrestamo)}" 
-                                 update="@(.prestar)"/>
+                <p:commandButton class="btn confirmarRes prestar"
+                                 value="Confirmar Reservación #{reservarMaterialController.listaPrestamo.size()} - #{reservarMaterialController.confirmarPrestamo}"
+                                 disabled="#{reservarMaterialController.listaPrestamo.isEmpty()}"
+                                 update="@(.prestar)"
+                                 action="${reservarMaterialController.generarPrestamo()}"/>
                 <!-- Estructura para la presentaciónde un material-->
 
-                <h:form rendered="#{!reservarMaterialController.confirmarPrestamo}" class="prestar"> 
+                <h:form class="escogerMateriales" rendered="#{!reservarMaterialController.confirmarPrestamo}"> 
                     <p:dataList class="prestar" value="#{reservarMaterialController.materiales}" var="material" type="definition">
                         <h:panelGrid class="panelGrid" columns="4" cellpadding = "15">
 
-                            <p:graphicImage class="imgMaterial" url="/imagenesPublicas/icono.png" height="20%"/>
+                            <p:graphicImage class="imgMaterial" url="/imagenesPublicas/#{material.rutaImagen}" height="20%"/>
                             <p:outputPanel>
-                                <h:panelGrid columns="2" cellpadding="2px">
-                                    <h:outputText value="Nombre" />
+                                <h:panelGrid columns="2" cellpadding="2px" class="prestar">
+                                    <h:outputText value="Nombre" class="info-tag"/>
                                     <h:outputText value="#{material.nombre}" class="info"/>
-                                    <h:outputText value="Descripción:" />
+                                    <h:outputText value="Descripción:" class="info-tag"/>
                                     <h:outputText value="#{material.descripcion}" class="info"/>
-                                    <h:outputText value="Disponible:" />
+                                    <h:outputText value="Disponibles:" class="info-tag"/>
                                     <h:outputText value="#{material.disponibles}" class="info"/>
-                                    <h:outputLabel value="Cantidad: "/>
-                                    <h:outputLabel class="prestar" value="#{reservarMaterialController.contarMateriales(material)}"/>
+                                    <h:outputLabel value="Cantidad:" class="info-tag prestar"/>
+                                    <h:outputLabel value="${reservarMaterialController.contarMateriales(material)} ${reservarMaterialController.confirmarPrestamo}"/>
                                 </h:panelGrid>
                             </p:outputPanel>
-                            <p:commandButton  class="btn btn-sm btnreservar" value="Reservar" action="${reservarMaterialController.listaPrestamo.add(material)}"
-                                              update="@(.prestar)" />
-                            <p:commandButton  id="btnQuitar" class="btn btn-sm btn-secondary prestar" value="Quitar" disabled="${!reservarMaterialController.listaPrestamo.contains(material)}" 
-                                              action="${reservarMaterialController.listaPrestamo.remove(material)}"
-                                              update="@(.prestar)"/>
-                        </h:panelGrid>
-                    </p:dataList>
-                </h:form>
-
-                <h:form rendered="#{reservarMaterialController.confirmarPrestamo}" class="prestar">
-                    <p:dataList value="${reservarMaterialController.listaPrestamo}" var="material" type="definition">
-                        <h:panelGrid class="panelGrid" columns="4" cellpadding = "15" >
-
-                            <p:graphicImage class="imgMaterial" url="/imagenesPublicas/icono.png" height="20%"/>
-                            <p:outputPanel>
-                                <h:panelGrid columns="2" cellpadding="2px">
-                                    <h:outputText value="Nombre" />
-                                    <h:outputText value="#{material.nombre}" class="info"/>
-                                    <h:outputText value="Descripción:" />
-                                    <h:outputText value="#{material.descripcion}" class="info"/>
-                                    <h:outputText value="Disponible:" />
-                                    <h:outputText value="#{material.disponibles}" class="info"/>
-                                    <h:outputLabel value="Cantidad: "/>
-                                    <h:outputLabel class="prestar" value="#{reservarMaterialController.contarMateriales(material)}"/>
-                                </h:panelGrid>
-                            </p:outputPanel>
-                            <p:commandButton  class="btn btn-sm btnreservar" value="Reservar" 
-                                              action="${reservarMaterialController.listaPrestamo.add(material)}"
+                            <p:commandButton  class="btn btn-sm btnreservar prestar" value="Reservar"
+                                              disabled="${!reservarMaterialController.hayDispobibles(material)}"
+                                              action="${reservarMaterialController.agregar(material)}"
                                               update="@(.prestar)" />
                             <p:commandButton  id="btnQuitar" class="btn btn-sm btn-secondary prestar" value="Quitar" 
                                               disabled="${!reservarMaterialController.listaPrestamo.contains(material)}" 
-                                              action="${reservarMaterialController.listaPrestamo.remove(material)}"
+                                              action="${reservarMaterialController.eliminar(material)}"
                                               update="@(.prestar)"/>
                         </h:panelGrid>
-                        <p:commandButton  value="CONFIRMAR PRESTAMO"/>
                     </p:dataList>
                 </h:form>
+
+                <h:form class="confirmarMateriales" rendered="#{reservarMaterialController.confirmarPrestamo}">
+                    <p:dataList value="${reservarMaterialController.listaPrestamoUnica}" var="material" type="definition">
+                        <h:panelGrid class="panelGrid" columns="4" cellpadding = "15" >
+
+                            <p:graphicImage class="imgMaterial" url="/imagenesPublicas/#{material.rutaImagen}" height="20%"/>
+                            <p:outputPanel>
+                                <h:panelGrid columns="2" cellpadding="2px">
+                                    <h:outputText value="Nombre" class="info-tag"/>
+                                    <h:outputText value="#{material.nombre}" class="info"/>
+                                    <h:outputText value="Descripción:" class="info-tag"/>
+                                    <h:outputText value="#{material.descripcion}" class="info"/>
+                                    <h:outputText value="Disponibles:" class="info-tag"/>
+                                    <h:outputText value="#{material.disponibles}" class="info"/>
+                                    <h:outputLabel value="Cantidad: " class="info-tag"/>
+                                    <h:outputLabel value="#{reservarMaterialController.contarMateriales(material)}"/>
+                                </h:panelGrid>
+                            </p:outputPanel>
+                            <!--
+                            <p:commandButton  class="btn btn-sm btnreservar prestar" value="Reservar" 
+                                              action="${reservarMaterialController.agregar(material)}"
+                                              disabled="${!reservarMaterialController.hayDispobibles(material)}"
+                                              update="@(.prestar)" />-->
+                            <p:commandButton  id="btnQuitar" class="btn btn-sm btn-secondary prestar" value="Quitar" 
+                                              disabled="${!reservarMaterialController.listaPrestamo.contains(material)}" 
+                                              action="${reservarMaterialController.eliminar(material)}"
+                                              update="@(.prestar)"/>
+                        </h:panelGrid>
+                    </p:dataList>
+                </h:form>
+                <p:commandButton  rendered="#{reservarMaterialController.confirmarPrestamo}" value="CONFIRMAR PRESTAMO"/>
             </div>
         </ui:define>
     </ui:composition> 
