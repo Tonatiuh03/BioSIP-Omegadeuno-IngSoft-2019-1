@@ -15,12 +15,8 @@ and open the template in the editor.
 .confirmarRes{
     background-color: #7F5A83;
     position: fixed;
-    right: 0px;
-}
-
-.materiales{
-     width: 100%;
-     
+    right: 10px;
+    height: 50px;
 }
 
 .panelGrid{
@@ -28,12 +24,16 @@ and open the template in the editor.
     background-color: #8D99AE;
     font-size: 12px;
     margin-bottom: 10px;
+    table-layout: fixed;
 }
 
 .info{
     font-weight: bold;
 }
 
+.info-tag{
+    font-weight: normal;
+}
 .btnreservar{
     background-color: #0D324D; color: white
 }

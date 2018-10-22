@@ -30,10 +30,12 @@ import mx.unam.is20191.models.Subcategoria;
 public class ReservarMaterialController {
 
     private List<Material> listaPrestamo;
+    private List<Material> listaPrestamoUnica;
     private boolean confirmarPrestamo;
 
     public ReservarMaterialController() {
         this.listaPrestamo = new ArrayList<Material>();
+        this.listaPrestamoUnica = new ArrayList<Material>();
         this.confirmarPrestamo = false;
     }
 
@@ -45,6 +47,14 @@ public class ReservarMaterialController {
         this.listaPrestamo = listaPrestamo;
     }
 
+    public List<Material> getListaPrestamoUnica() {
+        return listaPrestamoUnica;
+    }
+
+    public void setListaPrestamoUnica(List<Material> listaPrestamoUnica) {
+        this.listaPrestamoUnica = listaPrestamoUnica;
+    }
+
     public List<Material> getMateriales() {
         MaterialDao matdao = new MaterialDao();
         return matdao.getMateriales();
@@ -54,17 +64,46 @@ public class ReservarMaterialController {
         return confirmarPrestamo;
     }
 
-    public void setConfirmarPrestamo(boolean confirmarPrestamo) throws Exception {
+    public void setConfirmarPrestamo(boolean confirmarPrestamo) {
         this.confirmarPrestamo = confirmarPrestamo;
     }
+
     
+    
+    public void generarPrestamo() throws Exception{
+        System.out.println("Se cambiará a "+ !this.confirmarPrestamo);
+        this.confirmarPrestamo = !this.confirmarPrestamo;
+    }
+    
+    public void agregar(Material m) {
+        this.listaPrestamo.add(m);
+        if (!this.listaPrestamoUnica.contains(m)) {
+            this.listaPrestamoUnica.add(m);
+        }
+    }
+
+    public void eliminar(Material m) throws Exception{
+        this.listaPrestamo.remove(m);
+        if (!this.listaPrestamo.contains(m)) {
+            this.listaPrestamoUnica.remove(m);
+        }
+    }
+
     public int contarMateriales(Material m) throws Exception {
         int cont = 0;
-        for(Material material: listaPrestamo){
-            if(material==m){
+        for (Material material : listaPrestamo) {
+            if (material.equals(m)) {
                 cont++;
             }
         }
         return cont;
+    }
+    
+    public boolean hayDispobibles(Material m) throws Exception{
+        if(m.getDisponibles() > this.contarMateriales(m)){
+            return true;
+        }else{
+            return false;
+        }
     }
 }
