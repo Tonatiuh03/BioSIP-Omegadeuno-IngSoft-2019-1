@@ -15,22 +15,14 @@ import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.bean.ViewScoped;
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.validator.ValidatorException;
-import mx.unam.is20191.dao.AbstractDao;
-import mx.unam.is20191.dao.CategoriaDao;
 import mx.unam.is20191.dao.MaterialDao;
 import mx.unam.is20191.dao.PrestamoDao;
 import mx.unam.is20191.dao.PrestamoMaterialDao;
-import mx.unam.is20191.dao.SubcategoriaDao;
 import mx.unam.is20191.dao.UsuarioDao;
 import mx.unam.is20191.models.Material;
-import mx.unam.is20191.models.Categoria;
 import mx.unam.is20191.models.Prestamo;
 import mx.unam.is20191.models.PrestamoMaterial;
-import mx.unam.is20191.models.Subcategoria;
 import mx.unam.is20191.models.Usuario;
 
 @ManagedBean
