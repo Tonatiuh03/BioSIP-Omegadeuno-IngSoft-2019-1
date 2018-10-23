@@ -11,6 +11,6 @@ import mx.unam.is20191.models.Prestamo;
  *
  * @author dams_
  */
-public class PrestamoDao extends AbstractDao<Integer, Prestamo> {
+public class PrestamoDao extends AbstractDao<Integer, Prestamo>{
     
 }
