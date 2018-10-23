@@ -30,8 +30,10 @@ public class CategoriaController {
     private boolean esSubcategoria;
     private Categoria categoria;
     private String tipo; 
+    private boolean exito;
     
     public CategoriaController() {
+        this.exito = false;
     }
 
     public String getTipo() {
@@ -45,8 +47,6 @@ public class CategoriaController {
     public void setTipo(String tipo) {
         this.tipo = tipo;
     }
-
-    
     
     public String getNombre() {
         return nombre;
@@ -85,6 +85,14 @@ public class CategoriaController {
         return catdao.getCategorias();
     }
 
+    public boolean isExito() {
+        return exito;
+    }
+
+    public void setExito(boolean exito) {
+        this.exito = exito;
+    }
+    
     /**
      * Méotodo que agrega una nueva Ctagoería a la base de datos. Y además
      * genera un mensaje informativo para notar al usuario que proceso se
@@ -192,5 +200,14 @@ public class CategoriaController {
             SubcategoriaDao sd = new SubcategoriaDao();
             this.agregarSubcategoria(sd);
         }
+        this.exito = true;
+    }
+    
+    public void clear(){
+        this.nombre = "";
+        this.descripcion = "";
+        this.esSubcategoria = false;
+        this.categoria = null;
+        this.exito = false;
     }
 }

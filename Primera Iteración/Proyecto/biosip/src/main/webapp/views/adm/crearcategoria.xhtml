@@ -20,7 +20,9 @@
                     <h:panelGrid columns="2" >
                         <p:outputLabel for="esSubcategoria" value="¿Es Subcategoría?" />
                         <p:selectBooleanButton id="esSubcategoria" value="#{categoriaController.esSubcategoria}" 
-                                               class="btn btn-sm" onLabel="Sí" offLabel="No" style="background-color: silver">
+                                               class="btn btn-sm dato" 
+                                               onLabel="Sí" offLabel="No" style="background-color: silver"
+                                               disabled="#{categoriaController.exito}">
                             <p:ajax event="change" update="@form"  />
                         </p:selectBooleanButton>
                     </h:panelGrid>
@@ -28,41 +30,53 @@
 
 
                     <p:outputLabel value="Nombre de la #{categoriaController.tipo}:"/>
-                    <p:inputText id="nombre" class="form-control" placeholder="Escribir nombre" required="true" requiredMessage="El nombre es necesario."
+                    <p:inputText id="nombre" class="form-control dato" placeholder="Escribir nombre" required="true" requiredMessage="El nombre es necesario."
                                  value="${categoriaController.nombre}" 
-                                 validator="${categoriaController.validateCategoriaExist}">
+                                 validator="${categoriaController.validateCategoriaExist}"
+                                 disabled="#{categoriaController.exito}">
                         <p:ajax event="blur" update="messCategoria"/>
                     </p:inputText>
                     <p:message for="nombre" id="messCategoria"/>
-                    <p:outputPanel id="basic" rendered="#{categoriaController.esSubcategoria}">
+                    <p:outputPanel id="basic"  class="dato" rendered="#{categoriaController.esSubcategoria}">
                         <p:outputLabel id="escogerCategoria" for="advanced" value="Seleccione una Categoría:"/>
                         <p:selectOneMenu id="advanced" value="#{categoriaController.categoria}" converter="categoriaConverter" 
                                          effect="fade" var="c" filter="true" filterMatchMode="contains"
-                                         class="form-control form-sm">
+                                         class="form-control form-sm"
+                                         disabled="#{categoriaController.exito}">
 
                             <f:selectItems value="#{categoriaController.categorias}" var="categoria" 
                                            itemLabel="#{categoria.nombre}" itemValue="#{categoria}"/>
-                            
+
                             <p:column class="form-control" style="background-color: white; border: 0;">
                                 <h:outputText value="#{c.nombre}"/>
                             </p:column>
-                            
+
                         </p:selectOneMenu>   
                     </p:outputPanel>
 
 
                     <p:outputPanel class="">
                         <p:outputLabel value="Descripción de la #{categoriaController.tipo}:"/>
-                        <p:inputTextarea id="descripcion" class="form-control" required="true" 
+                        <p:inputTextarea id="descripcion" class="form-control dato" required="true" 
                                          placeholder="Escribir la descripción" requiredMessage="La descripcion es necesaria."
-                                         value="${categoriaController.descripcion}">
+                                         value="${categoriaController.descripcion}"
+                                         disabled="#{categoriaController.exito}">
                             <p:ajax event="blur" update="messDescripcion"/>
                         </p:inputTextarea>
                     </p:outputPanel>
                     <p:message for="descripcion" id="messDescripcion" />
 
-                    <p:commandButton action="#{categoriaController.crear}" class="btn btn-sm btn-outline-info" value="Crear"/>
-                    <p:commandButton id="btn-cancelar" class="btn btn-sm btn-outline-secondary" type="reset" value="Cancelar" />
+                    <p:commandButton action="#{categoriaController.crear}" 
+                                     class="btn btn-sm btn-outline-info dato"
+                                     disabled="#{categoriaController.exito}"
+                                     value="Crear #{categoriaController.tipo}" update="@(.dato)"/>
+                    <p:commandButton id="btn-cancelar" class="btn btn-sm btn-outline-secondary dato" 
+                                     type="reset" value="Cancelar"
+                                     disabled="#{categoriaController.exito}"/>
+                    <p:commandButton  class="btn btn-sm btn-outline-primary dato"
+                                      disabled="#{!categoriaController.exito}" 
+                                      value="Nueva #{categoriaController.tipo}" action="${categoriaController.clear()}"
+                                      update="@form"/>
 
                 </h:form>
             </div>
