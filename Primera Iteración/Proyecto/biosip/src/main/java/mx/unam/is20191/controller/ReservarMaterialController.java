@@ -37,6 +37,7 @@ public class ReservarMaterialController {
     private List<Material> listaPrestamo;
     private List<Material> listaPrestamoUnica;
     private boolean confirmarPrestamo;
+    private String estado;
 
     public ReservarMaterialController() {
         this.listaPrestamo = new ArrayList<Material>();
@@ -73,11 +74,16 @@ public class ReservarMaterialController {
         this.confirmarPrestamo = confirmarPrestamo;
     }
 
-    
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
     
     public void generarPrestamo() throws Exception{
-        System.out.println("Se cambiará a "+ !this.confirmarPrestamo);
-        this.confirmarPrestamo = !this.confirmarPrestamo;
+        this.estado = "Adiós";
     }
     
     public void agregar(Material m) {
@@ -109,6 +115,52 @@ public class ReservarMaterialController {
             return true;
         }else{
             return false;
+        }
+    }
+    
+    public void crearPrestamo() throws Exception {
+        try {
+            
+            UsuarioDao usuarioDao = new UsuarioDao();
+            SessionController sc = new SessionController();
+            Usuario usuario = usuarioDao.searchByUserNameOrEmail("dam");
+            Date date = new Date();
+            
+            Prestamo prestamo = new Prestamo();
+            prestamo.setUsuarioId(usuario);
+            prestamo.setFechaDeSolicitud(date);
+            
+            PrestamoDao presd = new PrestamoDao();
+            presd.getEntityManager().getTransaction().begin();
+            prestamo = presd.update(prestamo);
+            presd.getEntityManager().getTransaction().commit();
+            
+            PrestamoMaterialDao presmatd = new PrestamoMaterialDao();
+            presmatd.getEntityManager().getTransaction().begin();
+            
+            PrestamoMaterial presmat;
+            int disponibles = 0;
+            int materialesPrestados = 0;
+            for (Material material : listaPrestamoUnica) {
+                disponibles = material.getDisponibles();
+                materialesPrestados = this.contarMateriales(material);
+                material.setDisponibles(disponibles - materialesPrestados);
+                
+                presmat = new PrestamoMaterial();
+                presmat.setMaterial(material);
+                presmat.setPrestamo(prestamo);
+                presmat.setElementosPrestados(materialesPrestados);
+            }
+            presmatd.getEntityManager().getTransaction().commit();
+             FacesContext.getCurrentInstance().addMessage("nuevo_prestamo",
+                    new FacesMessage(FacesMessage.SEVERITY_INFO,
+                            "Se ha generado un nuevo prestamo.",
+                            "Se ha generado un nuevo prestamo."));
+         } catch (IllegalArgumentException ex) {
+            FacesContext.getCurrentInstance().addMessage("nuevo_prestamo",
+                    new FacesMessage(FacesMessage.SEVERITY_FATAL,
+                            "Por el momento no podemos generar un nuevo Prestamo, inténtelo más tarde.",
+                            "Por el momento no podemos generar un nuevo Prestamo, inténtelo más tarde."));
         }
     }
 }

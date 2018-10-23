@@ -13,12 +13,13 @@
         </ui:define>
         <ui:define name="body">
             <div class="container">
-                <h2>Reservar Material</h2>                
+                <h2>Reservar Material</h2>
+                <p:messages for="nuevo_prestamo"/><p:autoUpdate/>
                 <p:commandButton class="btn confirmarRes prestar"
-                                 value="Confirmar Reservación #{reservarMaterialController.listaPrestamo.size()} - #{reservarMaterialController.confirmarPrestamo}"
+                                 value="Confirmar Reservación #{reservarMaterialController.listaPrestamo.size()} - #{reservarMaterialController.estado}"
                                  disabled="#{reservarMaterialController.listaPrestamo.isEmpty()}"
                                  update="@(.prestar)"
-                                 action="${reservarMaterialController.generarPrestamo()}"/>
+                                 action="${reservarMaterialController.setEstado('adios')}"/>
                 <!-- Estructura para la presentaciónde un material-->
 
                 <h:form class="escogerMateriales" rendered="#{!reservarMaterialController.confirmarPrestamo}"> 
@@ -35,7 +36,7 @@
                                     <h:outputText value="Disponibles:" class="info-tag"/>
                                     <h:outputText value="#{material.disponibles}" class="info"/>
                                     <h:outputLabel value="Cantidad:" class="info-tag prestar"/>
-                                    <h:outputLabel value="${reservarMaterialController.contarMateriales(material)} ${reservarMaterialController.confirmarPrestamo}"/>
+                                    <h:outputLabel value="${reservarMaterialController.contarMateriales(material)} ${reservarMaterialController.estado}"/>
                                 </h:panelGrid>
                             </p:outputPanel>
                             <p:commandButton  class="btn btn-sm btnreservar prestar" value="Reservar"
@@ -79,7 +80,9 @@
                         </h:panelGrid>
                     </p:dataList>
                 </h:form>
-                <p:commandButton  rendered="#{reservarMaterialController.confirmarPrestamo}" value="CONFIRMAR PRESTAMO"/>
+                <p:commandButton  rendered="#{reservarMaterialController.confirmarPrestamo}" 
+                                  value="CONFIRMAR PRESTAMO"
+                                  action="${reservarMaterialController.crearPrestamo()}"/>
             </div>
         </ui:define>
     </ui:composition> 
