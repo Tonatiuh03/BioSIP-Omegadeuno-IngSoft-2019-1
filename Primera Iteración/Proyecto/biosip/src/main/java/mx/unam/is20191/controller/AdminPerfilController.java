@@ -12,6 +12,7 @@ package mx.unam.is20191.controller;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import mx.unam.is20191.dao.UsuarioDao;
 import mx.unam.is20191.models.Perfil;
 import mx.unam.is20191.models.Usuario;
@@ -45,8 +46,11 @@ public class AdminPerfilController {
         return new UsuarioDao().getAll();
     }
 
-    public StreamedContent genImage(Long userId) {
-        return new UsuarioDao().getByKey(userId).getImage();
+    public StreamedContent getListUserImage() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        String id = context.getExternalContext().getRequestParameterMap().get("id");
+        System.out.println(id);
+        return new UsuarioDao().getByKey(Long.valueOf(id)).getImage();
     }
 
 }

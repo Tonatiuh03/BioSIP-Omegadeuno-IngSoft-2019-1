@@ -36,7 +36,9 @@
                                                             <f:selectItems value="#{adminPerfilController.usuarios}" var="usuario" itemLabel="#{usuario.nombreCompleto}" itemValue="#{usuario}" />
 
                                                             <p:column>
-                                                                <p:graphicImage value="#{adminPerfilController.genImage(usuario.id)}" width="100" height="100" />
+                                                                <p:graphicImage value="#{adminPerfilController.listUserImage}" width="100" height="100" >
+                                                                    <f:param name="id" value="#{usuario.id}" />
+                                                                </p:graphicImage>
                                                             </p:column>
                                                             <p:column>
                                                                 <h:outputText value="#{usuario.nombreCompleto}" />
