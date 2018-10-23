@@ -5,6 +5,9 @@
  */
 package mx.unam.is20191.models;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
@@ -27,6 +30,9 @@ import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import mx.unam.is20191.utils.Config;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 
 /**
  *
@@ -245,5 +251,13 @@ public class Usuario implements Serializable {
     public String toString() {
         return "mx.unam.is20191.models.Usuario[ id=" + id + " ]";
     }
-    
+
+    public StreamedContent getImage() {
+        try {
+            return new DefaultStreamedContent(new FileInputStream(new File(Config.IMG_PROFILE_REPO + this.rutaImagen)), "png");
+        } catch (IOException ex) {
+            return null;
+        }
+    }
+
 }
