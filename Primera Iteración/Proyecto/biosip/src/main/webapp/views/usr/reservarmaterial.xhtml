@@ -14,16 +14,18 @@
         <ui:define name="body">
             <div class="container">
                 <h2>Reservar Material</h2>
-                <p:messages for="nuevo_prestamo"/><p:autoUpdate/>
-                <p:commandButton class="btn confirmarRes prestar"
-                                 value="Confirmar Reservación #{reservarMaterialController.listaPrestamo.size()} - #{reservarMaterialController.estado}"
-                                 disabled="#{reservarMaterialController.listaPrestamo.isEmpty()}"
-                                 update="@(.prestar)"
-                                 action="${reservarMaterialController.setEstado('adios')}"/>
                 <!-- Estructura para la presentaciónde un material-->
+                <p:messages for="nuevo_prestamo"><p:autoUpdate/></p:messages>
+                <h:form class="escogerMateriales prestar">
+                    <p:commandButton class="btn confirmarRes prestar"
+                                     value="Confirmar Reservación #{reservarMaterialController.listaPrestamo.size()} - #{reservarMaterialController.estado}"
+                                     disabled="#{reservarMaterialController.listaPrestamo.isEmpty()}"
+                                     update="@(.prestar)"
+                                     rendered="#{!reservarMaterialController.estado}"
+                                     action="${reservarMaterialController.setEstado(true)}"/>
 
-                <h:form class="escogerMateriales" rendered="#{!reservarMaterialController.confirmarPrestamo}"> 
-                    <p:dataList class="prestar" value="#{reservarMaterialController.materiales}" var="material" type="definition">
+                    <p:dataList class="prestar" value="#{reservarMaterialController.materiales}" var="material" type="definition" 
+                                rendered="#{!reservarMaterialController.estado}">
                         <h:panelGrid class="panelGrid" columns="4" cellpadding = "15">
 
                             <p:graphicImage class="imgMaterial" url="/imagenesPublicas/#{material.rutaImagen}" height="20%"/>
@@ -36,7 +38,7 @@
                                     <h:outputText value="Disponibles:" class="info-tag"/>
                                     <h:outputText value="#{material.disponibles}" class="info"/>
                                     <h:outputLabel value="Cantidad:" class="info-tag prestar"/>
-                                    <h:outputLabel value="${reservarMaterialController.contarMateriales(material)} ${reservarMaterialController.estado}"/>
+                                    <h:outputLabel value="${reservarMaterialController.contarMateriales(material)}"/>
                                 </h:panelGrid>
                             </p:outputPanel>
                             <p:commandButton  class="btn btn-sm btnreservar prestar" value="Reservar"
@@ -51,8 +53,10 @@
                     </p:dataList>
                 </h:form>
 
-                <h:form class="confirmarMateriales" rendered="#{reservarMaterialController.confirmarPrestamo}">
-                    <p:dataList value="${reservarMaterialController.listaPrestamoUnica}" var="material" type="definition">
+                <h:form class="confirmarMateriales prestar">
+                    <!--<p:messages for="nuevo_prestamo"><p:autoUpdate/></p:messages>-->
+                    <p:dataList value="${reservarMaterialController.listaPrestamoUnica}" var="material" type="definition"
+                                rendered="#{reservarMaterialController.estado}">
                         <h:panelGrid class="panelGrid" columns="4" cellpadding = "15" >
 
                             <p:graphicImage class="imgMaterial" url="/imagenesPublicas/#{material.rutaImagen}" height="20%"/>
@@ -64,7 +68,7 @@
                                     <h:outputText value="#{material.descripcion}" class="info"/>
                                     <h:outputText value="Disponibles:" class="info-tag"/>
                                     <h:outputText value="#{material.disponibles}" class="info"/>
-                                    <h:outputLabel value="Cantidad: " class="info-tag"/>
+                                    <h:outputLabel value="Cantidad: " class="info-tag prestar"/>
                                     <h:outputLabel value="#{reservarMaterialController.contarMateriales(material)}"/>
                                 </h:panelGrid>
                             </p:outputPanel>
@@ -74,15 +78,15 @@
                                               disabled="${!reservarMaterialController.hayDispobibles(material)}"
                                               update="@(.prestar)" />-->
                             <p:commandButton  id="btnQuitar" class="btn btn-sm btn-secondary prestar" value="Quitar" 
-                                              disabled="${!reservarMaterialController.listaPrestamo.contains(material)}" 
                                               action="${reservarMaterialController.eliminar(material)}"
                                               update="@(.prestar)"/>
                         </h:panelGrid>
                     </p:dataList>
+                    <p:commandButton  rendered="#{reservarMaterialController.estado}" 
+                                      value="CONFIRMAR PRESTAMO"
+                                      action="${reservarMaterialController.crearPrestamo()}"
+                                      update="@(.prestar)"/>
                 </h:form>
-                <p:commandButton  rendered="#{reservarMaterialController.confirmarPrestamo}" 
-                                  value="CONFIRMAR PRESTAMO"
-                                  action="${reservarMaterialController.crearPrestamo()}"/>
             </div>
         </ui:define>
     </ui:composition> 
