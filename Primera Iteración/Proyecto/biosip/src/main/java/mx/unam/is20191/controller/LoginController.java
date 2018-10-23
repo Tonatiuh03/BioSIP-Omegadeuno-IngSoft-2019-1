@@ -88,7 +88,6 @@ public class LoginController {
             ExternalContext eContext = context.getExternalContext();
             eContext.redirect(eContext.getRequestContextPath() + Config.LOGIN_PAGE);
         } catch (IOException e) {
-            e.printStackTrace();
             FacesContext.getCurrentInstance().addMessage("messages",
                     new FacesMessage(FacesMessage.SEVERITY_FATAL,
                             "Ha ocurrido un problema con el cierre de sesión, inténtelo más tarde.",
