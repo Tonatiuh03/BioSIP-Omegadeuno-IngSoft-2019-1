@@ -74,8 +74,12 @@
                                                         <p:inputText class="form-control"  placeholder="Correo" required="true" id="correo" size="133"
                                                                      requiredMessage="El correo no puede estar vacío."
                                                                      value="${registroController.correo}" 
-                                                                     validator="${registroController.validateUniqueEmail}">
+                                                                     validator="${registroController.validateUniqueEmail}"
+                                                                     validatorMessage="El formato del email es inválido">
                                                             <p:ajax event="blur" update="mCorreo" process="@this" />
+                                                            <f:validateRegex
+                                                                pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)$"
+                                                                 />
                                                         </p:inputText>
                                                         <br/>
                                                         <div class="input-group-prepend">
@@ -91,7 +95,7 @@
                                                         </div>
                                                         <p:password class="form-control"  placeholder="Contraseña" required="true" 
                                                                     value="${registroController.password}" 
-                                                                    requiredMessage="Debe ingresar su contraseña" id="password"  size="30"  feedback="true" inline="true" 
+                                                                    requiredMessage="La contraseña no puede ser vacía" id="password"  size="30"  feedback="true" inline="true" 
                                                                     promptLabel="Favor de ingresar una contraseña" weakLabel="Debil" goodLabel="Buena" strongLabel="¡Fuerte!" match="password2">
                                                             <f:validateLength minimum="8" ></f:validateLength>
                                                         </p:password>
@@ -126,8 +130,8 @@
                                         </p:panel>
                                         <div  class="row justify-content-md-center text-center">
                                             <div class="input-group-prepend">
-                                                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-camera-retro"></i></span>
-                                                </div>
+                                                <span class="input-group-text" id="basic-addon1"><i class="fas fa-camera-retro"></i></span>
+                                            </div>
                                             <p:fileUpload 
                                                 allowTypes="/(\.|\/)(png|jpeg|JPEG|jpg|JPG)$/"
                                                 invalidFileMessage="El archivo no es una imagen válida."
@@ -144,7 +148,7 @@
                     <div class="row justify-content-md-center">
                         <div class="form-group">
                             <br/>
-                            <p:commandButton action="#{registroController.registerUser}" class="btn btn-lg btn-primary btn-block" value="Registrarse"  update="myForm"/>
+                            <p:commandButton actionListener="#{registroController.registerUser}" class="btn btn-lg btn-primary btn-block" value="Registrarse"  update="myForm"/>
                         </div>
                     </div>
                 </h:form>
