@@ -6,11 +6,12 @@
 package mx.unam.is20191.dao;
 
 import mx.unam.is20191.models.PrestamoMaterial;
+import mx.unam.is20191.models.PrestamoMaterialPK;
 
 /**
  *
  * @author dams_
  */
-public class PrestamoMaterialDao extends AbstractDao<Integer, PrestamoMaterial>{
+public class PrestamoMaterialDao extends AbstractDao<PrestamoMaterialPK, PrestamoMaterial>{
     
 }

@@ -12,11 +12,10 @@ package mx.unam.is20191.controller;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
+import mx.unam.is20191.dao.PerfilDao;
 import mx.unam.is20191.dao.UsuarioDao;
 import mx.unam.is20191.models.Perfil;
 import mx.unam.is20191.models.Usuario;
-import org.primefaces.model.StreamedContent;
 
 @ManagedBean
 @ViewScoped
@@ -24,7 +23,7 @@ public class AdminPerfilController {
 
     private Usuario usuarioObjetivo;
 
-    private List<Perfil> perfiles;
+    private List<Perfil> usuarioObjetivoPerfiles;
 
     public Usuario getUsuarioObjetivo() {
         return usuarioObjetivo;
@@ -34,23 +33,20 @@ public class AdminPerfilController {
         this.usuarioObjetivo = usuarioObjetivo;
     }
 
-    public List<Perfil> getPerfiles() {
-        return perfiles;
+    public List<Perfil> getUsuarioObjetivoPerfiles() {
+        return usuarioObjetivoPerfiles;
     }
 
-    public void setPerfiles(List<Perfil> perfiles) {
-        this.perfiles = perfiles;
+    public void setUsuarioObjetivoPerfiles(List<Perfil> usuarioObjetivoPerfiles) {
+        this.usuarioObjetivoPerfiles = usuarioObjetivoPerfiles;
     }
 
     public List<Usuario> getUsuarios() {
         return new UsuarioDao().getAll();
     }
 
-    public StreamedContent getListUserImage() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        String id = context.getExternalContext().getRequestParameterMap().get("id");
-        System.out.println(id);
-        return new UsuarioDao().getByKey(Long.valueOf(id)).getImage();
+    public List<Perfil> getPerfiles() {
+        return new PerfilDao().getAll();
     }
 
 }
