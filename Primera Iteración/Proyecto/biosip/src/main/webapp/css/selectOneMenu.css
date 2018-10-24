@@ -26,10 +26,54 @@
 }
 
 .select-one-miniature{
- width: 40px;
- height: 40px;
+ width: 45px;
+ height: 45px;
+ border-radius: 10px;
 }
 
 .ui-selectonemenu-panel {
-    background: #4096ee;
+    background: #cde3fb;
+}
+
+.ui-selectonemenu-item:nth-child(odd)>td{
+    background: #e3ecff;
+    border: none;
+}
+
+.ui-selectonemenu-item:nth-child(even)>td{
+    background: #9ec9f7;
+    border: none;
+}
+
+.img-column-select-one-menu{
+    text-align: center;
+    width: 49px;
+}
+
+.ui-state-hover:nth-child(even)>td{
+    background: #caf69e;
+}
+
+.ui-state-hover:nth-child(odd)>td{
+    background: #caf69e;
+}
+
+.ui-state-highlight:nth-child(odd)>td{
+    background: #f6f79e;
+}
+
+.ui-state-highlight:nth-child(even)>td{
+    background: #f6f79e;
+}
+
+.ui-selectlistbox-item:nth-child(odd){
+    background: #cde3fb;
+}
+
+.ui-selectlistbox-item:nth-child(even){
+    background: #e3ecff;
+}
+
+.ui-chkbox-box>span{
+    background: red;
 }

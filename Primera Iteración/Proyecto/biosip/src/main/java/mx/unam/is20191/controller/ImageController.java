@@ -27,7 +27,6 @@ public class ImageController {
             return new DefaultStreamedContent();
         } else {
             String id = context.getExternalContext().getRequestParameterMap().get("id");
-            System.out.println(id);
             return new UsuarioDao().getByKey(Long.valueOf(id)).getImage();
         }
 
