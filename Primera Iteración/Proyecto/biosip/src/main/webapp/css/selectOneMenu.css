@@ -24,3 +24,12 @@
     margin-top: 5px !important;
     background: transparent !important;
 }
+
+.select-one-miniature{
+ width: 40px;
+ height: 40px;
+}
+
+.ui-selectonemenu-panel {
+    background: #4096ee;
+}
