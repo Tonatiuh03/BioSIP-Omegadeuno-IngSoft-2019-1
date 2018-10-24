@@ -1,5 +1,6 @@
 package mx.unam.is20191.dao;
 
+import java.util.List;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -12,7 +13,7 @@ import mx.unam.is20191.utils.Rol;
  *
  * @author Josué Cárdenas
  */
-public class UsuarioDao extends AbstractDao<Integer, Usuario> {
+public class UsuarioDao extends AbstractDao<Long, Usuario> {
 
     public Usuario searchByUserNameOrEmail(String userOrEmail) {
         CriteriaBuilder cb = createCriteriaBuilder();
@@ -49,6 +50,14 @@ public class UsuarioDao extends AbstractDao<Integer, Usuario> {
 
     public static boolean isProfesor(Usuario userManager) {
         return userManager.getPerfilSet().stream().anyMatch((p) -> (p.getNombre().equals(Rol.PROFESOR)));
+    }
+
+    public List<Usuario> getAll() {
+        CriteriaBuilder cb = createCriteriaBuilder();
+        CriteriaQuery<Usuario> crit = createCriteriaQuery(cb);
+        Root<Usuario> r = createRoot(crit);
+
+        return this.findAll(crit, r, cb.asc(r.get("nombreCompleto")));
     }
 
 }

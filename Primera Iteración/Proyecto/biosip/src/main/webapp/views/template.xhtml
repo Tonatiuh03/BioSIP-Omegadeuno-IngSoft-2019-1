@@ -27,12 +27,13 @@
 
                 <div class="user-data-header text-center">
                     <br/>
-                    <p:graphicImage class="profile-picture-normal" value="${sessionController.image}"   title="${user.nombreCompleto}"/><br/>
+                    <p:graphicImage class="profile-picture-normal" value="${user.image}"   title="${user.nombreCompleto}"/><br/>
                     <p:outputLabel value="${user.nombreCompleto}" class="user-name-style"  id="nombreUsuarioCompleto"/>
                 </div>
                 <br/>
                 <p:outputPanel  rendered="${sessionController.admin}" >
                     <button type="button" class="list-group-item list-group-item-action nav-tit-rol" disabled="true">Administrador</button>
+                    <a href="/views/adm/administrar_roles.xhtml">Administrar roles</a>
                     <a href="crearcategoria.xhtml">Crear Categorías o Subcategoría</a>
                     <a href="#">Desbloquear Usuario</a>
                     <a href="#">Bloquear Usuario</a>
@@ -56,7 +57,7 @@
                 </tbody></table>
             <div class="btn_cerrarSesion form-inline">
                 <p:outputPanel class="btn_cerrarSesion form-inline" rendered="${not empty user}" >
-                    <p:graphicImage class="profile-picture" value="${sessionController.image}"   title="${user.nombreCompleto}"/>
+                    <p:graphicImage class="profile-picture" value="${user.image}"   title="${user.nombreCompleto}"/>
                     <p:commandButton  id="menu" class="btn btn-info" onclick="openNav()" value="Menú"  />
 
                     <form class="md-form form-sm">

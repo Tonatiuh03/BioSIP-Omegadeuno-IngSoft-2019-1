@@ -5,17 +5,11 @@
  */
 package mx.unam.is20191.controller;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import mx.unam.is20191.dao.UsuarioDao;
 import mx.unam.is20191.models.Usuario;
-import static mx.unam.is20191.utils.Config.IMG_PROFILE_REPO;
-import org.primefaces.model.DefaultStreamedContent;
-import org.primefaces.model.StreamedContent;
 
 /**
  * Clase que implementa operaciones útiles con la sesión.
@@ -31,19 +25,6 @@ public class SessionController {
      */
     private Usuario usuario;
 
-    /**
-     * Método que obtiene la imagen de perfil del usuario.
-     *
-     * @return La imagen de perfil del usuario .
-     */
-    public StreamedContent getImage() {
-        try {
-            String profilePicturePath = IMG_PROFILE_REPO + getUsuario().getRutaImagen();
-            return new DefaultStreamedContent(new FileInputStream(new File(profilePicturePath)), "png");
-        } catch (IOException ex) {
-            return null;
-        }
-    }
 
     /**
      * Método que obtiene al usuario que está loggeado.
