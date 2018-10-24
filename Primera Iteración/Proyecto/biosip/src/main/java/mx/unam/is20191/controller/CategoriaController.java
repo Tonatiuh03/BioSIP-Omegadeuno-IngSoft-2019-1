@@ -9,6 +9,7 @@ package mx.unam.is20191.controller;
  *
  * @author dams_
  */
+import java.io.Serializable;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -23,7 +24,7 @@ import mx.unam.is20191.models.Subcategoria;
 
 @ManagedBean
 @ViewScoped
-public class CategoriaController {
+public class CategoriaController implements Serializable{
 
     private String nombre;
     private String descripcion;
