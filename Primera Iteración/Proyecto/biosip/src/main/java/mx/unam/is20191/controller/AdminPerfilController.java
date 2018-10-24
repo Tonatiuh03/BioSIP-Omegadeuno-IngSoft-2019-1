@@ -9,6 +9,8 @@ package mx.unam.is20191.controller;
  *
  * @author Josué Rodrigo Cárdenas Vallarta
  */
+import java.io.Serializable;
+import java.util.LinkedList;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -19,7 +21,7 @@ import mx.unam.is20191.models.Usuario;
 
 @ManagedBean
 @ViewScoped
-public class AdminPerfilController {
+public class AdminPerfilController implements Serializable{
 
     private Usuario usuarioObjetivo;
 
@@ -47,6 +49,15 @@ public class AdminPerfilController {
 
     public List<Perfil> getPerfiles() {
         return new PerfilDao().getAll();
+    }
+
+    public void updateUsuarioObjetivoPerfiles() {
+        this.usuarioObjetivoPerfiles = this.usuarioObjetivo == null
+                ? null : new LinkedList<>(this.usuarioObjetivo.getPerfilSet());
+    }
+
+    public void cambiarPerfiles() {
+
     }
 
 }

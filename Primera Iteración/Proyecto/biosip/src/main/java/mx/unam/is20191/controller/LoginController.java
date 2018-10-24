@@ -1,6 +1,7 @@
 package mx.unam.is20191.controller;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -14,7 +15,7 @@ import mx.unam.is20191.utils.Password;
 
 @ManagedBean
 @ViewScoped
-public class LoginController {
+public class LoginController implements Serializable{
 
     private String userName, password;
 

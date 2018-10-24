@@ -10,7 +10,7 @@
             <title>Administrar rol</title>
         </ui:define>
         <ui:define name="body">
-            <br/><br/><br/><br/><br/>
+            <br/>
             <div class="container">
                 <div class="row justify-content-md-center">
                     <div class="col-sm-6 col-md-6 col-md-offset-6">
@@ -32,7 +32,8 @@
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i class="fas fa-user-circle"></i>&nbsp;Usuario</span>
                                                         </div>
-                                                        <p:selectOneMenu id="usuarioObjetivo" class="form-control" value="#{adminPerfilController.usuarioObjetivo}" converter="usuarioConverter" 
+                                                        <p:selectOneMenu id="usuarioObjetivo" class="form-control" value="#{adminPerfilController.usuarioObjetivo}" converter="usuarioConverter"
+                                                                         
                                                                          var="usuario"  filter="true" filterMatchMode="contains">
                                                             <f:selectItem itemLabel="Seleccione una opción" itemValue="" />
                                                             <f:selectItems value="#{adminPerfilController.usuarios}" var="usuario" itemLabel="#{usuario.userName}" itemValue="#{usuario}" />
@@ -46,7 +47,7 @@
                                                                 <h:outputText value="#{usuario.nombreCompleto}" /><br/>
                                                                 &lt;<h:outputText value="#{usuario.correoCiencias}" />&gt;
                                                             </p:column>
-                                                            <p:ajax event="change" update="@form"  />
+                                                            <p:ajax listener="#{adminPerfilController.updateUsuarioObjetivoPerfiles}"  event="change" update="@form"  />
                                                         </p:selectOneMenu>
                                                         <br/>
                                                     </div>
@@ -58,8 +59,9 @@
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text" id="basic-addon2"><i class="fab fa-superpowers"></i>&nbsp;Perfiles&nbsp;</span>
                                                             </div>
-                                                            <p:selectManyMenu style="height:60px;" id="usuarioObjetivoPerfiles" class="form-control" value="#{adminPerfilController.usuarioObjetivoPerfiles}" converter="perfilConverter" 
-                                                                              var="perfil" showCheckbox="false" >
+                                                            <p:selectManyMenu 
+                                                                style="height:60px;" id="usuarioObjetivoPerfiles" class="form-control" value="#{adminPerfilController.usuarioObjetivoPerfiles}" converter="perfilConverter" 
+                                                                var="perfil" showCheckbox="true" >
                                                                 <f:selectItems value="#{adminPerfilController.perfiles}" var="perfil" itemLabel="#{perfil.nombre}" itemValue="#{perfil}" />
                                                                 <p:column>
                                                                     <h:outputText value="#{perfil.id}" />:<h:outputText value="#{perfil.nombre}" />
@@ -70,7 +72,7 @@
                                                     </div>
                                                 </p:panel>
                                                 <div class="form-group">
-                                                    <p:commandButton actionListener="#{loginController.loginUser}" ajax="true" class="btn btn-lg btn-primary btn-block" value="Cambiar roles" update="myForm"/>
+                                                    <p:commandButton disabled="#{adminPerfilController.usuarioObjetivo==null}" actionListener="#{adminPerfilController.cambiarPerfiles}" ajax="true" class="btn btn-lg btn-primary btn-block" value="Cambiar roles" update="myForm"/>
                                                 </div>
                                             </div>
                                         </div>

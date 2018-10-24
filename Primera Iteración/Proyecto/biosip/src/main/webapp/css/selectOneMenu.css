@@ -26,9 +26,9 @@
 }
 
 .select-one-miniature{
- width: 45px;
- height: 45px;
- border-radius: 10px;
+    width: 45px;
+    height: 45px;
+    border-radius: 10px;
 }
 
 .ui-selectonemenu-panel {
@@ -60,10 +60,12 @@
 
 .ui-state-highlight:nth-child(odd)>td{
     background: #f6f79e;
+    font-weight: bold;
 }
 
 .ui-state-highlight:nth-child(even)>td{
     background: #f6f79e;
+    font-weight: bold;
 }
 
 .ui-selectlistbox-item:nth-child(odd){
@@ -74,6 +76,33 @@
     background: #e3ecff;
 }
 
-.ui-chkbox-box>span{
-    background: red;
+.ui-selectonemenu-filter-container::after{
+     font-weight: 900;
+    font-family: "Font Awesome 5 Free";
+    content: "\f002";
+    padding-left: 30px;
+}
+.ui-selectonemenu-filter-container{
+    width: 410px;
+}
+
+
+/*MultiSelect modificaciones*/
+
+.ui-selectlistbox-item>td{
+    text-align: center;
+}
+
+.ui-chkbox-box::after{
+    background: #ff9e9e;
+    border-radius: 11px;
+    font-family: "Font Awesome 5 Free";
+    content: "\f111";
+}
+
+tr.ui-state-highlight>td>div>div::after{
+     font-weight: 900;
+    background: #4ae324;
+    font-weight: normal;
+    content: "\f058";
 }

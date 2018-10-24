@@ -5,6 +5,7 @@
  */
 package mx.unam.is20191.controller;
 
+import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -18,7 +19,7 @@ import mx.unam.is20191.models.Usuario;
  */
 @ManagedBean
 @SessionScoped
-public class SessionController {
+public class SessionController implements Serializable{
 
     /**
      * Objeto en donde tendremos presente la información del usuario.

@@ -9,6 +9,7 @@ package mx.unam.is20191.controller;
  *
  * @author dams_
  */
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -16,23 +17,18 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.validator.ValidatorException;
-import mx.unam.is20191.dao.CategoriaDao;
 import mx.unam.is20191.dao.MaterialDao;
 import mx.unam.is20191.dao.PrestamoDao;
 import mx.unam.is20191.dao.PrestamoMaterialDao;
 import mx.unam.is20191.dao.UsuarioDao;
-import mx.unam.is20191.dao.SubcategoriaDao;
 import mx.unam.is20191.models.Material;
 import mx.unam.is20191.models.Prestamo;
 import mx.unam.is20191.models.PrestamoMaterial;
 import mx.unam.is20191.models.Usuario;
-import mx.unam.is20191.models.Categoria;
-import mx.unam.is20191.models.Subcategoria;
 
 @ManagedBean
 @SessionScoped
-public class ReservarMaterialController {
+public class ReservarMaterialController implements Serializable{
 
     private List<Material> listaPrestamo;
     private List<Material> listaPrestamoUnica;

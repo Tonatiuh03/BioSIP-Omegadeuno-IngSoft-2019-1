@@ -5,6 +5,7 @@
  */
 package mx.unam.is20191.controller;
 
+import java.io.Serializable;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
@@ -19,7 +20,7 @@ import org.primefaces.model.StreamedContent;
  */
 @ManagedBean
 @ApplicationScoped
-public class ImageController {
+public class ImageController implements Serializable{
 
     public StreamedContent getListUserImage() {
         FacesContext context = FacesContext.getCurrentInstance();
