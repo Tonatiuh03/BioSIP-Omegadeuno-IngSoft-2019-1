@@ -24,11 +24,12 @@ import mx.unam.is20191.dao.UsuarioDao;
 import mx.unam.is20191.models.Material;
 import mx.unam.is20191.models.Prestamo;
 import mx.unam.is20191.models.PrestamoMaterial;
+import mx.unam.is20191.models.PrestamoMaterialPK;
 import mx.unam.is20191.models.Usuario;
 
 @ManagedBean
 @SessionScoped
-public class ReservarMaterialController implements Serializable{
+public class ReservarMaterialController implements Serializable {
 
     private List<Material> listaPrestamo;
     private List<Material> listaPrestamoUnica;
@@ -125,40 +126,41 @@ public class ReservarMaterialController implements Serializable{
 
             Prestamo prestamo = new Prestamo();
             prestamo.setUsuarioId(usuario);
-            prestamo.setFechaDeSolicitud(date);
+            //prestamo.setFechaDeSolicitud(date);
             //prestamo.setAdministradorIdAprobador(usuario);
             //prestamo.setFechaDeAprobacion(date);
             //prestamo.setFechaDeDevolucion(date);
-            prestamo.setId(6L); //Aquí hay que hacer que se genere en automático el id para el siguiente prestamo.
-            
+            //prestamo.setId(6L); //Aquí hay que hacer que se genere en automático el id para el siguiente prestamo.
+
             PrestamoDao presd = new PrestamoDao();
             presd.getEntityManager().getTransaction().begin();
             prestamo = presd.update(prestamo);
-
+            presd.getEntityManager().getTransaction().commit();
             PrestamoMaterialDao presmatd = new PrestamoMaterialDao();;
             presmatd.getEntityManager().getTransaction().begin();
 
             PrestamoMaterial presmat = new PrestamoMaterial();
-            
+
             int disponibles = 0;
             int materialesPrestados = 0;
             for (Material material : listaPrestamoUnica) {
-
+                System.err.println(prestamo);
                 disponibles = material.getDisponibles();
                 materialesPrestados = this.contarMateriales(material);
                 material.setDisponibles(disponibles - materialesPrestados);
-                //m.update(material); //Aun falta actualizar la cantidad de los materiales disponibles.
-
+                m.getEntityManager().getTransaction().begin();
+                material = m.update(material); //Aun falta actualizar la cantidad de los materiales disponibles.
+                m.getEntityManager().getTransaction().commit();
                 //Hace falta agregar los registros en la tabla de Prestamo_Material
+                presmat.setPrestamoMaterialPK(new PrestamoMaterialPK(prestamo.getId(), material.getId()));
                 //presmat.setPrestamo(prestamo);
                 //presmat.setMaterial(material);
-                //presmat.setElementosPrestados(materialesPrestados);
+                presmat.setElementosPrestados(materialesPrestados);
 
-                //presmatd.save(presmat);
+                presmatd.save(presmat);
             }
             presmatd.getEntityManager().getTransaction().commit();
-            presd.getEntityManager().getTransaction().commit();
-            
+
             FacesContext.getCurrentInstance().addMessage("nuevo_prestamo",
                     new FacesMessage(FacesMessage.SEVERITY_INFO,
                             "Se ha generado un nuevo prestamo.",
