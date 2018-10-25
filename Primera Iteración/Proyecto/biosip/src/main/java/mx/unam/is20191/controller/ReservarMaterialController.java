@@ -35,11 +35,24 @@ public class ReservarMaterialController implements Serializable {
     private List<Material> listaPrestamoUnica;
     private boolean confirmarPrestamo;
     private boolean estado;
+    private String nombreBtnAccion;
+    private boolean exito;
 
     public ReservarMaterialController() {
         this.listaPrestamo = new ArrayList<Material>();
         this.listaPrestamoUnica = new ArrayList<Material>();
         this.confirmarPrestamo = false;
+        this.nombreBtnAccion = "Confirmar Préstamo";
+        this.exito = false;
+    }
+
+    public void nuevoPrestamo() {
+        this.listaPrestamo = new ArrayList<Material>();
+        this.listaPrestamoUnica = new ArrayList<Material>();
+        this.confirmarPrestamo = false;
+        this.nombreBtnAccion = "Confirmar Préstamo";
+        this.exito = false;
+        this.estado = false;
     }
 
     public List<Material> getListaPrestamo() {
@@ -77,6 +90,39 @@ public class ReservarMaterialController implements Serializable {
 
     public void setEstado(boolean estado) {
         this.estado = estado;
+    }
+
+    public boolean isExito() {
+        return exito;
+    }
+
+    public void setExito(boolean exito) {
+        this.exito = exito;
+    }
+
+    public String getNombreBtnAccion() {
+        if (this.estado) {
+            this.nombreBtnAccion = "Continuar Agregando";
+        } else {
+            this.nombreBtnAccion = "Confirmar Préstamo";
+        }
+        return nombreBtnAccion;
+    }
+
+    public void setNombreBtnAccion(String nombreBtnAccion) {
+        this.nombreBtnAccion = nombreBtnAccion;
+    }
+
+    public boolean habilitarBoton() {
+        boolean habilitar = false;
+        if (this.listaPrestamoUnica.isEmpty() && this.estado == true) {
+            habilitar = false;
+        } else if (!this.listaPrestamo.isEmpty() && this.estado == false) {
+            habilitar = false;
+        } else if (this.listaPrestamoUnica.isEmpty() && this.estado == false) {
+            habilitar = true;
+        }
+        return habilitar;
     }
 
     public void generarPrestamo() throws Exception {
@@ -119,18 +165,12 @@ public class ReservarMaterialController implements Serializable {
         UsuarioDao usuarioDao = new UsuarioDao();
         SessionController sc = new SessionController();
         Usuario usuario = usuarioDao.searchByUserNameOrEmail("dam");
-        Date date = new Date();
 
         try {
             MaterialDao m = new MaterialDao();
 
             Prestamo prestamo = new Prestamo();
             prestamo.setUsuarioId(usuario);
-            //prestamo.setFechaDeSolicitud(date);
-            //prestamo.setAdministradorIdAprobador(usuario);
-            //prestamo.setFechaDeAprobacion(date);
-            //prestamo.setFechaDeDevolucion(date);
-            //prestamo.setId(6L); //Aquí hay que hacer que se genere en automático el id para el siguiente prestamo.
 
             PrestamoDao presd = new PrestamoDao();
             presd.getEntityManager().getTransaction().begin();
@@ -144,28 +184,25 @@ public class ReservarMaterialController implements Serializable {
             int disponibles = 0;
             int materialesPrestados = 0;
             for (Material material : listaPrestamoUnica) {
-                System.err.println(prestamo);
                 disponibles = material.getDisponibles();
                 materialesPrestados = this.contarMateriales(material);
                 material.setDisponibles(disponibles - materialesPrestados);
                 m.getEntityManager().getTransaction().begin();
-                material = m.update(material); //Aun falta actualizar la cantidad de los materiales disponibles.
+                material = m.update(material);
                 m.getEntityManager().getTransaction().commit();
-                //Hace falta agregar los registros en la tabla de Prestamo_Material
                 presmat.setPrestamoMaterialPK(new PrestamoMaterialPK(prestamo.getId(), material.getId()));
-                //presmat.setPrestamo(prestamo);
-                //presmat.setMaterial(material);
                 presmat.setElementosPrestados(materialesPrestados);
-
                 presmatd.save(presmat);
             }
             presmatd.getEntityManager().getTransaction().commit();
+
+            this.exito = true;
 
             FacesContext.getCurrentInstance().addMessage("nuevo_prestamo",
                     new FacesMessage(FacesMessage.SEVERITY_INFO,
                             "Se ha generado un nuevo prestamo.",
                             "Se ha generado un nuevo prestamo."));
-            this.setEstado(false);
+
         } catch (IllegalArgumentException ex) {
             FacesContext.getCurrentInstance().addMessage("nuevo_prestamo",
                     new FacesMessage(FacesMessage.SEVERITY_FATAL,
