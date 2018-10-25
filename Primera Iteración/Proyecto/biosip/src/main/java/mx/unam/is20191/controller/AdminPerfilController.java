@@ -10,8 +10,8 @@ package mx.unam.is20191.controller;
  * @author Josué Rodrigo Cárdenas Vallarta
  */
 import java.io.Serializable;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import mx.unam.is20191.dao.PerfilDao;
@@ -21,43 +21,48 @@ import mx.unam.is20191.models.Usuario;
 
 @ManagedBean
 @ViewScoped
-public class AdminPerfilController implements Serializable{
-
+public class AdminPerfilController implements Serializable {
+    
     private Usuario usuarioObjetivo;
-
-    private List<Perfil> usuarioObjetivoPerfiles;
-
+    
+    private Set<Perfil> usuarioObjetivoPerfiles;
+    
     public Usuario getUsuarioObjetivo() {
         return usuarioObjetivo;
     }
-
+    
     public void setUsuarioObjetivo(Usuario usuarioObjetivo) {
         this.usuarioObjetivo = usuarioObjetivo;
     }
-
-    public List<Perfil> getUsuarioObjetivoPerfiles() {
+    
+    public Set<Perfil> getUsuarioObjetivoPerfiles() {
         return usuarioObjetivoPerfiles;
     }
-
-    public void setUsuarioObjetivoPerfiles(List<Perfil> usuarioObjetivoPerfiles) {
+    
+    public void setUsuarioObjetivoPerfiles(Set<Perfil> usuarioObjetivoPerfiles) {
         this.usuarioObjetivoPerfiles = usuarioObjetivoPerfiles;
     }
-
+    
     public List<Usuario> getUsuarios() {
         return new UsuarioDao().getAll();
     }
-
+    
     public List<Perfil> getPerfiles() {
         return new PerfilDao().getAll();
     }
-
+    
     public void updateUsuarioObjetivoPerfiles() {
         this.usuarioObjetivoPerfiles = this.usuarioObjetivo == null
-                ? null : new LinkedList<>(this.usuarioObjetivo.getPerfilSet());
+                ? null : this.usuarioObjetivo.getPerfilSet();
     }
-
+    
     public void cambiarPerfiles() {
-
+        UsuarioDao usuarioDao = new UsuarioDao();
+        usuarioDao.getEntityManager().getTransaction().begin();
+        Usuario u = usuarioDao.getByKey(usuarioObjetivo.getId());
+        u.setPerfilSet(usuarioObjetivoPerfiles);
+        usuarioDao.update(u);
+        usuarioDao.getEntityManager().getTransaction().commit();
     }
-
+    
 }
