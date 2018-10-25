@@ -58,10 +58,15 @@ public class AdminPerfilController implements Serializable {
     
     public void cambiarPerfiles() {
         UsuarioDao usuarioDao = new UsuarioDao();
+        PerfilDao perfilDao = new PerfilDao();
         usuarioDao.getEntityManager().getTransaction().begin();
         Usuario u = usuarioDao.getByKey(usuarioObjetivo.getId());
-        u.setPerfilSet(usuarioObjetivoPerfiles);
-        usuarioDao.update(u);
+        u.getPerfilSet().clear();
+        for (Perfil p : usuarioObjetivoPerfiles) {
+            System.err.println(u.getUserName());
+            u.getPerfilSet().add(perfilDao.getByKey(p.getId()));
+        }
+        usuarioDao.save(u);
         usuarioDao.getEntityManager().getTransaction().commit();
     }
     
