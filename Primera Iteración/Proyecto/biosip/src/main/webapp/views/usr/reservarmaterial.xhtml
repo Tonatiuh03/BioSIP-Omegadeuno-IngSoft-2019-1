@@ -18,11 +18,10 @@
                 <p:messages for="nuevo_prestamo"><p:autoUpdate/></p:messages>
                 <h:form class="escogerMateriales prestar">
                     <p:commandButton class="btn confirmarRes prestar"
-                                     value="Confirmar Reservación #{reservarMaterialController.listaPrestamo.size()} - #{reservarMaterialController.estado}"
-                                     disabled="#{reservarMaterialController.listaPrestamo.isEmpty()}"
+                                     value="#{reservarMaterialController.nombreBtnAccion} #{reservarMaterialController.listaPrestamo.size()}"
+                                     disabled="#{reservarMaterialController.habilitarBoton() or reservarMaterialController.exito}"
                                      update="@(.prestar)"
-                                     rendered="#{!reservarMaterialController.estado}"
-                                     action="${reservarMaterialController.setEstado(true)}"/>
+                                     action="${reservarMaterialController.generarPrestamo()}"/>
 
                     <p:dataList class="prestar" value="#{reservarMaterialController.materiales}" var="material" type="definition" 
                                 rendered="#{!reservarMaterialController.estado}">
@@ -53,35 +52,38 @@
                     </p:dataList>
 
 
-                    <p:panel class="confirmarMateriales prestar">
-                        <!--<p:messages for="nuevo_prestamo"><p:autoUpdate/></p:messages>-->
-                        <p:dataList value="${reservarMaterialController.listaPrestamoUnica}" var="material" type="definition"
-                                    rendered="#{reservarMaterialController.estado}">
-                            <h:panelGrid class="panelGrid" columns="4" cellpadding = "15" >
+                    <p:dataList class="confirmarMateriales prestar" 
+                                value="${reservarMaterialController.listaPrestamoUnica}" var="material" type="definition"
+                                rendered="#{reservarMaterialController.estado and reservarMaterialController.listaPrestamoUnica.size()!=0}">
+                        <h:panelGrid class="panelGrid" columns="4" cellpadding = "15" >
 
-                                <p:graphicImage class="imgMaterial" url="/imagenesPublicas/#{material.rutaImagen}" height="20%"/>
-                                <p:outputPanel>
-                                    <h:panelGrid columns="2" cellpadding="2px">
-                                        <h:outputText value="Nombre" class="info-tag"/>
-                                        <h:outputText value="#{material.nombre}" class="info"/>
-                                        <h:outputText value="Descripción:" class="info-tag"/>
-                                        <h:outputText value="#{material.descripcion}" class="info"/>
-                                        <h:outputText value="Disponibles:" class="info-tag"/>
-                                        <h:outputText value="#{material.disponibles}" class="info"/>
-                                        <h:outputLabel value="Cantidad: " class="info-tag prestar"/>
-                                        <h:outputLabel value="#{reservarMaterialController.contarMateriales(material)}"/>
-                                    </h:panelGrid>
-                                </p:outputPanel>
-                                <p:commandButton  id="btnQuitar" class="btn btn-sm btn-secondary prestar" value="Quitar" 
-                                                  action="${reservarMaterialController.eliminar(material)}"
-                                                  update="@(.prestar)"/>
-                            </h:panelGrid>
-                        </p:dataList>
-                        <p:commandButton  rendered="#{reservarMaterialController.estado}" 
-                                          value="CONFIRMAR PRESTAMO"
-                                          action="${reservarMaterialController.crearPrestamo()}"
-                                          update="@(.prestar)"/>
-                    </p:panel>
+                            <p:graphicImage class="imgMaterial" url="/imagenesPublicas/#{material.rutaImagen}" height="20%"/>
+                            <p:outputPanel>
+                                <h:panelGrid columns="2" cellpadding="2px">
+                                    <h:outputText value="Nombre" class="info-tag"/>
+                                    <h:outputText value="#{material.nombre}" class="info"/>
+                                    <h:outputText value="Descripción:" class="info-tag"/>
+                                    <h:outputText value="#{material.descripcion}" class="info"/>
+                                    <h:outputText value="Disponibles:" class="info-tag"/>
+                                    <h:outputText value="#{material.disponibles}" class="info"/>
+                                    <h:outputLabel value="Cantidad: " class="info-tag prestar"/>
+                                    <h:outputLabel value="#{reservarMaterialController.contarMateriales(material)}"/>
+                                </h:panelGrid>
+                            </p:outputPanel>
+                            <p:commandButton  id="btnQuitar" class="btn btn-sm btn-secondary prestar" value="Quitar" 
+                                              action="${reservarMaterialController.eliminar(material)}"
+                                              rendered="${!reservarMaterialController.exito}"
+                                              update="@(.prestar)"/>
+                        </h:panelGrid>
+                    </p:dataList>
+                    <p:commandButton  rendered="#{reservarMaterialController.estado and reservarMaterialController.listaPrestamoUnica.size()!=0}" 
+                                      value="CONFIRMAR PRESTAMO"
+                                      action="${reservarMaterialController.crearPrestamo()}"
+                                      update="@(.prestar)"
+                                      disabled="${reservarMaterialController.exito}"/>
+                    <p:commandButton rendered="${reservarMaterialController.exito}" value="CREAR NUEVO PRÉSTAMO" 
+                                     actionListener="${reservarMaterialController.nuevoPrestamo()}"
+                                     update="@(.prestar)"/>
                 </h:form>
             </div>
         </ui:define>
