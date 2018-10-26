@@ -10,6 +10,7 @@ package mx.unam.is20191.controller;
  * @author dams_
  */
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -37,6 +38,7 @@ public class ReservarMaterialController implements Serializable {
     private boolean estado;
     private String nombreBtnAccion;
     private boolean exito;
+    private int cantidad;
 
     public ReservarMaterialController() {
         this.listaPrestamo = new ArrayList<Material>();
@@ -44,6 +46,7 @@ public class ReservarMaterialController implements Serializable {
         this.confirmarPrestamo = false;
         this.nombreBtnAccion = "Confirmar Préstamo";
         this.exito = false;
+        this.cantidad = 1;
     }
 
     public void nuevoPrestamo() {
@@ -53,6 +56,14 @@ public class ReservarMaterialController implements Serializable {
         this.nombreBtnAccion = "Confirmar Préstamo";
         this.exito = false;
         this.estado = false;
+    }
+
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
     }
 
     public List<Material> getListaPrestamo() {
@@ -134,10 +145,23 @@ public class ReservarMaterialController implements Serializable {
         this.estado = !this.estado;
     }
 
-    public void agregar(Material m) {
-        this.listaPrestamo.add(m);
-        if (!this.listaPrestamoUnica.contains(m)) {
-            this.listaPrestamoUnica.add(m);
+    public void agregar(Material m, int n) throws Exception {
+        if (n <= m.getDisponibles() && n > 0) {
+            for (int i = 0; i < n; i++) {
+                this.listaPrestamo.add(m);
+            }
+            if (!this.listaPrestamoUnica.contains(m)) {
+                this.listaPrestamoUnica.add(m);
+            }
+            FacesContext.getCurrentInstance().addMessage("mensaje-material",
+                    new FacesMessage(FacesMessage.SEVERITY_INFO,
+                            "Se ha agregado el material: " + m.getNombre() + " a la lista.",
+                            "Hay "+this.contarMateriales(m)+" unidades del material en la lista del préstamo."));
+        } else {
+            FacesContext.getCurrentInstance().addMessage("mensaje-material",
+                    new FacesMessage(FacesMessage.SEVERITY_WARN,
+                            "Lo sentimos, la cantidad solicitada del material no se encuentra disponible.",
+                            "Por favor revise la cantidad de material disponible."));
         }
     }
 
@@ -146,6 +170,10 @@ public class ReservarMaterialController implements Serializable {
         if (!this.listaPrestamo.contains(m)) {
             this.listaPrestamoUnica.remove(m);
         }
+        FacesContext.getCurrentInstance().addMessage("mensaje-material",
+                new FacesMessage(FacesMessage.SEVERITY_INFO,
+                        "Se ha quitado una unidad del material: "+m.getNombre()+".",
+                        "Hay "+this.contarMateriales(m)+" unidades del material en la lista del préstamo."));
     }
 
     public int contarMateriales(Material m) throws Exception {
@@ -170,6 +198,9 @@ public class ReservarMaterialController implements Serializable {
         UsuarioDao usuarioDao = new UsuarioDao();
         SessionController sc = new SessionController();
         Usuario usuario = usuarioDao.searchByUserNameOrEmail("dam");
+        Date fechaLimite = new Date();
+        //fechaLimite = DateUtil.addDays(fechaLimite, 3);
+        String f = LocalDate.parse("dd/mm/aaaa").plusDays(3).toString();
 
         try {
             MaterialDao m = new MaterialDao();
@@ -206,7 +237,7 @@ public class ReservarMaterialController implements Serializable {
             FacesContext.getCurrentInstance().addMessage("nuevo_prestamo",
                     new FacesMessage(FacesMessage.SEVERITY_INFO,
                             "Se ha generado un nuevo prestamo.",
-                            "Se ha generado un nuevo prestamo."));
+                            "Tiene hasta el día " + f + " para recogerlos."));
 
         } catch (IllegalArgumentException ex) {
             FacesContext.getCurrentInstance().addMessage("nuevo_prestamo",
