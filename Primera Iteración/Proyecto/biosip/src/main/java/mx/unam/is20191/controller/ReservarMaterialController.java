@@ -102,9 +102,9 @@ public class ReservarMaterialController implements Serializable {
 
     public String getNombreBtnAccion() {
         if (this.estado) {
-            this.nombreBtnAccion = "Continuar Agregando";
+            this.nombreBtnAccion = "Continúa Agregando";
         } else {
-            this.nombreBtnAccion = "Confirmar Préstamo";
+            this.nombreBtnAccion = "Confirma Préstamo";
         }
         return nombreBtnAccion;
     }
@@ -114,15 +114,20 @@ public class ReservarMaterialController implements Serializable {
     }
 
     public boolean habilitarBoton() {
-        boolean habilitar = false;
+        boolean deshabilitar = false;
         if (this.listaPrestamoUnica.isEmpty() && this.estado == true) {
-            habilitar = false;
+            deshabilitar = false;
+
+            FacesContext.getCurrentInstance().addMessage("prestamo_vacio",
+                    new FacesMessage(FacesMessage.SEVERITY_INFO,
+                            "No hay elementos para generar un Préstamo.",
+                            "Por favor haz clic en 'Continuar Agregando'."));
         } else if (!this.listaPrestamo.isEmpty() && this.estado == false) {
-            habilitar = false;
+            deshabilitar = false;
         } else if (this.listaPrestamoUnica.isEmpty() && this.estado == false) {
-            habilitar = true;
+            deshabilitar = true;
         }
-        return habilitar;
+        return deshabilitar;
     }
 
     public void generarPrestamo() throws Exception {

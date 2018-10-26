@@ -13,10 +13,10 @@ and open the template in the editor.
 }
 
 .confirmarRes{
-    background-color: #7F5A83;
+    background-color: #1E3231;
     position: fixed;
     right: 10px;
-    height: 50px;
+    color: white;
 }
 
 .panelGrid{
@@ -35,10 +35,25 @@ and open the template in the editor.
     font-weight: normal;
 }
 .btnreservar{
-    background-color: #0D324D; color: white
+    background-color: #0D324D;
+    color: white
+}
+
+.confirmar-prestamo{
+    background-color: #6B0F1A;
+    color: white;
+}
+
+.nuervo-prestamo{
+    background-color: #073B3A;
+    color: white;
 }
 
 .imgMaterial{
     display: block;
     margin: 0px auto;
+}
+
+.texto-descripcion{
+    font-size: 10px;
 }
