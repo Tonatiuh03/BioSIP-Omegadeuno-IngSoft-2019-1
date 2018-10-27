@@ -81,7 +81,7 @@ public class Usuario implements Serializable {
     @Basic(optional = false)
     @Column(nullable = false)
     private boolean validado;
-    @ManyToMany(mappedBy = "usuarioSet", fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "usuarioSet", fetch = FetchType.LAZY)
     private Set<Perfil> perfilSet;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "usuarioId", fetch = FetchType.LAZY)
     private Confirmacion confirmacion;
