@@ -19,6 +19,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -81,7 +83,13 @@ public class Usuario implements Serializable {
     @Basic(optional = false)
     @Column(nullable = false)
     private boolean validado;
-    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "usuarioSet", fetch = FetchType.LAZY)
+    @ManyToMany(cascade = {
+        CascadeType.PERSIST,
+        CascadeType.MERGE
+    })
+    @JoinTable(name = "usuario_perfil", joinColumns = {
+        @JoinColumn(name = "usuario_id", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {
+        @JoinColumn(name = "perfil_id", referencedColumnName = "id", nullable = false)})
     private Set<Perfil> perfilSet;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "usuarioId", fetch = FetchType.LAZY)
     private Confirmacion confirmacion;

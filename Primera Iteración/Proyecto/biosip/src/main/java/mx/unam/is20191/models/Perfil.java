@@ -10,12 +10,9 @@ import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -49,10 +46,7 @@ public class Perfil implements Serializable {
     @Basic(optional = false)
     @Column(nullable = false, length = 200)
     private String descripcion;
-    @JoinTable(name = "usuario_perfil", joinColumns = {
-        @JoinColumn(name = "perfil_id", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {
-        @JoinColumn(name = "usuario_id", referencedColumnName = "id", nullable = false)})
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "perfilSet")
     private Set<Usuario> usuarioSet;
 
     public Perfil() {
@@ -125,5 +119,5 @@ public class Perfil implements Serializable {
     public String toString() {
         return "mx.unam.is20191.models.Perfil[ id=" + id + " ]";
     }
-    
+
 }
