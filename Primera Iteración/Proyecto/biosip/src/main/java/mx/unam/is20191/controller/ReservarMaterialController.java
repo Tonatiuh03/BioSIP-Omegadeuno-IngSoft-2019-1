@@ -10,12 +10,18 @@ package mx.unam.is20191.controller;
  * @author dams_
  */
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import mx.unam.is20191.dao.MaterialDao;
@@ -31,7 +37,7 @@ import mx.unam.is20191.models.Usuario;
 @ManagedBean
 @SessionScoped
 public class ReservarMaterialController implements Serializable {
-
+    
     private List<Material> listaPrestamo;
     private List<Material> listaPrestamoUnica;
     private boolean confirmarPrestamo;
@@ -128,17 +134,21 @@ public class ReservarMaterialController implements Serializable {
         boolean deshabilitar = false;
         if (this.listaPrestamoUnica.isEmpty() && this.estado == true) {
             deshabilitar = false;
-
-            FacesContext.getCurrentInstance().addMessage("prestamo_vacio",
-                    new FacesMessage(FacesMessage.SEVERITY_INFO,
-                            "No hay elementos para generar un Préstamo.",
-                            "Por favor haz clic en 'Continuar Agregando'."));
         } else if (!this.listaPrestamo.isEmpty() && this.estado == false) {
             deshabilitar = false;
         } else if (this.listaPrestamoUnica.isEmpty() && this.estado == false) {
             deshabilitar = true;
         }
         return deshabilitar;
+    }
+
+    public void avisarPrestamoVacio() {
+        if (this.listaPrestamoUnica.isEmpty() && this.estado == true) {
+            FacesContext.getCurrentInstance().addMessage("prestamo_vacio",
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                            "No hay elementos para generar un Préstamo.",
+                            "Por favor haz clic en 'Continúa Agregando'."));
+        }
     }
 
     public void generarPrestamo() throws Exception {
@@ -153,12 +163,12 @@ public class ReservarMaterialController implements Serializable {
             if (!this.listaPrestamoUnica.contains(m)) {
                 this.listaPrestamoUnica.add(m);
             }
-            FacesContext.getCurrentInstance().addMessage("mensaje-material",
+            FacesContext.getCurrentInstance().addMessage("mensaje-agregar-material",
                     new FacesMessage(FacesMessage.SEVERITY_INFO,
-                            "Se ha agregado el material: " + m.getNombre() + " a la lista.",
-                            "Hay "+this.contarMateriales(m)+" unidades del material en la lista del préstamo."));
+                            "Se ha agregado una unidad del material: -" + m.getNombre() + "- a la lista del préstamo.",
+                            "Hay " + this.contarMateriales(m) + " unidades del material en la lista del préstamo."));
         } else {
-            FacesContext.getCurrentInstance().addMessage("mensaje-material",
+            FacesContext.getCurrentInstance().addMessage("mensaje-agregar-material",
                     new FacesMessage(FacesMessage.SEVERITY_WARN,
                             "Lo sentimos, la cantidad solicitada del material no se encuentra disponible.",
                             "Por favor revise la cantidad de material disponible."));
@@ -170,10 +180,10 @@ public class ReservarMaterialController implements Serializable {
         if (!this.listaPrestamo.contains(m)) {
             this.listaPrestamoUnica.remove(m);
         }
-        FacesContext.getCurrentInstance().addMessage("mensaje-material",
-                new FacesMessage(FacesMessage.SEVERITY_INFO,
-                        "Se ha quitado una unidad del material: "+m.getNombre()+".",
-                        "Hay "+this.contarMateriales(m)+" unidades del material en la lista del préstamo."));
+        FacesContext.getCurrentInstance().addMessage("mensaje-eliminar-material",
+                new FacesMessage(FacesMessage.SEVERITY_WARN,
+                        "Se ha quitado una unidad del material: -" + m.getNombre() + "- de la lista del préstamo.",
+                        "Hay " + this.contarMateriales(m) + " unidades del material en la lista del préstamo."));
     }
 
     public int contarMateriales(Material m) throws Exception {
@@ -195,12 +205,16 @@ public class ReservarMaterialController implements Serializable {
     }
 
     public void crearPrestamo() throws Exception {
-        UsuarioDao usuarioDao = new UsuarioDao();
-        SessionController sc = new SessionController();
-        Usuario usuario = usuarioDao.searchByUserNameOrEmail("dam");
-        Date fechaLimite = new Date();
-        //fechaLimite = DateUtil.addDays(fechaLimite, 3);
-        String f = LocalDate.parse("dd/mm/aaaa").plusDays(3).toString();
+
+        Usuario usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user");
+        
+        LocalDateTime ldt = LocalDateTime.now();
+        String dt = DateTimeFormatter.ofPattern("dd-MM-yyyy", Locale.getDefault()).format(ldt);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        Calendar c = Calendar.getInstance();
+        c.setTime(sdf.parse(dt));
+        c.add(Calendar.DATE, 3);  // agregamos 3 días a la fecha actual
+        dt = sdf.format(c.getTime());  // obtenemos la fecha limite del préstamo
 
         try {
             MaterialDao m = new MaterialDao();
@@ -237,7 +251,7 @@ public class ReservarMaterialController implements Serializable {
             FacesContext.getCurrentInstance().addMessage("nuevo_prestamo",
                     new FacesMessage(FacesMessage.SEVERITY_INFO,
                             "Se ha generado un nuevo prestamo.",
-                            "Tiene hasta el día " + f + " para recogerlos."));
+                            "Tiene hasta el día " + dt + " para recoger los materiales."));
 
         } catch (IllegalArgumentException ex) {
             FacesContext.getCurrentInstance().addMessage("nuevo_prestamo",

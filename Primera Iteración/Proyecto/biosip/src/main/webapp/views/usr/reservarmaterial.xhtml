@@ -14,10 +14,13 @@
             <div class="container">
                 <h2>Reservar Material</h2>
                 <!-- Estructura para la presentaciónde un material-->
-                <p:messages for="nuevo_prestamo" closable="true" showDetail="true"><p:autoUpdate/></p:messages>
-                
+
                 <h:form class="escogerMateriales prestar">
-                    <p:growl for="mensaje-material" showDetail="true" />
+                    <p:messages for="nuevo_prestamo" closable="true" showDetail="true"/>
+                    <p:messages for="prestamo_vacio" showDetail="true" closable="true"/>
+                    <p:growl for="mensaje-agregar-material" showDetail="true" sticky="true"/>
+                    <p:growl for="mensaje-eliminar-material" showDetail="true" sticky="true"/>
+                    
                     <p:commandButton class="btn btn-outline-success confirmarRes prestar"
                                      value="#{reservarMaterialController.nombreBtnAccion} #{reservarMaterialController.listaPrestamo.size()}" 
                                      icon="fa fa-arrow-circle-right"
@@ -77,7 +80,6 @@
                         </h:panelGrid>
                     </p:dataList>
 
-
                     <p:dataList class="confirmarMateriales prestar" 
                                 value="${reservarMaterialController.listaPrestamoUnica}" var="material" type="definition"
                                 rendered="#{reservarMaterialController.estado and reservarMaterialController.listaPrestamoUnica.size()!=0}">
@@ -96,13 +98,14 @@
                                 </h:panelGrid>
                             </p:outputPanel>
                             <p:commandButton id="btnQuitar" class="btn btn-sm btn-dark prestar" value="Quitar" 
-                                             action="${reservarMaterialController.eliminar(material)}"
+                                             actionListener="${reservarMaterialController.eliminar(material)}"
                                              rendered="${!reservarMaterialController.exito}"
                                              icon="fa fa-fw fa-times"
-                                             update="@(.prestar)"/>
+                                             update="@(.prestar)">
+                                <f:actionListener binding="${reservarMaterialController.avisarPrestamoVacio()}" />
+                            </p:commandButton>
                         </h:panelGrid>
                     </p:dataList>
-                    <p:messages for="prestamo_vacio" showDetail="true" closable="true"><p:autoUpdate/></p:messages>
                 </h:form>
             </div>
         </ui:define>
