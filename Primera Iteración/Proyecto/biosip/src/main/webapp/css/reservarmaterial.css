@@ -15,7 +15,15 @@ and open the template in the editor.
 .confirmarRes{
     background-color: #1E3231;
     position: fixed;
-    right: 10px;
+    right: 0px;
+    color: white;
+}
+
+
+.continua-agregando{
+    background-color: #1E3231;
+    position: fixed;
+    left: 0px;
     color: white;
 }
 
@@ -42,6 +50,8 @@ and open the template in the editor.
 .confirmar-prestamo{
     background-color: #6B0F1A;
     color: white;
+    position: fixed;
+    right: 0px;
 }
 
 .nuervo-prestamo{
