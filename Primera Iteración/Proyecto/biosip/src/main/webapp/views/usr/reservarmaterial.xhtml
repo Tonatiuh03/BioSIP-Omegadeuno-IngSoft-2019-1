@@ -18,9 +18,9 @@
                 <h:form class="escogerMateriales prestar">
                     <p:messages for="nuevo_prestamo" closable="true" showDetail="true"/>
                     <p:messages for="prestamo_vacio" showDetail="true" closable="true"/>
-                    <p:growl for="mensaje-agregar-material" showDetail="true" sticky="true"/>
-                    <p:growl for="mensaje-eliminar-material" showDetail="true" sticky="true"/>
-                    
+                    <p:growl for="mensaje-agregar-material" showDetail="true" />
+                    <p:growl for="mensaje-eliminar-material" showDetail="true" />
+
                     <p:commandButton class="btn btn-outline-success confirmarRes prestar"
                                      value="#{reservarMaterialController.nombreBtnAccion} #{reservarMaterialController.listaPrestamo.size()}" 
                                      icon="fa fa-arrow-circle-right"
@@ -52,9 +52,12 @@
 
                     <p:dataList class="prestar" value="#{reservarMaterialController.materiales}" var="material" type="definition" 
                                 rendered="#{!reservarMaterialController.estado}">
-                        <h:panelGrid class="panelGrid" columns="4" cellpadding = "15">
+                        <h:panelGrid class="panelGrid" columns="4" cellpadding = "15" columnClasses="columna-imagen material-info btnAgregar btnQuitar">
 
-                            <p:graphicImage class="imgMaterial" url="/imagenesPublicas/#{material.rutaImagen}" height="100px"/>
+
+                            <p:graphicImage cache="false" class="imgMaterial" value="#{imageController.listMaterialImage}" height="100px">
+                                <f:param name="id" value="#{material.id}" />
+                            </p:graphicImage>
                             <p:outputPanel>
                                 <h:panelGrid columns="2" cellpadding="2px" class="prestar">
                                     <h:outputText value="Nombre" class="info-tag"/>
@@ -63,18 +66,23 @@
                                     <h:outputText value="#{material.descripcion}" class="info"/>
                                     <h:outputText value="Disponibles:" class="info-tag"/>
                                     <h:outputText value="#{material.disponibles}" class="info"/>
-                                    <h:outputLabel value="Cantidad:" class="info-tag prestar"/>
+                                    <h:outputLabel value="No. Elementos:" class="info-tag prestar"/>
                                     <h:outputText  value="${reservarMaterialController.contarMateriales(material)}" />
+                                    <h:outputLabel value="Cantidad:" class="info-tag prestar"/>
+                                    <p:inputNumber id="input1" type="number" value="${reservarMaterialController.cantidad}" >
+                                        <p:ajax update="output10"/>
+                                    </p:inputNumber>
+                                    <p:inputText id="output10" disabled="true" value="${reservarMaterialController.cantidad}"/>  
                                 </h:panelGrid>
                             </p:outputPanel>
                             <p:commandButton  class="btn btn-sm  btn-outline-primary btnreservar prestar" value="Reservar"
                                               disabled="${!reservarMaterialController.hayDispobibles(material)}"
-                                              actionListener="${reservarMaterialController.agregar(material, reservarMaterialController.cantidad)}"
+                                              actionListener="#{reservarMaterialController.agregar(material, reservarMaterialController.cantidad)}"
                                               icon="fa fa-plus"
                                               update="@(.prestar)" />
                             <p:commandButton  id="btnQuitar" class="btn btn-sm btn-dark prestar" value="Quitar" 
                                               disabled="${!reservarMaterialController.listaPrestamo.contains(material)}" 
-                                              action="${reservarMaterialController.eliminar(material)}"
+                                              actionListener="${reservarMaterialController.eliminar(material)}"
                                               icon="fa fa-fw fa-times"
                                               update="@(.prestar)"/>
                         </h:panelGrid>
@@ -85,7 +93,9 @@
                                 rendered="#{reservarMaterialController.estado and reservarMaterialController.listaPrestamoUnica.size()!=0}">
                         <h:panelGrid class="panelGrid" columns="4" cellpadding = "15" >
 
-                            <p:graphicImage class="imgMaterial" url="/imagenesPublicas/#{material.rutaImagen}" height="70px"/>
+                            <p:graphicImage cache="false" class="imgMaterial" value="#{imageController.listMaterialImage}" height="75px">
+                                <f:param name="id" value="#{material.id}" />
+                            </p:graphicImage>
                             <p:outputPanel>
                                 <h:panelGrid columns="2" cellpadding="2px">
                                     <h:outputText value="Nombre" class="info-tag"/>

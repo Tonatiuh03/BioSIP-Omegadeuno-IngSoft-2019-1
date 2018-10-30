@@ -17,6 +17,7 @@ and open the template in the editor.
     position: fixed;
     right: 0px;
     color: white;
+    height: 75px;
 }
 
 
@@ -25,6 +26,7 @@ and open the template in the editor.
     position: fixed;
     left: 0px;
     color: white;
+    height: 75px;
 }
 
 .panelGrid{
@@ -52,11 +54,13 @@ and open the template in the editor.
     color: white;
     position: fixed;
     right: 0px;
+    height: 75px;
 }
 
 .nuervo-prestamo{
     background-color: #073B3A;
     color: white;
+    height: 50px;
 }
 
 .imgMaterial{
@@ -71,4 +75,20 @@ and open the template in the editor.
 .ui-growl{
     background-color: #56282D;
     color: white;
+}
+
+.columna-imagen{
+    width: 100px;
+}
+
+.material-info{
+    width: 100%;
+}
+
+.btnAgregar{
+    width: 10%;
+}
+
+.btnQuitar{
+    width: 10%;
 }

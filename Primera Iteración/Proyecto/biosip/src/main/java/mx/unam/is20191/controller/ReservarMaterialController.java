@@ -156,7 +156,7 @@ public class ReservarMaterialController implements Serializable {
     }
 
     public void agregar(Material m, int n) throws Exception {
-        if (n <= m.getDisponibles() && n > 0) {
+        if ((n+ this.contarMateriales(m)) <= m.getDisponibles() && n > 0) {
             for (int i = 0; i < n; i++) {
                 this.listaPrestamo.add(m);
             }
