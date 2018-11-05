@@ -23,6 +23,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import mx.unam.is20191.dao.MaterialDao;
 import mx.unam.is20191.dao.PrestamoDao;
@@ -155,7 +156,9 @@ public class ReservarMaterialController implements Serializable {
         this.estado = !this.estado;
     }
 
-    public void agregar(Material m, int n) throws Exception {
+    public void agregar(Material m) throws Exception {
+        System.err.println(cantidad);
+        int n=this.cantidad;
         if ((n+ this.contarMateriales(m)) <= m.getDisponibles() && n > 0) {
             for (int i = 0; i < n; i++) {
                 this.listaPrestamo.add(m);
