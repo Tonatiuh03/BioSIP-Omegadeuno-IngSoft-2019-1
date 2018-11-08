@@ -77,9 +77,12 @@
                             </p:outputPanel>
                             <p:commandButton  class="btn btn-sm  btn-outline-primary btnreservar prestar out" value="Reservar #{reservarMaterialController.cantidad}"
                                               disabled="${!reservarMaterialController.hayDispobibles(material)}"
-                                              actionListener="#{reservarMaterialController.agregar(material)}"
+                                              actionListener="#{reservarMaterialController.agregar}"
                                               icon="fa fa-plus"
-                                              update="@(.prestar)" />
+                                              update="@(.prestar)" >
+                                 <f:attribute name="cantidadPrestamo" value="#{reservarMaterialController.cantidad}"></f:attribute>
+                                 <f:attribute name="material" value="#{material}"></f:attribute>
+                            </p:commandButton>
                             <p:commandButton  id="btnQuitar" class="btn btn-sm btn-dark prestar" value="Quitar" 
                                               disabled="${!reservarMaterialController.listaPrestamo.contains(material)}" 
                                               actionListener="${reservarMaterialController.eliminar(material)}"
