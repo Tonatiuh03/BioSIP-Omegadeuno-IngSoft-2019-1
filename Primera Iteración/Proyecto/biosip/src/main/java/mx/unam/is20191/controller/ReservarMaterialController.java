@@ -23,7 +23,9 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import mx.unam.is20191.dao.MaterialDao;
 import mx.unam.is20191.dao.PrestamoDao;
 import mx.unam.is20191.dao.PrestamoMaterialDao;
@@ -37,7 +39,7 @@ import mx.unam.is20191.models.Usuario;
 @ManagedBean
 @SessionScoped
 public class ReservarMaterialController implements Serializable {
-    
+
     private List<Material> listaPrestamo;
     private List<Material> listaPrestamoUnica;
     private boolean confirmarPrestamo;
@@ -45,6 +47,7 @@ public class ReservarMaterialController implements Serializable {
     private String nombreBtnAccion;
     private boolean exito;
     private int cantidad;
+    private int cantidadPrestamo;
 
     public ReservarMaterialController() {
         this.listaPrestamo = new ArrayList<Material>();
@@ -70,6 +73,15 @@ public class ReservarMaterialController implements Serializable {
 
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
+    }
+
+    public int getCantidadPrestamo() {
+        return cantidadPrestamo;
+    }
+
+    public void setCantidadPrestamo(int cantidadPrestamo) {
+        System.err.println("En el seter" + cantidadPrestamo);
+        this.cantidadPrestamo = cantidadPrestamo;
     }
 
     public List<Material> getListaPrestamo() {
@@ -155,8 +167,12 @@ public class ReservarMaterialController implements Serializable {
         this.estado = !this.estado;
     }
 
-    public void agregar(Material m, int n) throws Exception {
-        if ((n+ this.contarMateriales(m)) <= m.getDisponibles() && n > 0) {
+    public void agregar(ActionEvent event) throws Exception {
+        this.cantidadPrestamo = (Integer) event.getComponent().getAttributes().get("cantidadPrestamo");
+        Material m =(Material) event.getComponent().getAttributes().get("material");
+        System.err.println(cantidadPrestamo);
+        int n = this.cantidadPrestamo;
+        if ((n + this.contarMateriales(m)) <= m.getDisponibles() && n > 0) {
             for (int i = 0; i < n; i++) {
                 this.listaPrestamo.add(m);
             }
@@ -207,7 +223,7 @@ public class ReservarMaterialController implements Serializable {
     public void crearPrestamo() throws Exception {
 
         Usuario usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user");
-        
+
         LocalDateTime ldt = LocalDateTime.now();
         String dt = DateTimeFormatter.ofPattern("dd-MM-yyyy", Locale.getDefault()).format(ldt);
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
