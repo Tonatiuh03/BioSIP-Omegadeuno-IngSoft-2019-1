@@ -17,6 +17,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import javax.faces.application.FacesMessage;
@@ -25,6 +26,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import mx.unam.is20191.dao.MaterialDao;
 import mx.unam.is20191.dao.PrestamoDao;
 import mx.unam.is20191.dao.PrestamoMaterialDao;
@@ -38,7 +40,7 @@ import mx.unam.is20191.models.Usuario;
 @ManagedBean
 @SessionScoped
 public class ReservarMaterialController implements Serializable {
-    
+
     private List<Material> listaPrestamo;
     private List<Material> listaPrestamoUnica;
     private boolean confirmarPrestamo;
@@ -46,6 +48,7 @@ public class ReservarMaterialController implements Serializable {
     private String nombreBtnAccion;
     private boolean exito;
     private int cantidad;
+    private HashMap<Long, Integer> carritoCantidades;
 
     public ReservarMaterialController() {
         this.listaPrestamo = new ArrayList<Material>();
@@ -54,6 +57,7 @@ public class ReservarMaterialController implements Serializable {
         this.nombreBtnAccion = "Confirmar Préstamo";
         this.exito = false;
         this.cantidad = 1;
+        this.carritoCantidades = new HashMap<>();
     }
 
     public void nuevoPrestamo() {
@@ -156,10 +160,19 @@ public class ReservarMaterialController implements Serializable {
         this.estado = !this.estado;
     }
 
-    public void agregar(Material m) throws Exception {
-        System.err.println(cantidad);
-        int n=this.cantidad;
-        if ((n+ this.contarMateriales(m)) <= m.getDisponibles() && n > 0) {
+    public void changeMaterialCantidad(Material m) {
+        System.err.println(m.getId() + "#" + this.cantidad);
+        this.carritoCantidades.put(m.getId(), this.cantidad);
+    }
+
+    public void agregar(ActionEvent event) throws Exception {
+        this.cantidad = 1;
+        Material m = (Material) event.getComponent().getAttributes().get("material");
+        Integer n = this.carritoCantidades.get(m.getId());
+        if (n == null) {
+            n = 0;
+        }
+        if ((n + this.contarMateriales(m)) <= m.getDisponibles() && n > 0) {
             for (int i = 0; i < n; i++) {
                 this.listaPrestamo.add(m);
             }
@@ -210,7 +223,7 @@ public class ReservarMaterialController implements Serializable {
     public void crearPrestamo() throws Exception {
 
         Usuario usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user");
-        
+
         LocalDateTime ldt = LocalDateTime.now();
         String dt = DateTimeFormatter.ofPattern("dd-MM-yyyy", Locale.getDefault()).format(ldt);
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
