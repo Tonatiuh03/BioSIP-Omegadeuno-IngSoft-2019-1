@@ -78,7 +78,7 @@ public class Material implements Serializable {
     private Set<PrestamoMaterial> prestamoMaterialSet;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "material", fetch = FetchType.LAZY)
     private Set<KitMaterial> kitMaterialSet;
-
+    
     public Material() {
     }
 

@@ -69,18 +69,16 @@
                                     <h:outputLabel value="No. Elementos:" class="info-tag prestar"/>
                                     <h:outputText  value="${reservarMaterialController.contarMateriales(material)}" />
                                     <h:outputLabel value="Cantidad:" class="info-tag prestar"/>
-                                    <p:inputText id="input1"  type="number" value="${reservarMaterialController.cantidad}" >
-                                        <p:ajax update="@(.out)"/>
+                                    <p:inputText id="input1"  type="number" value="${reservarMaterialController.cantidad}">
+                                        <p:ajax listener="#{reservarMaterialController.changeMaterialCantidad(material)}" update="@(.out)"/>
                                     </p:inputText>
-                                    <p:inputText class="out" disabled="true" value="#{reservarMaterialController.cantidad}"/>  
                                 </h:panelGrid>
                             </p:outputPanel>
-                            <p:commandButton  class="btn btn-sm  btn-outline-primary btnreservar prestar out" value="Reservar #{reservarMaterialController.cantidad}"
+                            <p:commandButton  class="btn btn-sm  btn-outline-primary btnreservar prestar out" value="Reservar"
                                               disabled="${!reservarMaterialController.hayDispobibles(material)}"
                                               actionListener="#{reservarMaterialController.agregar}"
                                               icon="fa fa-plus"
                                               update="@(.prestar)" >
-                                 <f:attribute name="cantidadPrestamo" value="#{reservarMaterialController.cantidad}"></f:attribute>
                                  <f:attribute name="material" value="#{material}"></f:attribute>
                             </p:commandButton>
                             <p:commandButton  id="btnQuitar" class="btn btn-sm btn-dark prestar" value="Quitar" 

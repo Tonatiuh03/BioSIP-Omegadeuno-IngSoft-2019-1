@@ -31,7 +31,7 @@ and open the template in the editor.
 
 .panelGrid{
     width:100%;
-    background-color: #8D99AE;
+    background-color: #92C3CE;
     font-size: 12px;
     margin-bottom: 10px;
     table-layout: fixed;
@@ -91,4 +91,10 @@ and open the template in the editor.
 
 .btnQuitar{
     width: 10%;
+}
+
+.panelGrid>tbody>tr{
+    border-style: solid;
+    border-width: 5px;
+    border-radius: 30px;
 }

@@ -17,6 +17,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import javax.faces.application.FacesMessage;
@@ -47,7 +48,7 @@ public class ReservarMaterialController implements Serializable {
     private String nombreBtnAccion;
     private boolean exito;
     private int cantidad;
-    private int cantidadPrestamo;
+    private HashMap<Long, Integer> carritoCantidades;
 
     public ReservarMaterialController() {
         this.listaPrestamo = new ArrayList<Material>();
@@ -56,6 +57,7 @@ public class ReservarMaterialController implements Serializable {
         this.nombreBtnAccion = "Confirmar Préstamo";
         this.exito = false;
         this.cantidad = 1;
+        this.carritoCantidades = new HashMap<>();
     }
 
     public void nuevoPrestamo() {
@@ -73,15 +75,6 @@ public class ReservarMaterialController implements Serializable {
 
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
-    }
-
-    public int getCantidadPrestamo() {
-        return cantidadPrestamo;
-    }
-
-    public void setCantidadPrestamo(int cantidadPrestamo) {
-        System.err.println("En el seter" + cantidadPrestamo);
-        this.cantidadPrestamo = cantidadPrestamo;
     }
 
     public List<Material> getListaPrestamo() {
@@ -167,11 +160,18 @@ public class ReservarMaterialController implements Serializable {
         this.estado = !this.estado;
     }
 
+    public void changeMaterialCantidad(Material m) {
+        System.err.println(m.getId() + "#" + this.cantidad);
+        this.carritoCantidades.put(m.getId(), this.cantidad);
+    }
+
     public void agregar(ActionEvent event) throws Exception {
-        this.cantidadPrestamo = (Integer) event.getComponent().getAttributes().get("cantidadPrestamo");
-        Material m =(Material) event.getComponent().getAttributes().get("material");
-        System.err.println(cantidadPrestamo);
-        int n = this.cantidadPrestamo;
+        this.cantidad = 1;
+        Material m = (Material) event.getComponent().getAttributes().get("material");
+        Integer n = this.carritoCantidades.get(m.getId());
+        if (n == null) {
+            n = 0;
+        }
         if ((n + this.contarMateriales(m)) <= m.getDisponibles() && n > 0) {
             for (int i = 0; i < n; i++) {
                 this.listaPrestamo.add(m);
