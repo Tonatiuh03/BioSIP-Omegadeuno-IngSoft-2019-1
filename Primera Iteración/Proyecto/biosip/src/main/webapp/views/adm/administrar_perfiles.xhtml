@@ -16,7 +16,7 @@
                     <div class="col-sm-6 col-md-6 col-md-offset-6">
                         <div class="panel panel-default">
                             <div class="panel-heading text-center">
-                                <strong>Edición de perfiles</strong>
+                                <strong>Editar permisos</strong>
                             </div>
                             <div class="panel-body">
                                 <h:form id="myForm">
@@ -57,7 +57,7 @@
                                                     <div class="form-group">
                                                         <div class="input-group">
                                                             <div class="input-group-prepend">
-                                                                <span class="input-group-text" id="basic-addon2"><i class="fab fa-superpowers"></i>&nbsp;Perfiles&nbsp;</span>
+                                                                <span class="input-group-text" id="basic-addon2"><i class="fab fa-superpowers"></i>&nbsp;Permisos&nbsp;</span>
                                                             </div>
                                                             <p:selectManyMenu 
                                                                 style="height:60px;" id="usuarioObjetivoPerfiles" class="form-control" value="#{adminPerfilController.usuarioObjetivoPerfiles}" converter="perfilConverter" 
@@ -72,7 +72,7 @@
                                                     </div>
                                                 </p:panel>
                                                 <div class="form-group">
-                                                    <p:commandButton disabled="#{adminPerfilController.usuarioObjetivo==null}" actionListener="#{adminPerfilController.cambiarPerfiles}" ajax="true" class="btn btn-lg btn-primary btn-block" value="Cambiar roles" update="myForm"/>
+                                                    <p:commandButton disabled="#{adminPerfilController.usuarioObjetivo==null}" actionListener="#{adminPerfilController.cambiarPerfiles}" ajax="true" class="btn btn-lg btn-primary btn-block" value="Cambiar permisos" update="myForm"/>
                                                 </div>
                                             </div>
                                         </div>
