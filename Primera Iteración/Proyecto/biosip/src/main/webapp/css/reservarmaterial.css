@@ -15,13 +15,23 @@ and open the template in the editor.
 .confirmarRes{
     background-color: #1E3231;
     position: fixed;
-    right: 10px;
+    right: 0px;
     color: white;
+    height: 75px;
+}
+
+
+.continua-agregando{
+    background-color: #1E3231;
+    position: fixed;
+    left: 0px;
+    color: white;
+    height: 75px;
 }
 
 .panelGrid{
     width:100%;
-    background-color: #8D99AE;
+    background-color: #92C3CE;
     font-size: 12px;
     margin-bottom: 10px;
     table-layout: fixed;
@@ -42,11 +52,15 @@ and open the template in the editor.
 .confirmar-prestamo{
     background-color: #6B0F1A;
     color: white;
+    position: fixed;
+    right: 0px;
+    height: 75px;
 }
 
 .nuervo-prestamo{
     background-color: #073B3A;
     color: white;
+    height: 50px;
 }
 
 .imgMaterial{
@@ -56,4 +70,31 @@ and open the template in the editor.
 
 .texto-descripcion{
     font-size: 10px;
+}
+
+.ui-growl{
+    background-color: #56282D;
+    color: white;
+}
+
+.columna-imagen{
+    width: 100px;
+}
+
+.material-info{
+    width: 100%;
+}
+
+.btnAgregar{
+    width: 10%;
+}
+
+.btnQuitar{
+    width: 10%;
+}
+
+.panelGrid>tbody>tr{
+    border-style: solid;
+    border-width: 5px;
+    border-radius: 30px;
 }

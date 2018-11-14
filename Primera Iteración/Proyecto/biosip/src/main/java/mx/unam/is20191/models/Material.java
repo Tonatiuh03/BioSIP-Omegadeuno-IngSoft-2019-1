@@ -5,6 +5,9 @@
  */
 package mx.unam.is20191.models;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.Basic;
@@ -24,6 +27,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import mx.unam.is20191.utils.Config;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 
 /**
  *
@@ -72,7 +78,7 @@ public class Material implements Serializable {
     private Set<PrestamoMaterial> prestamoMaterialSet;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "material", fetch = FetchType.LAZY)
     private Set<KitMaterial> kitMaterialSet;
-
+    
     public Material() {
     }
 
@@ -187,5 +193,13 @@ public class Material implements Serializable {
     public String toString() {
         return "mx.unam.is20191.models.Material[ id=" + id + " ]";
     }
-    
+
+    public StreamedContent getImage() {
+        try {
+            return new DefaultStreamedContent(new FileInputStream(new File(Config.IMG_MATERIAL_REPO + this.rutaImagen)), "png");
+        } catch (IOException ex) {
+            return null;
+        }
+    }
+
 }

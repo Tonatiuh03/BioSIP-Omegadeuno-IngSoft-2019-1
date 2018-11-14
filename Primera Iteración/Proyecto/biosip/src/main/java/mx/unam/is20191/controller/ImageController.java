@@ -10,6 +10,7 @@ import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
+import mx.unam.is20191.dao.MaterialDao;
 import mx.unam.is20191.dao.UsuarioDao;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
@@ -29,6 +30,17 @@ public class ImageController implements Serializable{
         } else {
             String id = context.getExternalContext().getRequestParameterMap().get("id");
             return new UsuarioDao().getByKey(Long.valueOf(id)).getImage();
+        }
+
+    }
+    
+    public StreamedContent getListMaterialImage() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
+            return new DefaultStreamedContent();
+        } else {
+            String id = context.getExternalContext().getRequestParameterMap().get("id");
+            return new MaterialDao().getByKey(Long.valueOf(id)).getImage();
         }
 
     }
