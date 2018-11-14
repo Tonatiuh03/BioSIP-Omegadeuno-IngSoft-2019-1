@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/views/template.xhtml">
+        <ui:define name="head">
+            <title>Confirmar Prestamo</title>
+            <link rel="stylesheet" type="text/css" href="/css/reservarmaterial.css"></link>
+        </ui:define>
+        <ui:define name="body">
+            <div class="container">
+                <h2>Confirmar Prestamo</h2>
+                <!-- Estructura para la presentaciónde un material-->
+
+                <h:form class="escogerMateriales prestar">
+                    <p:messages for="mensaje-prestado" closable="true" showDetail="true"/>
+                    <p:messages for="mensaje-devuelto" showDetail="true" closable="true"/>
+                    <p:growl for="mensaje-prestado" showDetail="true" />
+                    <p:growl for="mensaje-devuelto" showDetail="true" />
+
+
+
+                    <p:dataList class="prestar" value="#{confirmarPrestamoController.listaPrestamos}" var="prestamo" type="definition">
+                        <h:panelGrid class="panelGrid" columns="4" cellpadding = "15">
+
+                            <p:outputPanel>
+                                <h:panelGrid columns="2" cellpadding="2px" class="prestar">
+                                    <h:outputText value="No. Préstamo:" class="info-tag"/>
+                                    <h:outputText value="#{prestamo.id}" class="info"/>
+                                    <h:outputText value="Usuario:" class="info-tag"/>
+                                    <h:outputText value="#{prestamo.usuarioId.userName}" class="info"/>
+                                    <h:outputText value="Fecha de Reservación:" class="info-tag"/>
+                                    <h:outputText value="#{prestamo.fechaDeSolicitud}" class="info"/>
+                                    <h:outputText value="Fecha de Aprovación:" class="info-tag"/>
+                                    <h:outputText value="#{prestamo.fechaDeAprobacion}" class="info"/>
+                                    <h:outputLabel value="Fecha de Devolución:" class="info-tag prestar"/>
+                                    <h:outputText  value="#{prestamo.fechaDeDevolucion}" />
+                                </h:panelGrid>
+                            </p:outputPanel>
+                            <p:commandButton  class="btn-sm  btn-primary" value="Detalle del Préstamo" action="${confirmarPrestamoController.mostrarDetallePrestamo(prestamo)}"/>
+                            <p:commandButton  class="btn-sm  btn-danger" value="Material Prestado" action="${confirmarPrestamoController.confirmarMaterialPrestado()}"/>
+                            <p:commandButton  class="btn-sm btn-secondary" value="Material Devuelto" action="${confirmarPrestamoController.confirmarMaterialDevuelto()}"/>
+                        </h:panelGrid>
+                    </p:dataList>
+
+                </h:form>
+            </div>
+        </ui:define>
+    </ui:composition> 
+</html>

@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <h:head>
         <meta charset="utf-8"/>
         <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -34,7 +35,8 @@
                 <p:outputPanel  rendered="${sessionController.admin}" >
                     <button type="button" class="list-group-item list-group-item-action nav-tit-rol" disabled="true">Administrador</button>
                     <a href="/views/adm/administrar_perfiles.xhtml">Administrar perfiles</a>
-                    <a href="crearcategoria.xhtml">Crear Categorías o Subcategoría</a>
+                    <a href="/views/adm/crearcategoria.xhtml">Crear Categorías o Subcategoría</a>
+                    <a href="/views/adm/confirmarprestamo.xhtml">Confirmar Préstamo</a>
                     <a href="#">Desbloquear Usuario</a>
                     <a href="#">Bloquear Usuario</a>
                     <a href="#">Cambiar Estado de Material</a>
@@ -44,7 +46,10 @@
                     <a href="#">Crear Kits</a>
                     <a href="#">Compartir Kits</a>
                 </p:outputPanel>
-                <button type="button" class="list-group-item list-group-item-action nav-tit-rol" disabled="true">Alumno</button>
+                <p:outputPanel>
+                    <button type="button" class="list-group-item list-group-item-action nav-tit-rol" disabled="true">Alumno</button>
+                    <a href="/views/usr/reservarmaterial.xhtml">Reservar Material</a>
+                </p:outputPanel>
             </div>
         </p:outputPanel>
         <header>
