@@ -14,6 +14,11 @@ import mx.unam.is20191.models.Perfil;
  */
 public class PerfilDao extends AbstractDao<Short, Perfil> {
 
+    /**
+     * Método que obtiene todos los perfiles disponibles en la base.
+     *
+     * @return Los perfiles encontrados en la base.
+     */
     public List<Perfil> getAll() {
         CriteriaBuilder cb = createCriteriaBuilder();
         CriteriaQuery<Perfil> crit = createCriteriaQuery(cb);

@@ -77,6 +77,11 @@ public class MaterialDao extends AbstractDao<Long, Material> {
 
     }
 
+    /**
+     * Método que obtiene todos los materiales de la base de datos.
+     *
+     * @return Los materiales que se encuentren en la base.
+     */
     public List<Material> getMateriales() {
         CriteriaBuilder cb = createCriteriaBuilder();
         CriteriaQuery<Material> crit = createCriteriaQuery(cb);

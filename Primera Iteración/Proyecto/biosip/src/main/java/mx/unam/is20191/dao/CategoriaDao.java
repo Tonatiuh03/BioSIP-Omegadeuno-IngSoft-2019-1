@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package mx.unam.is20191.dao;
 
 import java.util.List;
@@ -12,11 +7,18 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
 /**
+ * Clase que implementa el manejo de datos con las categorías.
  *
  * @author Josué Rodrigo Cárdenas Vallarta
  */
 public class CategoriaDao extends AbstractDao<Integer, Categoria> {
 
+    /**
+     * Método que revisa si existe una categoría.
+     *
+     * @param categoria Es el nombre de la categoría a buscar.
+     * @return True si la categoría existe y False en otro caso.
+     */
     public boolean categoriaExist(String categoria) {
         CriteriaBuilder cb = createCriteriaBuilder();
         CriteriaQuery<Categoria> crit = createCriteriaQuery(cb);
@@ -26,6 +28,11 @@ public class CategoriaDao extends AbstractDao<Integer, Categoria> {
         return this.count(cb.equal(r.get("nombre"), categoria)) > 0;
     }
 
+    /**
+     * Método que obtiene todas las categorías en la base de datos.
+     *
+     * @return Las categorías encontradas en la base.
+     */
     public List<Categoria> getCategorias() {
         CriteriaBuilder cb = createCriteriaBuilder();
         CriteriaQuery<Categoria> crit = createCriteriaQuery(cb);
