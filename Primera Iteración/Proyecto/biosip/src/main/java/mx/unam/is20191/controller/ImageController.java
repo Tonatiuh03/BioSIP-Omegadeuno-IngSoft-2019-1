@@ -16,13 +16,20 @@ import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
 /**
+ * Controlador que maneja operaciones de imágenes con algunos objetos.
  *
  * @author Josué Rodrigo Cárdenas Vallarta
  */
 @ManagedBean
 @ApplicationScoped
-public class ImageController implements Serializable{
+public class ImageController implements Serializable {
 
+    /**
+     * Método que obtiene el stream de la imagen del usuario a partir de un id
+     * de usuario.
+     *
+     * @return El stream de la imagen del usuario seleccionado.
+     */
     public StreamedContent getListUserImage() {
         FacesContext context = FacesContext.getCurrentInstance();
         if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
@@ -33,7 +40,13 @@ public class ImageController implements Serializable{
         }
 
     }
-    
+
+    /**
+     * Método que obtiene el stream de la imagen de un material a partir de un
+     * id de material.
+     *
+     * @return El stream de la imagen del material seleccionado.
+     */
     public StreamedContent getListMaterialImage() {
         FacesContext context = FacesContext.getCurrentInstance();
         if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
