@@ -21,8 +21,15 @@ import mx.unam.is20191.models.Usuario;
 @ViewScoped
 public class AdminPerfilController implements Serializable {
 
+    /**
+     * En este atributo se almacena al usuario que vamos a afectar sus permisos.
+     */
     private Usuario usuarioObjetivo;
 
+    /**
+     * En este atributo obtendremos los nuevos permisos a guardar del usuario
+     * objetivo.
+     */
     private Set<Perfil> usuarioObjetivoPerfiles;
 
     public Usuario getUsuarioObjetivo() {

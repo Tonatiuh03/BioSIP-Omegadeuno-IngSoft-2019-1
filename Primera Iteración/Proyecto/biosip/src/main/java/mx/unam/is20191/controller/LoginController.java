@@ -13,11 +13,24 @@ import mx.unam.is20191.models.Usuario;
 import mx.unam.is20191.utils.Config;
 import mx.unam.is20191.utils.Password;
 
+/**
+ * Controlador que implmenta las acciones relacionadas con el inicio de sesión
+ * del usuario.
+ *
+ * @author Josué Rodrigo Cárdenas Vallarta
+ */
 @ManagedBean
 @ViewScoped
-public class LoginController implements Serializable{
+public class LoginController implements Serializable {
 
-    private String userName, password;
+    /**
+     * Atributo donde almacenaremos el nombre o correo del usuario.
+     */
+    private String userName;
+    /**
+     * Atributo donde almacenamos la contrqaseña sin encriptar.
+     */
+    private String password;
 
     public String getUserName() {
         return userName;
@@ -35,9 +48,10 @@ public class LoginController implements Serializable{
         this.password = password;
     }
 
+    /**
+     * Contructor del controlador.
+     */
     public LoginController() {
-        userName = "";
-        password = "";
     }
 
     /**

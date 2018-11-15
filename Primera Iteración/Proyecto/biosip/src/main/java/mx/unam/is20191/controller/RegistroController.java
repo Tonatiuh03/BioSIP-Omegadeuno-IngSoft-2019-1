@@ -24,12 +24,38 @@ import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 
+/**
+ * Controlador que implementa las acciones relacionadas con el registro.
+ *
+ * @author Josué Cárdenas
+ */
 @ManagedBean
 @SessionScoped
-public class RegistroController implements Serializable{
+public class RegistroController implements Serializable {
 
-    private String nombreCompleto, userName, password, correo;
+    /**
+     * Atributo que contiene el nombre completo del usuario que se quiere
+     * registrar.
+     */
+    private String nombreCompleto;
 
+    /**
+     * Atributo que contiene el user name del usuario que se quiere registrar.
+     */
+    private String userName;
+    /**
+     * Atributo que contiene la contraseña del usuario que se quiere registrar.
+     */
+    private String password;
+
+    /**
+     * Atributo que contiene el correo del usuario que se quiere registrar.
+     */
+    private String correo;
+
+    /**
+     * Es el atributo que contiene al archivo que el usuario quiere subir.
+     */
     private UploadedFile file;
 
     public String getCorreo() {
@@ -95,7 +121,7 @@ public class RegistroController implements Serializable{
                 } while (new File(Config.IMG_PROFILE_REPO + nuevoUsuario.getRutaImagen()).exists());
                 file.write(Config.IMG_PROFILE_REPO + nuevoUsuario.getRutaImagen());
             }
-            UsuarioDao usuarioDao=new UsuarioDao();
+            UsuarioDao usuarioDao = new UsuarioDao();
             usuarioDao.getEntityManager().getTransaction().begin();
             nuevoUsuario = usuarioDao.update(nuevoUsuario);
             Confirmacion confirm = new Confirmacion();
@@ -145,7 +171,7 @@ public class RegistroController implements Serializable{
      * es decir, el user name.
      */
     public void validateUniqueUserName(FacesContext context, UIComponent component, Object value) {
-        UsuarioDao usuarioDao=new UsuarioDao();
+        UsuarioDao usuarioDao = new UsuarioDao();
         if (usuarioDao.userExist(value.toString())) {
             FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,
                     "El usuario ya existe, escriba otro.",
@@ -162,7 +188,7 @@ public class RegistroController implements Serializable{
      * @param value Es el valor del mail que se tiene.
      */
     public void validateUniqueEmail(FacesContext context, UIComponent component, Object value) {
-        UsuarioDao usuarioDao=new UsuarioDao();
+        UsuarioDao usuarioDao = new UsuarioDao();
         if (usuarioDao.mailExist(value + Config.DOMINIO_CORREO)) {
             FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,
                     "El correo que intenta dar ya está registrado, escriba otro.",
@@ -219,21 +245,21 @@ public class RegistroController implements Serializable{
      * @return La página a donde se redirijirá después de aplicar este proceso.
      */
     public String confirmEmail(String id) {
-        UsuarioDao usuarioDao=new UsuarioDao();
+        UsuarioDao usuarioDao = new UsuarioDao();
         Usuario u = usuarioDao.searchByConfirmacion(id);
         if (u != null) {
-            ConfirmacionDao confirmacionDao =new ConfirmacionDao();
+            ConfirmacionDao confirmacionDao = new ConfirmacionDao();
             confirmacionDao.getEntityManager().getTransaction().begin();
             confirmacionDao.delete(u.getConfirmacion());
             confirmacionDao.getEntityManager().getTransaction().commit();
-            
+
             u.setConfirmacion(null);
-            
+
             usuarioDao.getEntityManager().getTransaction().begin();
             u.setValidado(true);
             usuarioDao.save(u);
             usuarioDao.getEntityManager().getTransaction().commit();
-            
+
             FacesContext.getCurrentInstance().addMessage("messages",
                     new FacesMessage(FacesMessage.SEVERITY_INFO,
                             "Su correo se ha confirmado, puede iniciar sesión.",
