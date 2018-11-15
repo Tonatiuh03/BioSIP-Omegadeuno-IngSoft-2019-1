@@ -7,6 +7,7 @@ package mx.unam.is20191.dao;
 
 import java.util.ArrayList;
 import java.util.List;
+import javafx.util.Pair;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -24,15 +25,15 @@ public class PrestamoMaterialDao extends AbstractDao<PrestamoMaterialPK, Prestam
         CriteriaBuilder cb = createCriteriaBuilder();
         CriteriaQuery<PrestamoMaterial> crit = createCriteriaQuery(cb);
         Root<PrestamoMaterial> r = createRoot(crit);
-        return this.findAll(crit, r, cb.asc(r.get("id")));
+        return this.findAll(crit, r, cb.asc(r.get("prestamoMaterialPK")));
     }    
     
-    public ArrayList<Material> getMateriales(Prestamo p){
+    public List<Pair<Material, Integer>> getMateriales(Prestamo p){
         MaterialDao md = new MaterialDao();
-        ArrayList<Material> lm = new ArrayList();
+        ArrayList<Pair<Material, Integer>> lm = new ArrayList();
         for (PrestamoMaterial mp : this.getRegistros()){
             if(mp.getPrestamo().getId() == (p.getId())){
-                lm.add(md.getByKey(mp.getMaterial().getId()));
+                lm.add(new Pair(mp.getMaterial(), mp.getElementosPrestados()));
             }
         }
         return lm;

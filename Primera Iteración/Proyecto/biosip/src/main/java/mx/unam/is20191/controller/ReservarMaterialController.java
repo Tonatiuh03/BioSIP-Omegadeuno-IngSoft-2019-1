@@ -233,7 +233,7 @@ public class ReservarMaterialController implements Serializable {
         dt = sdf.format(c.getTime());  // obtenemos la fecha limite del préstamo
 
         try {
-            MaterialDao m = new MaterialDao();
+            MaterialDao materialdao = new MaterialDao();
 
             Prestamo prestamo = new Prestamo();
             prestamo.setUsuarioId(usuario);
@@ -243,24 +243,26 @@ public class ReservarMaterialController implements Serializable {
             prestamo = presd.update(prestamo);
             presd.getEntityManager().getTransaction().commit();
             PrestamoMaterialDao presmatd = new PrestamoMaterialDao();;
-            presmatd.getEntityManager().getTransaction().begin();
-
-            PrestamoMaterial presmat = new PrestamoMaterial();
 
             int disponibles = 0;
             int materialesPrestados = 0;
             for (Material material : listaPrestamoUnica) {
+                
                 disponibles = material.getDisponibles();
                 materialesPrestados = this.contarMateriales(material);
+                
                 material.setDisponibles(disponibles - materialesPrestados);
-                m.getEntityManager().getTransaction().begin();
-                material = m.update(material);
-                m.getEntityManager().getTransaction().commit();
+                materialdao.getEntityManager().getTransaction().begin();
+                material = materialdao.update(material);
+                materialdao.getEntityManager().getTransaction().commit();
+                
+                PrestamoMaterial presmat = new PrestamoMaterial();
+                presmatd.getEntityManager().getTransaction().begin();
                 presmat.setPrestamoMaterialPK(new PrestamoMaterialPK(prestamo.getId(), material.getId()));
                 presmat.setElementosPrestados(materialesPrestados);
                 presmatd.save(presmat);
+                presmatd.getEntityManager().getTransaction().commit();
             }
-            presmatd.getEntityManager().getTransaction().commit();
 
             this.exito = true;
 

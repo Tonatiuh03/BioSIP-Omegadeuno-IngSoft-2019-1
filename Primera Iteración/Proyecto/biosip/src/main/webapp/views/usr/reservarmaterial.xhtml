@@ -42,7 +42,7 @@
                                      disabled="${reservarMaterialController.exito}"
                                      update="@(.prestar)"
                                      rendered="#{reservarMaterialController.estado and reservarMaterialController.listaPrestamoUnica.size()!=0}" 
-                                     actionListener="${reservarMaterialController.crearPrestamo()}"/>
+                                     action="${reservarMaterialController.crearPrestamo()}"/>
 
                     <p:commandButton class="btn btn-outline-primary nuervo-prestamo"
                                      value="CREAR NUEVO PRÉSTAMO" icon="fa fa-plus-square" 
