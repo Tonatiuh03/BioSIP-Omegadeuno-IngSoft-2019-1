@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import javafx.util.Pair;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -47,7 +48,16 @@ public class ConfirmarPrestamoController implements Serializable {
     private Date fechaSolicitud;
     private Date fechaAprobacion;
     private Date fechaDevolucion;
+    private List<String> detalle;
 
+    public List<String> getDetalle() {
+        return detalle;
+    }
+
+    public void setDetalle(List<String> detalle) {
+        this.detalle = detalle;
+    }
+    
     public String getUsuario() {
         return usuario;
     }
@@ -89,7 +99,7 @@ public class ConfirmarPrestamoController implements Serializable {
         this.listaPrestamos = listaPrestamos;
     }
 
-    public List<Material> getListaMateriales(Prestamo prestamo) {
+    public List<Pair<Material, Integer>> getListaMateriales(Prestamo prestamo) {
         PrestamoMaterialDao pmd = new PrestamoMaterialDao();
         return pmd.getMateriales(prestamo);
     }
@@ -100,7 +110,10 @@ public class ConfirmarPrestamoController implements Serializable {
 
     public void confirmarMaterialPrestado() {
         Usuario usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user");
-
+        FacesContext.getCurrentInstance().addMessage("mensaje-prestado",
+                new FacesMessage(FacesMessage.SEVERITY_INFO,
+                        "Se ha entregado el material al usuario: " + usuario.getUserName() + ".",
+                        "Se ha entregado el material al usuario: " + usuario.getUserName() + "."));
         if (true) {
             FacesContext.getCurrentInstance().addMessage("mensaje-prestado",
                     new FacesMessage(FacesMessage.SEVERITY_INFO,
@@ -120,6 +133,10 @@ public class ConfirmarPrestamoController implements Serializable {
     }
 
     public void confirmarMaterialDevuelto() {
+        FacesContext.getCurrentInstance().addMessage("mensaje-devuelto",
+                new FacesMessage(FacesMessage.SEVERITY_INFO,
+                        "El materil prestado ha sido devuelto al inventario.",
+                        "El materil prestado ha sido devuelto al inventario."));
         if (true) {
             FacesContext.getCurrentInstance().addMessage("mensaje-devuelto",
                     new FacesMessage(FacesMessage.SEVERITY_INFO,
@@ -129,9 +146,11 @@ public class ConfirmarPrestamoController implements Serializable {
     }
 
     public void mostrarDetallePrestamo(Prestamo p) {
-        for(Material m: this.getListaMateriales(p)){
-            System.out.println(m.getNombre());
-        }
+        this.detalle = new ArrayList<String>();
+        for (Pair<Material, Integer> m : this.getListaMateriales(p)) {
+            this.detalle.add("Material: "+m.getKey().getNombre()+" - Cantidad: "+m.getValue().toString()+"\n");
+            System.out.println(m.getKey()+" || "+m.getValue());
+        }        
     }
 
 }

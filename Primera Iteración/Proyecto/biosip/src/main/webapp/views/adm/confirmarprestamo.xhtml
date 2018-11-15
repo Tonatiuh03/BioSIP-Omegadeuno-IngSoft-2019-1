@@ -45,12 +45,40 @@ and open the template in the editor.
                                     <h:outputText  value="#{prestamo.fechaDeDevolucion}" />
                                 </h:panelGrid>
                             </p:outputPanel>
-                            <p:commandButton  class="btn-sm  btn-primary" value="Detalle del Préstamo" action="${confirmarPrestamoController.mostrarDetallePrestamo(prestamo)}"/>
-                            <p:commandButton  class="btn-sm  btn-danger" value="Material Prestado" action="${confirmarPrestamoController.confirmarMaterialPrestado()}"/>
-                            <p:commandButton  class="btn-sm btn-secondary" value="Material Devuelto" action="${confirmarPrestamoController.confirmarMaterialDevuelto()}"/>
-                        </h:panelGrid>
-                    </p:dataList>
 
+                            <button  data-toggle="modal" data-target="#detalle-del-prestamo" type="button" 
+                                     class="btn btn-sm  btn-primary"  
+                                     action="${confirmarPrestamoController.mostrarDetallePrestamo(prestamo)}">Detalle del Préstamo</button>
+                            <p:commandButton  class="btn btn-sm  btn-danger" value="Material Prestado" action="${confirmarPrestamoController.confirmarMaterialPrestado()}"/>
+                            <p:commandButton  class="btn btn-sm btn-secondary" value="Material Devuelto" action="${confirmarPrestamoController.confirmarMaterialDevuelto()}"/>
+                        </h:panelGrid>
+                        
+                        <div class="modal fade" id="detalle-del-prestamo" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLongTitle">Detalles del Préstamo
+                                            <h:outputText value="#{prestamo.id}" class="info"/></h5>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p:dataList value="#{confirmarPrestamoController.detalle}" var="detalle">
+                                            <h:outputText value="#{detalle}" class="info"/>
+                                        </p:dataList>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-sm btn-dark" data-dismiss="modal">Cerrar</button>
+                                        <p:commandButton  class="btn btn-sm  btn-danger"
+                                                          value="Material Prestado" 
+                                                          action="${confirmarPrestamoController.confirmarMaterialPrestado()}"/>
+                                        <p:commandButton  class="btn btn-sm btn-secondary" 
+                                                          value="Material Devuelto" 
+                                                          action="${confirmarPrestamoController.confirmarMaterialDevuelto()}"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </p:dataList>
                 </h:form>
             </div>
         </ui:define>
