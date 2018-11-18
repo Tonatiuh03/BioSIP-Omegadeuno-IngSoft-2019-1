@@ -16,10 +16,13 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 import javafx.util.Pair;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -28,6 +31,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.faces.event.AjaxBehaviorEvent;
 import mx.unam.is20191.dao.MaterialDao;
 import mx.unam.is20191.dao.PrestamoDao;
 import mx.unam.is20191.dao.PrestamoMaterialDao;
@@ -44,11 +48,55 @@ public class ConfirmarPrestamoController implements Serializable {
 
     private List<Prestamo> listaPrestamos;
     private List<Material> listaMateriales;
-    private String usuario;
     private Date fechaSolicitud;
     private Date fechaAprobacion;
     private Date fechaDevolucion;
     private List<String> detalle;
+    private Usuario usuario;
+    private Prestamo prestamo;
+    private boolean btnFechaAprobacion;
+    private boolean btnFechaDevolucion;
+
+    public ConfirmarPrestamoController() {
+        this.usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user");
+    }
+
+    public boolean isBtnFechaAprobacion() {
+        return btnFechaAprobacion;
+    }
+
+    public void setBtnFechaAprobacion(boolean btnFechaAprobacion) {
+        this.btnFechaAprobacion = btnFechaAprobacion;
+    }
+
+    public boolean isBtnFechaDevolucion() {
+        return btnFechaDevolucion;
+    }
+
+    public void setBtnFechaDevolucion(boolean btnFechaDevolucion) {
+        this.btnFechaDevolucion = btnFechaDevolucion;
+    }
+
+    public Prestamo getPrestamo() {
+        return prestamo;
+    }
+
+    public Prestamo cargarPrestamo(AjaxBehaviorEvent event) {
+        this.prestamo = (Prestamo) event.getComponent().getAttributes().get("prestamo");
+        return prestamo;
+    }
+
+    public void setPrestamo(Prestamo prestamo) {
+        this.prestamo = prestamo;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
 
     public List<String> getDetalle() {
         return detalle;
@@ -56,14 +104,6 @@ public class ConfirmarPrestamoController implements Serializable {
 
     public void setDetalle(List<String> detalle) {
         this.detalle = detalle;
-    }
-    
-    public String getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(String usuario) {
-        this.usuario = usuario;
     }
 
     public Date getFechaSolicitud() {
@@ -108,49 +148,152 @@ public class ConfirmarPrestamoController implements Serializable {
         this.listaMateriales = listaMateriales;
     }
 
-    public void confirmarMaterialPrestado() {
-        Usuario usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user");
-        FacesContext.getCurrentInstance().addMessage("mensaje-prestado",
-                new FacesMessage(FacesMessage.SEVERITY_INFO,
-                        "Se ha entregado el material al usuario: " + usuario.getUserName() + ".",
-                        "Se ha entregado el material al usuario: " + usuario.getUserName() + "."));
-        if (true) {
-            FacesContext.getCurrentInstance().addMessage("mensaje-prestado",
-                    new FacesMessage(FacesMessage.SEVERITY_INFO,
-                            "Se ha entregado el material al usuario: " + usuario.getUserName() + ".",
-                            "Se ha entregado el material al usuario: " + usuario.getUserName() + "."));
-        } else if (false) {
-            FacesContext.getCurrentInstance().addMessage("mensaje-prestado",
-                    new FacesMessage(FacesMessage.SEVERITY_WARN,
-                            "Lo sentimos, El periodo de reserva ha expirado.",
-                            "El material ya no se encuentra reservado."));
-        } else {
-            FacesContext.getCurrentInstance().addMessage("mensaje-prestado",
-                    new FacesMessage(FacesMessage.SEVERITY_WARN,
-                            "Lo sentimos, por el momento no se puede realizar la acción",
-                            "Lo sentimos, por el momento no se puede realizar la acción"));
+    public void confirmarMaterialPrestado(ActionEvent event) throws Exception {
+        try {
+            Prestamo p = (Prestamo) event.getComponent().getAttributes().get("prestamo");
+            Date date = new Date();
+
+            PrestamoDao presd = new PrestamoDao();
+            presd.getEntityManager().getTransaction().begin();
+            p = presd.getByKey(p.getId());
+            p.setFechaDeAprobacion(date);
+            p.setAdministradorIdAprobador(usuario);
+            System.err.println("Prestamo :" + p.getId());
+            presd.update(p);
+            presd.getEntityManager().getTransaction().commit();
+
+            if (this.diferenciaDeFechas(p) > 3) {
+                FacesContext.getCurrentInstance().addMessage("mensajes",
+                        new FacesMessage(FacesMessage.SEVERITY_INFO,
+                                "Lo sentimos, el periodo de reserva ha terminado.",
+                                "El material ya no se encuentra apartado para el usuario \"" + p.getUsuarioId().getNombreCompleto() + "\"."));
+
+            } else {
+                FacesContext.getCurrentInstance().addMessage("mensajes",
+                        new FacesMessage(FacesMessage.SEVERITY_INFO,
+                                "Se ha prestado material al usuario \"" + p.getUsuarioId().getNombreCompleto() + "\".",
+                                "Préstamo " + p.getId() + " iniciado."));
+            }
+
+        } catch (IllegalArgumentException ex) {
+            FacesContext.getCurrentInstance().addMessage("mensajes",
+                    new FacesMessage(FacesMessage.SEVERITY_FATAL,
+                            "Por el momento no podemos generar la confirmación del Prestamo, inténtelo más tarde.",
+                            "Por el momento no podemos generar la confirmación del Prestamo, inténtelo más tarde."));
         }
     }
 
-    public void confirmarMaterialDevuelto() {
-        FacesContext.getCurrentInstance().addMessage("mensaje-devuelto",
-                new FacesMessage(FacesMessage.SEVERITY_INFO,
-                        "El materil prestado ha sido devuelto al inventario.",
-                        "El materil prestado ha sido devuelto al inventario."));
-        if (true) {
-            FacesContext.getCurrentInstance().addMessage("mensaje-devuelto",
+    public void confirmarMaterialDevuelto(ActionEvent event) {
+        try {
+            Prestamo p = (Prestamo) event.getComponent().getAttributes().get("prestamo");
+            Date date = new Date();
+
+            PrestamoDao presd = new PrestamoDao();
+            presd.getEntityManager().getTransaction().begin();
+            p = presd.getByKey(p.getId());
+            p.setFechaDeDevolucion(date);
+            System.err.println("Prestamo :" + p.getId());
+
+            MaterialDao materialDao = new MaterialDao();
+            Material material = new Material();
+            for (Pair<Material, Integer> par : this.getListaMateriales(p)) {
+                materialDao.getEntityManager().getTransaction().begin();
+                material = materialDao.getByKey(par.getKey().getId());
+                material.setDisponibles(material.getDisponibles() + par.getValue());
+                materialDao.update(material);
+                materialDao.getEntityManager().getTransaction().commit();
+            }
+
+            presd.update(p);
+            presd.getEntityManager().getTransaction().commit();
+
+            FacesContext.getCurrentInstance().addMessage("mensajes",
                     new FacesMessage(FacesMessage.SEVERITY_INFO,
-                            "El materil prestado ha sido devuelto al inventario.",
-                            "El materil prestado ha sido devuelto al inventario."));
+                            "El material prestado al usuario \"" + p.getUsuarioId().getNombreCompleto() + "\", ha sido devuelto al inventario.",
+                            "Préstamo " + p.getId() + " finalizado."));
+
+        } catch (IllegalArgumentException ex) {
+            FacesContext.getCurrentInstance().addMessage("mensajes",
+                    new FacesMessage(FacesMessage.SEVERITY_FATAL,
+                            "Por el momento no podemos generar la confirmación del Prestamo, inténtelo más tarde.",
+                            "Por el momento no podemos generar la confirmación del Prestamo, inténtelo más tarde."));
         }
     }
 
-    public void mostrarDetallePrestamo(Prestamo p) {
+    public List mostrarDetallePrestamo(Prestamo p) throws Exception {
         this.detalle = new ArrayList<String>();
+        System.err.println(p.toString());
         for (Pair<Material, Integer> m : this.getListaMateriales(p)) {
-            this.detalle.add("Material: "+m.getKey().getNombre()+" - Cantidad: "+m.getValue().toString()+"\n");
-            System.out.println(m.getKey()+" || "+m.getValue());
-        }        
+            this.detalle.add("Material: " + m.getKey().getNombre() + "\t - Cantidad: " + m.getValue().toString());
+            System.err.println("Material: " + m.getKey().getNombre() + "\t - Cantidad: " + m.getValue().toString());
+        }
+        return this.detalle;
+    }
+
+    public void mostrarDetallePrestamo3(ActionEvent event) throws Exception {
+        this.prestamo = (Prestamo) event.getComponent().getAttributes().get("prestamo");
+        this.detalle = new ArrayList<String>();
+        System.err.println(this.prestamo.toString());
+        for (Pair<Material, Integer> m : this.getListaMateriales(prestamo)) {
+            this.detalle.add("Material: " + m.getKey().getNombre() + "\t - Cantidad: " + m.getValue().toString());
+            System.err.println("Material: " + m.getKey().getNombre() + "\t - Cantidad: " + m.getValue().toString());
+        }
+
+        FacesContext.getCurrentInstance().addMessage("mensajes",
+                new FacesMessage(FacesMessage.SEVERITY_INFO,
+                        "Cuaquier cosa",
+                        this.detalle.toString()));
+    }
+
+    public boolean habilitarBtnMaterialPrestado(Prestamo p) {
+        boolean deshabilitar = false;
+        if (this.diferenciaDeFechas(p) > 3 || p.getFechaDeAprobacion() != null) {
+            deshabilitar = true;
+        } else if (p.getFechaDeAprobacion() == null) {
+            return false;
+        }
+
+        return deshabilitar;
+    }
+
+    public boolean habilitarBtnMaterialDevuelto(Prestamo p) {
+        boolean deshabilitar = false;
+        if (p.getFechaDeAprobacion() == null) {
+            return true;
+        }
+        if (this.diferenciaDeFechas(p) > 3 || p.getFechaDeDevolucion() != null) {
+            deshabilitar = true;
+        }
+
+        return deshabilitar;
+    }
+
+    public String estadoPrestamo(Prestamo p) {
+        String estado = "Desconocido";
+        if (this.diferenciaDeFechas(p) > 3) {
+            estado = "Apartado Expirado";
+        } else if (p.getFechaDeAprobacion() == null && p.getFechaDeDevolucion() == null) {
+            estado = "Reservado";
+        } else if (p.getFechaDeAprobacion() != null && p.getFechaDeDevolucion() != null) {
+            estado = "Finalizado";
+        } else if (p.getFechaDeAprobacion() != null) {
+            estado = "Iniciado";
+        }
+        return estado;
+    }
+
+    /*
+    * Función que dado un Préstamo, con base en su fecha de solicitud y la fecha actual
+    * obtiene la diferencia de días entre ambas fechas.
+    * @param p - Un objeto de tipo Prestamo
+    * @return limite - el número de días entre ambas fechas.
+     */
+    public Long diferenciaDeFechas(Prestamo p) {
+        Date actual = new Date();
+        Date fechaSolicitud = p.getFechaDeSolicitud();
+        Long diferencia = actual.getTime() - fechaSolicitud.getTime();
+        Long limite = TimeUnit.DAYS.convert(diferencia, TimeUnit.MILLISECONDS);
+        return limite;
     }
 
 }

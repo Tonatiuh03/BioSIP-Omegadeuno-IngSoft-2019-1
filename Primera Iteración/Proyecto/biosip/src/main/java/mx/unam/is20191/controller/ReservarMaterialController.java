@@ -67,6 +67,8 @@ public class ReservarMaterialController implements Serializable {
         this.nombreBtnAccion = "Confirmar Préstamo";
         this.exito = false;
         this.estado = false;
+        this.cantidad = 1;
+        this.carritoCantidades = new HashMap<>();
     }
 
     public int getCantidad() {
@@ -223,14 +225,13 @@ public class ReservarMaterialController implements Serializable {
     public void crearPrestamo() throws Exception {
 
         Usuario usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user");
-
         LocalDateTime ldt = LocalDateTime.now();
-        String dt = DateTimeFormatter.ofPattern("dd-MM-yyyy", Locale.getDefault()).format(ldt);
+        String fechaLimite = DateTimeFormatter.ofPattern("dd-MM-yyyy", Locale.getDefault()).format(ldt);
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         Calendar c = Calendar.getInstance();
-        c.setTime(sdf.parse(dt));
+        c.setTime(sdf.parse(fechaLimite));
         c.add(Calendar.DATE, 3);  // agregamos 3 días a la fecha actual
-        dt = sdf.format(c.getTime());  // obtenemos la fecha limite del préstamo
+        fechaLimite = sdf.format(c.getTime());  // obtenemos la fecha limite del préstamo
 
         try {
             MaterialDao materialdao = new MaterialDao();
@@ -247,15 +248,15 @@ public class ReservarMaterialController implements Serializable {
             int disponibles = 0;
             int materialesPrestados = 0;
             for (Material material : listaPrestamoUnica) {
-                
+
                 disponibles = material.getDisponibles();
                 materialesPrestados = this.contarMateriales(material);
-                
+
                 material.setDisponibles(disponibles - materialesPrestados);
                 materialdao.getEntityManager().getTransaction().begin();
                 material = materialdao.update(material);
                 materialdao.getEntityManager().getTransaction().commit();
-                
+
                 PrestamoMaterial presmat = new PrestamoMaterial();
                 presmatd.getEntityManager().getTransaction().begin();
                 presmat.setPrestamoMaterialPK(new PrestamoMaterialPK(prestamo.getId(), material.getId()));
@@ -268,8 +269,8 @@ public class ReservarMaterialController implements Serializable {
 
             FacesContext.getCurrentInstance().addMessage("nuevo_prestamo",
                     new FacesMessage(FacesMessage.SEVERITY_INFO,
-                            "Se ha generado un nuevo prestamo.",
-                            "Tiene hasta el día " + dt + " para recoger los materiales."));
+                            "Se ha generado un nuevo préstamo, No. de Préstamo: " + prestamo.getId() + ".",
+                            "Tiene hasta el día " + fechaLimite + " para recoger los materiales."));
 
         } catch (IllegalArgumentException ex) {
             FacesContext.getCurrentInstance().addMessage("nuevo_prestamo",

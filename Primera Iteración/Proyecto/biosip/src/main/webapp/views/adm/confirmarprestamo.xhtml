@@ -12,72 +12,126 @@ and open the template in the editor.
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:composition template="/views/template.xhtml">
         <ui:define name="head">
-            <title>Confirmar Prestamo</title>
-            <link rel="stylesheet" type="text/css" href="/css/reservarmaterial.css"></link>
+            <title>Confirmar Préstamo</title>
+            <link rel="stylesheet" type="text/css" href="/css/reservarmaterial.css"/>
+            <link rel="stylesheet" type="text/css" href="/css/confirmarprestamo.css"/>
         </ui:define>
         <ui:define name="body">
             <div class="container">
-                <h2>Confirmar Prestamo</h2>
+                <h2>Confirmar Préstamo</h2>
                 <!-- Estructura para la presentaciónde un material-->
 
                 <h:form class="escogerMateriales prestar">
-                    <p:messages for="mensaje-prestado" closable="true" showDetail="true"/>
-                    <p:messages for="mensaje-devuelto" showDetail="true" closable="true"/>
-                    <p:growl for="mensaje-prestado" showDetail="true" />
-                    <p:growl for="mensaje-devuelto" showDetail="true" />
+                    <p:messages for="mensajes" closable="true" showDetail="true" class="mensaje-exterior mensaje"/>
+                    <p:growl for="mensajes" showDetail="true" class="mensaje-exterior mensaje" life="10000"/>
 
+                    <p:dataList class="prestar" value="#{confirmarPrestamoController.listaPrestamos}" var="prestamo" type="definition" >
 
-
-                    <p:dataList class="prestar" value="#{confirmarPrestamoController.listaPrestamos}" var="prestamo" type="definition">
-                        <h:panelGrid class="panelGrid" columns="4" cellpadding = "15">
-
+                        <h:panelGrid class="panelGrid  mensaje-exterior" columns="3" cellpadding = "15" style="width: 100%">
+                            <p:column style="width: 10px;">
+                                <h:outputText value="No. Préstamo: #{prestamo.id}" style="font-size: large;"/>
+                                <br/>
+                                <h:outputText  id="estado" value="Estado: ${confirmarPrestamoController.estadoPrestamo(prestamo)}"/>
+                            </p:column>
                             <p:outputPanel>
-                                <h:panelGrid columns="2" cellpadding="2px" class="prestar">
-                                    <h:outputText value="No. Préstamo:" class="info-tag"/>
-                                    <h:outputText value="#{prestamo.id}" class="info"/>
+                                <h:panelGrid class="prestar">
                                     <h:outputText value="Usuario:" class="info-tag"/>
-                                    <h:outputText value="#{prestamo.usuarioId.userName}" class="info"/>
+                                    <h:outputText value="#{prestamo.usuarioId.nombreCompleto}" class="info"/>
                                     <h:outputText value="Fecha de Reservación:" class="info-tag"/>
-                                    <h:outputText value="#{prestamo.fechaDeSolicitud}" class="info"/>
+                                    <h:outputText value="#{prestamo.fechaDeSolicitud}" class="info mensaje-exterior"/>
                                     <h:outputText value="Fecha de Aprovación:" class="info-tag"/>
-                                    <h:outputText value="#{prestamo.fechaDeAprobacion}" class="info"/>
-                                    <h:outputLabel value="Fecha de Devolución:" class="info-tag prestar"/>
-                                    <h:outputText  value="#{prestamo.fechaDeDevolucion}" />
+                                    <h:outputText value="#{prestamo.fechaDeAprobacion}" class="info mensaje-exterior"/>
+                                    <h:outputText value="Fecha de Devolución:" class="info-tag prestar"/>
+                                    <h:outputText value="#{prestamo.fechaDeDevolucion}" class="mensaje-exterior"/>
+                                    <!--
+                                    <p:commandButton value="Detalle del Préstamo" onclick="PF('det').show();" class="btn btn-ligth btn-sm"
+                                                     style="width: 100%;">
+                                    </p:commandButton>
+                                    <button type="button" class="btn btn-sm btn-primary" 
+
+                                            >Detalle
+                                        <f:attribute name="prestamo" value=""/>
+                                    </button>-->
+                                    <p:accordionPanel dynamic="true" style=" width: 100%" activeIndex="1">
+                                        <p:tab title="Detalle del Préstamo" titleStyle=" background-color: white; border-radius: 10px; " >
+                                            <p:dataList var="material" type="definition" value="${confirmarPrestamoController.mostrarDetallePrestamo(prestamo)}">
+                                                <h:outputText value="#{material}" />
+                                            </p:dataList>
+                                        </p:tab>
+                                    </p:accordionPanel>
+
                                 </h:panelGrid>
                             </p:outputPanel>
 
-                            <button  data-toggle="modal" data-target="#detalle-del-prestamo" type="button" 
-                                     class="btn btn-sm  btn-primary"  
-                                     action="${confirmarPrestamoController.mostrarDetallePrestamo(prestamo)}">Detalle del Préstamo</button>
-                            <p:commandButton  class="btn btn-sm  btn-danger" value="Material Prestado" action="${confirmarPrestamoController.confirmarMaterialPrestado()}"/>
-                            <p:commandButton  class="btn btn-sm btn-secondary" value="Material Devuelto" action="${confirmarPrestamoController.confirmarMaterialDevuelto()}"/>
-                        </h:panelGrid>
+                            <h:column>
+                                <p:commandButton  class="btn btn-sm  btn-danger" 
+                                                  value="Material Prestado" disabled="${confirmarPrestamoController.habilitarBtnMaterialPrestado(prestamo)}"
+                                                  actionListener="${confirmarPrestamoController.confirmarMaterialPrestado}"
+                                                  update="@form">
+                                    <f:attribute name="prestamo" value="#{prestamo}"/>
+                                </p:commandButton>
+                                <p:commandButton  class="btn btn-sm btn-dark" 
+                                                  value="Material Devuelto" disabled="${confirmarPrestamoController.habilitarBtnMaterialDevuelto(prestamo)}"
+                                                  actionListener="${confirmarPrestamoController.confirmarMaterialDevuelto}"
+                                                  update="@form">
+                                    <f:attribute name="prestamo" value="#{prestamo}"/>
+                                </p:commandButton>                                
+                            </h:column>
+
+                        </h:panelGrid>  
+
+
+
+                        <!--
+                        <p:dialog header="Detalle del Préstamo {confirmarPrestamoController.prestamo}" widgetVar="det" modal="true"
+                                  style=" z-index: -1; background-color: whitesmoke;" class="dialog" resizable="false" >
+                            <p:dataList var="d" type="definition" value="">
+                                <h:outputText value="{d}" />
+                            </p:dataList>
+
+                            <p:commandButton class="btn btn-sm  btn-dark" value="Cerrar" onclick="PF('det').hide();"/>
+                            <p:commandButton  class="btn btn-sm  btn-danger" 
+                                              value="Material Prestado" disabled="{confirmarPrestamoController.habilitarBtnMaterialPrestado(prestamo)}"
+                                              actionListener="{confirmarPrestamoController.confirmarMaterialPrestado}">
+                                <f:attribute name="prestamo" value="{prestamo}"/>
+                            </p:commandButton>
+                            <p:commandButton  class="btn btn-sm btn-secondary" 
+                                              value="Material Devuelto" disabled="{confirmarPrestamoController.habilitarBtnMaterialDevuelto(prestamo)}"
+                                              actionListener="{confirmarPrestamoController.confirmarMaterialDevuelto}"
+                                              update="@(.mensaje)">
+                                <f:attribute name="prestamo" value="{prestamo}"/>
+                            </p:commandButton>
+                        </p:dialog>
                         
                         <div class="modal fade" id="detalle-del-prestamo" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLongTitle">Detalles del Préstamo
-                                            <h:outputText value="#{prestamo.id}" class="info"/></h5>
+                                        <h5 class="modal-title" id="exampleModalLongTitle">
+                                            Detalles del Préstamo: {prestamo.id} | Usuario: {confirmarPrestamoController.usuario.nombreCompleto}
+                                        </h5>
                                     </div>
                                     <div class="modal-body">
-                                        <p:dataList value="#{confirmarPrestamoController.detalle}" var="detalle">
-                                            <h:outputText value="#{detalle}" class="info"/>
-                                        </p:dataList>
+                                        <h:outputText value="{confirmarPrestamoController.mostrarDetallePrestamo(prestamo)}"/>
+                                    </div>
+                                    <div>
+                                        <p:messages for="mensajes" closable="true" showDetail="true" class="mensaje-interior mensaje"/>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-sm btn-dark" data-dismiss="modal">Cerrar</button>
-                                        <p:commandButton  class="btn btn-sm  btn-danger"
-                                                          value="Material Prestado" 
-                                                          action="${confirmarPrestamoController.confirmarMaterialPrestado()}"/>
+                                        <p:commandButton   class="btn btn-sm  btn-danger"
+                                                           value="Material Prestado" 
+                                                           actionListener="{confirmarPrestamoController.confirmarMaterialPrestado(prestamo)}"
+                                                           update="@(.mensaje)"/>
                                         <p:commandButton  class="btn btn-sm btn-secondary" 
                                                           value="Material Devuelto" 
-                                                          action="${confirmarPrestamoController.confirmarMaterialDevuelto()}"/>
+                                                          actionListener="{confirmarPrestamoController.confirmarMaterialDevuelto}"
+                                                          update="@(.mensaje)"/>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
+                        -->
                     </p:dataList>
                 </h:form>
             </div>

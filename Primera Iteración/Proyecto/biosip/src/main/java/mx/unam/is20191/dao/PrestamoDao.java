@@ -17,7 +17,7 @@ import mx.unam.is20191.models.PrestamoMaterial;
  *
  * @author dams_
  */
-public class PrestamoDao extends AbstractDao<Integer, Prestamo> {
+public class PrestamoDao extends AbstractDao<Long, Prestamo> {
 
     public List<Prestamo> getPrestamos() {
         CriteriaBuilder cb = createCriteriaBuilder();
