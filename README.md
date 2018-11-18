@@ -8,6 +8,13 @@ Repositorio del Proyecto del curso de Ingeniería de Software
     2. Configurar un usuario para que tenga acceso a la base de datos, por defecto el sistema utiliza al usuario postres.
     3. En caso de que se requiera hacer un cambio de host, puerto, usuario y/o contraseña se deberá hacer los cambios respectivos en el siguiente [archivo][1]
     4. Se deberá montar la base de datos <b>biosip</b>, contenida en el archivo [biosip.sql][4], se recomienda ocupar el programa <b>PgAdmin</b> y también se recomienda copiar el archivo a una ruta más corta, hemos detectado que PgAdmin no puede acceder al archivo si no se encuentra en una ruta corta como <b>c:/users/&lt;usuario&gt;/Documents</b>.
+    5. La base de datos se encuentra en  "src/main/setup/biosip.sql" y la información para usarla esta en el archivo sun-resources.xml
+
+        1. serverName : localhost
+        2. portNumber:  5432
+        3. databaseName : biosip
+        4. User : postgres
+        5. password : postgres
     
 2. Instalación de los directorios de repositorios de imágenes
     1. Se deberá agregar el directorio [biosip-img][2] en <b>c:/</b>, se acordó esto debido a que la mayoría ocuparía Windows como sistema operativo para desarrollar.
