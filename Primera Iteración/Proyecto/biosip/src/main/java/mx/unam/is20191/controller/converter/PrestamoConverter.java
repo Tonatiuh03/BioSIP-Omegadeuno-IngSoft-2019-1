@@ -26,7 +26,7 @@ public class PrestamoConverter implements Converter{
         if (value != null && value.trim().length() > 0) {
             try {
                 PrestamoDao prestamodao = new PrestamoDao();
-                return prestamodao.getByKey(Integer.parseInt(value));
+                return prestamodao.getByKey(Long.getLong(value));
             } catch (NumberFormatException e) {
                 throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Conversion Error", "Not a valid theme."));
             }

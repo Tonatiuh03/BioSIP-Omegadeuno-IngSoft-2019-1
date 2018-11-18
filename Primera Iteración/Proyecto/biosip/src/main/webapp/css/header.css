@@ -118,3 +118,12 @@
 .nav-tit-rol:disabled{
     background-color: #c2c156;
 }
+
+.ui-messages-close::after{
+    font-family: "Font Awesome 5 Free";
+    font-weight: normal;
+    content: "\f057";
+    border-radius: 20px;
+    background-color: white;
+    color: black;
+}

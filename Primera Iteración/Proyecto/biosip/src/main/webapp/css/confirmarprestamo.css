@@ -1,0 +1,38 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 16/11/2018, 03:09:33 AM
+    Author     : dams_
+*/
+
+.ui-widget-overlay {
+  background:#073B3A;
+  opacity: .50;
+  filter: Alpha(Opacity=50);
+  z-index: -1;
+}
+
+.dialog{
+    background-color: beige;
+}
+
+.titulo{
+    font: bold x-large;
+}
+
+#estado{
+    font-size: large;
+    color: brown;
+}
+
+tab{
+    background-color: white; 
+    border-radius: 10px;
+}
+
+.ui-accordion-content .ui-helper-reset .ui-widget-content{
+    display: none;
+}
