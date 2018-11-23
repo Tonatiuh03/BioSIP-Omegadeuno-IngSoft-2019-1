@@ -152,27 +152,50 @@ public class ConfirmarPrestamoController implements Serializable {
         try {
             Prestamo p = (Prestamo) event.getComponent().getAttributes().get("prestamo");
             Date date = new Date();
-
-            PrestamoDao presd = new PrestamoDao();
-            presd.getEntityManager().getTransaction().begin();
-            p = presd.getByKey(p.getId());
-            p.setFechaDeAprobacion(date);
-            p.setAdministradorIdAprobador(usuario);
-            System.err.println("Prestamo :" + p.getId());
-            presd.update(p);
-            presd.getEntityManager().getTransaction().commit();
-
-            if (this.diferenciaDeFechas(p) > 3) {
-                FacesContext.getCurrentInstance().addMessage("mensajes",
-                        new FacesMessage(FacesMessage.SEVERITY_INFO,
-                                "Lo sentimos, el periodo de reserva ha terminado.",
-                                "El material ya no se encuentra apartado para el usuario \"" + p.getUsuarioId().getNombreCompleto() + "\"."));
-
-            } else {
+            if (!(this.diferenciaDeFechas(p.getFechaDeSolicitud(), new Date()) > 3)) {
+                PrestamoDao presd = new PrestamoDao();
+                presd.getEntityManager().getTransaction().begin();
+                p = presd.getByKey(p.getId());
+                p.setFechaDeAprobacion(date);
+                p.setAdministradorIdAprobador(usuario);
+                System.err.println("Prestamo :" + p.getId());
+                presd.update(p);
+                presd.getEntityManager().getTransaction().commit();
                 FacesContext.getCurrentInstance().addMessage("mensajes",
                         new FacesMessage(FacesMessage.SEVERITY_INFO,
                                 "Se ha prestado material al usuario \"" + p.getUsuarioId().getNombreCompleto() + "\".",
                                 "Préstamo " + p.getId() + " iniciado."));
+            } else if (this.diferenciaDeFechas(p.getFechaDeSolicitud(), new Date()) > 3 && p.getFechaDeAprobacion() == null && p.getFechaDeDevolucion() == null) {
+                PrestamoDao presd = new PrestamoDao();
+                presd.getEntityManager().getTransaction().begin();
+                p = presd.getByKey(p.getId());
+                //Actualizamos las dos fechas para saber que el prestamo se cierra en automatico.
+                p.setFechaDeAprobacion(date);
+                p.setFechaDeDevolucion(date);
+                p.setAdministradorIdAprobador(usuario);
+                System.err.println("Prestamo :" + p.getId());
+
+                MaterialDao materialDao = new MaterialDao();
+                Material material = new Material();
+                for (Pair<Material, Integer> par : this.getListaMateriales(p)) {
+                    materialDao.getEntityManager().getTransaction().begin();
+                    material = materialDao.getByKey(par.getKey().getId());
+                    material.setDisponibles(material.getDisponibles() + par.getValue());
+                    materialDao.update(material);
+                    materialDao.getEntityManager().getTransaction().commit();
+                }
+                presd.update(p);
+
+                presd.getEntityManager().getTransaction().commit();
+                FacesContext.getCurrentInstance().addMessage("mensajes",
+                        new FacesMessage(FacesMessage.SEVERITY_INFO,
+                                "Lo sentimos, el periodo de reserva ha terminado para el prestamo con No.: " + p.getId(),
+                                "El material ya no se encuentra apartado para el usuario \"" + p.getUsuarioId().getNombreCompleto() + "\"."));
+            } else {
+                FacesContext.getCurrentInstance().addMessage("mensajes",
+                        new FacesMessage(FacesMessage.SEVERITY_INFO,
+                                "Lo sentimos, el periodo de reserva ha terminado para el prestamo con No.: " + p.getId(),
+                                "El material ya no se encuentra apartado para el usuario \"" + p.getUsuarioId().getNombreCompleto() + "\"."));
             }
 
         } catch (IllegalArgumentException ex) {
@@ -222,35 +245,24 @@ public class ConfirmarPrestamoController implements Serializable {
 
     public List mostrarDetallePrestamo(Prestamo p) throws Exception {
         this.detalle = new ArrayList<String>();
+        ArrayList<String> lista = new ArrayList<>();
         System.err.println(p.toString());
         for (Pair<Material, Integer> m : this.getListaMateriales(p)) {
             this.detalle.add("Material: " + m.getKey().getNombre() + "\t - Cantidad: " + m.getValue().toString());
+            lista.add("Material: " + m.getKey().getNombre() + "\t - Cantidad: " + m.getValue().toString());
             System.err.println("Material: " + m.getKey().getNombre() + "\t - Cantidad: " + m.getValue().toString());
         }
-        return this.detalle;
-    }
-
-    public void mostrarDetallePrestamo3(ActionEvent event) throws Exception {
-        this.prestamo = (Prestamo) event.getComponent().getAttributes().get("prestamo");
-        this.detalle = new ArrayList<String>();
-        System.err.println(this.prestamo.toString());
-        for (Pair<Material, Integer> m : this.getListaMateriales(prestamo)) {
-            this.detalle.add("Material: " + m.getKey().getNombre() + "\t - Cantidad: " + m.getValue().toString());
-            System.err.println("Material: " + m.getKey().getNombre() + "\t - Cantidad: " + m.getValue().toString());
-        }
-
-        FacesContext.getCurrentInstance().addMessage("mensajes",
-                new FacesMessage(FacesMessage.SEVERITY_INFO,
-                        "Cuaquier cosa",
-                        this.detalle.toString()));
+        return lista;
     }
 
     public boolean habilitarBtnMaterialPrestado(Prestamo p) {
         boolean deshabilitar = false;
-        if (this.diferenciaDeFechas(p) > 3 || p.getFechaDeAprobacion() != null) {
+        if (p.getFechaDeAprobacion() != null) {
             deshabilitar = true;
-        } else if (p.getFechaDeAprobacion() == null) {
-            return false;
+        } else if (p.getFechaDeAprobacion() == null && p.getFechaDeDevolucion() == null) {
+            deshabilitar = false;
+        } else if (p.getFechaDeAprobacion() == p.getFechaDeDevolucion()) {
+            deshabilitar = true;
         }
 
         return deshabilitar;
@@ -258,10 +270,10 @@ public class ConfirmarPrestamoController implements Serializable {
 
     public boolean habilitarBtnMaterialDevuelto(Prestamo p) {
         boolean deshabilitar = false;
-        if (p.getFechaDeAprobacion() == null) {
+        if (p.getFechaDeAprobacion() == null || p.getFechaDeAprobacion() == p.getFechaDeDevolucion()) {
             return true;
         }
-        if (this.diferenciaDeFechas(p) > 3 || p.getFechaDeDevolucion() != null) {
+        if (this.diferenciaDeFechas(p.getFechaDeSolicitud(), new Date()) > 3 || p.getFechaDeDevolucion() != null) {
             deshabilitar = true;
         }
 
@@ -270,14 +282,19 @@ public class ConfirmarPrestamoController implements Serializable {
 
     public String estadoPrestamo(Prestamo p) {
         String estado = "Desconocido";
-        if (this.diferenciaDeFechas(p) > 3) {
-            estado = "Apartado Expirado";
-        } else if (p.getFechaDeAprobacion() == null && p.getFechaDeDevolucion() == null) {
-            estado = "Reservado";
-        } else if (p.getFechaDeAprobacion() != null && p.getFechaDeDevolucion() != null) {
-            estado = "Finalizado";
-        } else if (p.getFechaDeAprobacion() != null) {
+        if (p.getFechaDeAprobacion() != null) {
             estado = "Iniciado";
+            if (this.diferenciaDeFechas(p.getFechaDeSolicitud(), p.getFechaDeAprobacion()) > 3  && p.getFechaDeDevolucion() != null) {
+                estado = "Apartado Expirado - Materiales disponibles en inventario";
+            }else if (p.getFechaDeDevolucion() != null) {
+                estado = "Finalizado - Materiales disponibles en inventario";
+            }
+        } else {
+            if (this.diferenciaDeFechas(p.getFechaDeSolicitud(), new Date()) > 3 && p.getFechaDeAprobacion() == null) {
+                estado = "Apartado Expirado";
+            } else if (p.getFechaDeAprobacion() == null && p.getFechaDeDevolucion() == null) {
+                estado = "Reservado";
+            }
         }
         return estado;
     }
@@ -288,10 +305,8 @@ public class ConfirmarPrestamoController implements Serializable {
     * @param p - Un objeto de tipo Prestamo
     * @return limite - el número de días entre ambas fechas.
      */
-    public Long diferenciaDeFechas(Prestamo p) {
-        Date actual = new Date();
-        Date fechaSolicitud = p.getFechaDeSolicitud();
-        Long diferencia = actual.getTime() - fechaSolicitud.getTime();
+    public Long diferenciaDeFechas(Date uno, Date dos) {
+        Long diferencia = dos.getTime() - uno.getTime();
         Long limite = TimeUnit.DAYS.convert(diferencia, TimeUnit.MILLISECONDS);
         return limite;
     }

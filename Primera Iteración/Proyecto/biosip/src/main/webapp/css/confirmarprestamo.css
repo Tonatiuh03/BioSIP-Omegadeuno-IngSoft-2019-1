@@ -8,31 +8,93 @@ and open the template in the editor.
     Author     : dams_
 */
 
-.ui-widget-overlay {
-  background:#073B3A;
-  opacity: .50;
-  filter: Alpha(Opacity=50);
-  z-index: -1;
+.container{
+    width: 100%;
 }
 
-.dialog{
-    background-color: beige;
+.confirmarRes{
+    background-color: #1E3231;
+    position: fixed;
+    right: 0px;
+    color: white;
+    height: 75px;
 }
 
-.titulo{
-    font: bold x-large;
+
+.continua-agregando{
+    background-color: #1E3231;
+    position: fixed;
+    left: 0px;
+    color: white;
+    height: 75px;
 }
 
-#estado{
-    font-size: large;
-    color: brown;
+.panelGrid{
+    width:100%;
+    background-color: #92C3CE;
+    font-size: 12px;
+    margin-bottom: 10px;
+    table-layout: fixed;
 }
 
-tab{
-    background-color: white; 
-    border-radius: 10px;
+.info{
+    font-weight: bold;
 }
 
-.ui-accordion-content .ui-helper-reset .ui-widget-content{
-    display: none;
+.info-tag{
+    font-weight: normal;
+}
+.btnreservar{
+    background-color: #0D324D;
+    color: white
+}
+
+.confirmar-prestamo{
+    background-color: #6B0F1A;
+    color: white;
+    position: fixed;
+    right: 0px;
+    height: 75px;
+}
+
+.nuervo-prestamo{
+    background-color: #073B3A;
+    color: white;
+    height: 50px;
+}
+
+.imgMaterial{
+    display: block;
+    margin: 0px auto;
+}
+
+.texto-descripcion{
+    font-size: 10px;
+}
+
+.ui-growl{
+    background-color: #56282D;
+    color: white;
+}
+
+.columna-imagen{
+    width: 100px;
+}
+
+.material-info{
+    width: 100%;
+}
+
+.btnAgregar{
+    width: 10%;
+}
+
+.btnQuitar{
+    width: 10%;
+}
+
+.panelGrid>tbody>tr{
+    border-style: solid;
+    border-width: 5px;
+    border-radius: 30px;
 }
