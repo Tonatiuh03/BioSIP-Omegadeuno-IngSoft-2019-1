@@ -38,13 +38,13 @@ public class MaterialDao extends AbstractDao<Long, Material> {
         CriteriaQuery<Material> crit = createCriteriaQuery(cb);
         Root<Material> r = createRoot(crit);
 
-        boolean porMaterial = nombreMaterial.isEmpty(),
+        boolean porMaterial = !nombreMaterial.isEmpty(),
                 porCategoria = idCategoria > -1,
                 porSubcategoria = idSubcategoria > -1;
         Predicate busqueda = null;
         ArrayList<Predicate> busquedasAnd = new ArrayList<>();
         if (porMaterial) {
-            busqueda = cb.like(r.get(nombreMaterial), "%" + nombreMaterial + "%");
+            busqueda = cb.like(cb.lower(r.get("nombre")), "%" + nombreMaterial.toLowerCase() + "%");
             busquedasAnd.add(busqueda);
         }
         if (porCategoria) {

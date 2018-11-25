@@ -12,14 +12,57 @@
         </ui:define>
         <ui:define name="body">
             <div class="container">
-                <h2>Reservar Material</h2>
-                <!-- Estructura para la presentaciónde un material-->
 
                 <h:form class="escogerMateriales prestar">
                     <p:messages for="nuevo_prestamo" closable="true" showDetail="true"/>
                     <p:messages for="prestamo_vacio" showDetail="true" closable="true"/>
                     <p:growl for="mensaje-agregar-material" showDetail="true" />
                     <p:growl for="mensaje-eliminar-material" showDetail="true" />
+
+                    <br/>
+                    <h2>Reservar Material</h2>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1"><i class="fab fa-elementor"></i></span>
+                        </div>
+                        <p:inputText class="form-control"  placeholder="Nombre del material"  id="nombreMaterial" size="100"
+                                     value="${reservarMaterialController.nombreMaterial}">
+                            <p:ajax process="@this" event="keyup" update="dataMaterialList"></p:ajax>
+                        </p:inputText>
+                        <br/>
+                    </div><br/>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1"><i class="fab fa-elementor"></i></span>
+                        </div>
+                        <p:selectOneMenu id="categoria" class="form-control" value="#{reservarMaterialController.categoria}" converter="categoriaConverter"
+                                         var="categoria"  filter="true" filterMatchMode="contains">
+                            <f:selectItem itemLabel="Seleccione una categoria" itemValue="" />
+                            <f:selectItems value="#{reservarMaterialController.categorias}" var="categoria" itemLabel="#{categoria.nombre}" itemValue="#{categoria}" />
+                            <p:column>
+                                <h:outputText value="#{categoria.nombre}" /><br/>
+                            </p:column> />
+                            <p:ajax process="@this" event="change" update="dataMaterialList"></p:ajax>
+                        </p:selectOneMenu>
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1"><i class="fab fa-elementor"></i></span>
+                        </div>
+                        <p:selectOneMenu id="subcategoria" class="form-control" value="#{reservarMaterialController.subcategoria}" converter="subcategoriaConverter"
+                                         var="subcategoria"  filter="true" filterMatchMode="contains">
+                            <f:selectItem itemLabel="Seleccione una subcategoria" itemValue="" />
+                            <f:selectItems value="#{reservarMaterialController.subcategorias}" var="subcategoria" itemLabel="#{subcategoria.nombre}" itemValue="#{subcategoria}" />
+                            <p:column>
+                                <h:outputText value="#{subcategoria.nombre}" /><br/>
+                            </p:column> />
+                            <p:ajax process="@this" event="change" update="dataMaterialList"></p:ajax>
+                        </p:selectOneMenu>
+                    </div>
+                    <br/>
+                    <!-- Estructura para la presentaciónde un material-->
 
                     <p:commandButton class="btn btn-outline-success confirmarRes prestar"
                                      value="#{reservarMaterialController.nombreBtnAccion} #{reservarMaterialController.listaPrestamo.size()}" 
@@ -50,8 +93,8 @@
                                      rendered="${reservarMaterialController.exito}"
                                      actionListener="${reservarMaterialController.nuevoPrestamo()}"/>
 
-                    <p:dataList class="prestar" value="#{reservarMaterialController.materiales}" var="material" type="definition" 
-                                rendered="#{!reservarMaterialController.estado}">
+                    <p:dataList id="dataMaterialList" class="prestar" value="#{reservarMaterialController.materiales}" var="material" type="definition" 
+                                rendered="#{!reservarMaterialController.estado}" emptyMessage="No se encontraron materiales con esa búsqueda.">
                         <h:panelGrid class="panelGrid" columns="4" cellpadding = "15" columnClasses="columna-imagen material-info btnAgregar btnQuitar">
 
 
@@ -79,7 +122,7 @@
                                               actionListener="#{reservarMaterialController.agregar}"
                                               icon="fa fa-plus"
                                               update="@(.prestar)" >
-                                 <f:attribute name="material" value="#{material}"></f:attribute>
+                                <f:attribute name="material" value="#{material}"></f:attribute>
                             </p:commandButton>
                             <p:commandButton  id="btnQuitar" class="btn btn-sm btn-dark prestar" value="Quitar" 
                                               disabled="${!reservarMaterialController.listaPrestamo.contains(material)}" 
