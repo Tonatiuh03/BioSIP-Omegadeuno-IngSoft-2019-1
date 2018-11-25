@@ -50,6 +50,10 @@ public class ReservarMaterialController implements Serializable {
     private int cantidad;
     private HashMap<Long, Integer> carritoCantidades;
 
+    private String nombreMaterial;
+    private int idCategoria;
+    private int idSubcategoria;
+
     public ReservarMaterialController() {
         this.listaPrestamo = new ArrayList<Material>();
         this.listaPrestamoUnica = new ArrayList<Material>();
@@ -58,6 +62,9 @@ public class ReservarMaterialController implements Serializable {
         this.exito = false;
         this.cantidad = 1;
         this.carritoCantidades = new HashMap<>();
+        this.nombreMaterial = "";
+        this.idCategoria = -1;
+        this.idSubcategoria = -1;
     }
 
     public void nuevoPrestamo() {
@@ -67,6 +74,30 @@ public class ReservarMaterialController implements Serializable {
         this.nombreBtnAccion = "Confirmar Préstamo";
         this.exito = false;
         this.estado = false;
+    }
+
+    public String getNombreMaterial() {
+        return nombreMaterial;
+    }
+
+    public void setNombreMaterial(String nombreMaterial) {
+        this.nombreMaterial = nombreMaterial;
+    }
+
+    public Integer getIdCategoria() {
+        return idCategoria;
+    }
+
+    public void setIdCategoria(Integer idCategoria) {
+        this.idCategoria = idCategoria;
+    }
+
+    public Integer getIdSubcategoria() {
+        return idSubcategoria;
+    }
+
+    public void setIdSubcategoria(Integer idSubcategoria) {
+        this.idSubcategoria = idSubcategoria;
     }
 
     public int getCantidad() {
@@ -95,7 +126,7 @@ public class ReservarMaterialController implements Serializable {
 
     public List<Material> getMateriales() {
         MaterialDao matdao = new MaterialDao();
-        return matdao.getMateriales();
+        return matdao.searchMaterial(this.nombreMaterial, this.idCategoria, this.idSubcategoria);
     }
 
     public boolean isConfirmarPrestamo() {
@@ -247,15 +278,15 @@ public class ReservarMaterialController implements Serializable {
             int disponibles = 0;
             int materialesPrestados = 0;
             for (Material material : listaPrestamoUnica) {
-                
+
                 disponibles = material.getDisponibles();
                 materialesPrestados = this.contarMateriales(material);
-                
+
                 material.setDisponibles(disponibles - materialesPrestados);
                 materialdao.getEntityManager().getTransaction().begin();
                 material = materialdao.update(material);
                 materialdao.getEntityManager().getTransaction().commit();
-                
+
                 PrestamoMaterial presmat = new PrestamoMaterial();
                 presmatd.getEntityManager().getTransaction().begin();
                 presmat.setPrestamoMaterialPK(new PrestamoMaterialPK(prestamo.getId(), material.getId()));
