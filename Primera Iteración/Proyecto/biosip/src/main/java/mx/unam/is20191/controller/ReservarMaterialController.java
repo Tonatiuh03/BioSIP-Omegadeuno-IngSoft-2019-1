@@ -27,14 +27,18 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import mx.unam.is20191.dao.CategoriaDao;
 import mx.unam.is20191.dao.MaterialDao;
 import mx.unam.is20191.dao.PrestamoDao;
 import mx.unam.is20191.dao.PrestamoMaterialDao;
+import mx.unam.is20191.dao.SubcategoriaDao;
 import mx.unam.is20191.dao.UsuarioDao;
+import mx.unam.is20191.models.Categoria;
 import mx.unam.is20191.models.Material;
 import mx.unam.is20191.models.Prestamo;
 import mx.unam.is20191.models.PrestamoMaterial;
 import mx.unam.is20191.models.PrestamoMaterialPK;
+import mx.unam.is20191.models.Subcategoria;
 import mx.unam.is20191.models.Usuario;
 
 @ManagedBean
@@ -51,8 +55,9 @@ public class ReservarMaterialController implements Serializable {
     private HashMap<Long, Integer> carritoCantidades;
 
     private String nombreMaterial;
-    private int idCategoria;
-    private int idSubcategoria;
+    private Categoria categoria;
+    private Subcategoria subcategoria;
+    
 
     public ReservarMaterialController() {
         this.listaPrestamo = new ArrayList<Material>();
@@ -63,8 +68,6 @@ public class ReservarMaterialController implements Serializable {
         this.cantidad = 1;
         this.carritoCantidades = new HashMap<>();
         this.nombreMaterial = "";
-        this.idCategoria = -1;
-        this.idSubcategoria = -1;
     }
 
     public void nuevoPrestamo() {
@@ -76,6 +79,15 @@ public class ReservarMaterialController implements Serializable {
         this.estado = false;
     }
 
+    public List<Categoria> getCategorias() {
+        return new CategoriaDao().getCategorias();
+    }
+
+    public List<Subcategoria> getSubcategorias() {
+        return new SubcategoriaDao().getSubcategorias();
+    }
+
+    
     public String getNombreMaterial() {
         return nombreMaterial;
     }
@@ -84,20 +96,20 @@ public class ReservarMaterialController implements Serializable {
         this.nombreMaterial = nombreMaterial;
     }
 
-    public Integer getIdCategoria() {
-        return idCategoria;
+    public Categoria getCategoria() {
+        return categoria;
     }
 
-    public void setIdCategoria(Integer idCategoria) {
-        this.idCategoria = idCategoria;
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
     }
 
-    public Integer getIdSubcategoria() {
-        return idSubcategoria;
+    public Subcategoria getSubcategoria() {
+        return subcategoria;
     }
 
-    public void setIdSubcategoria(Integer idSubcategoria) {
-        this.idSubcategoria = idSubcategoria;
+    public void setSubcategoria(Subcategoria subcategoria) {
+        this.subcategoria = subcategoria;
     }
 
     public int getCantidad() {
@@ -126,7 +138,9 @@ public class ReservarMaterialController implements Serializable {
 
     public List<Material> getMateriales() {
         MaterialDao matdao = new MaterialDao();
-        return matdao.searchMaterial(this.nombreMaterial, this.idCategoria, this.idSubcategoria);
+        return matdao.searchMaterial(this.nombreMaterial,
+                this.categoria == null ? -1 : this.categoria.getId(),
+                this.subcategoria == null ? -1 : this.subcategoria.getId());
     }
 
     public boolean isConfirmarPrestamo() {
