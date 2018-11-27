@@ -1,0 +1,108 @@
+.ui-selectonemenu.form-control {
+    color: #555 !important;
+    display: block !important;
+    margin-bottom: 0 !important;
+    padding: 5px 10px !important;
+    background-color: #fff !important;
+    border: 1px solid #ccc !important;
+}
+
+.radius-none {
+    border-radius: 0 !important;
+}
+
+.ui-selectonemenu.form-control .ui-selectonemenu-trigger {
+    top: 0;
+    right: 0;
+    width: 16px;
+    height: 100%;
+    padding: 0 5px;
+    cursor: pointer;
+    position: absolute;
+    margin: 0 !important;
+    border: none !important;
+    margin-top: 5px !important;
+    background: transparent !important;
+}
+
+.select-one-miniature{
+    width: 45px;
+    height: 45px;
+    border-radius: 10px;
+}
+
+.ui-selectonemenu-panel {
+    background: #cde3fb;
+}
+
+.ui-selectonemenu-item:nth-child(odd)>td{
+    background: #e3ecff;
+    border: none;
+}
+
+.ui-selectonemenu-item:nth-child(even)>td{
+    background: #9ec9f7;
+    border: none;
+}
+
+.img-column-select-one-menu{
+    text-align: center;
+    width: 49px;
+}
+
+.ui-state-hover:nth-child(even)>td{
+    background: #caf69e;
+}
+
+.ui-state-hover:nth-child(odd)>td{
+    background: #caf69e;
+}
+
+.ui-state-highlight:nth-child(odd)>td{
+    background: #f6f79e;
+    font-weight: bold;
+}
+
+.ui-state-highlight:nth-child(even)>td{
+    background: #f6f79e;
+    font-weight: bold;
+}
+
+.ui-selectlistbox-item:nth-child(odd){
+    background: #cde3fb;
+}
+
+.ui-selectlistbox-item:nth-child(even){
+    background: #e3ecff;
+}
+
+.ui-selectonemenu-filter-container::after{
+     font-weight: 900;
+    font-family: "Font Awesome 5 Free";
+    content: "\f002";
+    padding-left: 30px;
+}
+.ui-selectonemenu-filter-container{
+    width: 410px;
+}
+
+
+/*MultiSelect modificaciones*/
+
+.ui-selectlistbox-item>td{
+    text-align: center;
+}
+
+.ui-chkbox-box::after{
+    background: #ff9e9e;
+    border-radius: 11px;
+    font-family: "Font Awesome 5 Free";
+    content: "\f111";
+}
+
+tr.ui-state-highlight>td>div>div::after{
+     font-weight: 900;
+    background: #4ae324;
+    font-weight: normal;
+    content: "\f058";
+}

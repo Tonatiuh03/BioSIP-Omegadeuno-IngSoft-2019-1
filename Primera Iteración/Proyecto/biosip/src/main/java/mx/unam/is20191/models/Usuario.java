@@ -83,6 +83,9 @@ public class Usuario implements Serializable {
     @Basic(optional = false)
     @Column(nullable = false)
     private boolean validado;
+    @Basic(optional = false)
+    @Column(nullable = false)
+    private Integer bloqueado;
     @ManyToMany(cascade = {
         CascadeType.PERSIST,
         CascadeType.MERGE
@@ -268,4 +271,13 @@ public class Usuario implements Serializable {
         }
     }
 
+    public Integer getBloqueado() {
+        return bloqueado;
+    }
+
+    public void setBloqueado(Integer bloqueado) {
+        this.bloqueado = bloqueado;
+    }
+
+    
 }

@@ -6,6 +6,11 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
+    
+    <f:metadata>
+        <f:viewAction action="#{bloquearController.validarBloqueo()}" onPostback="true"/>
+    </f:metadata>
+    
     <ui:composition template="/views/template.xhtml">
         <ui:define name="head">
             <title>Crear (Sub)Categoría </title>

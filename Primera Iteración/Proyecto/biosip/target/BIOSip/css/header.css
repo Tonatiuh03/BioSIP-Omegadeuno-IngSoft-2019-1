@@ -1,0 +1,129 @@
+.encabezado{
+    width: 100%; 
+    background-color: #A8C256;
+}
+
+.encabezado th{
+    text-align: center;
+}
+#titulo{
+    font-size: 50px;
+}
+
+#logoUnam{
+    width: 100px;
+    height: 100px;
+}
+
+#logoCiencias{
+    width: 95px;
+    height: 95px;
+}
+
+.btn_cerrarSesion{
+    width: 100%;
+    background-color: #271F30;
+    height: 55px;
+    padding: 10px;
+    top: 0;
+    z-index: 999 !important;
+}
+
+#cerrar-sesion{
+    font-size: 12px;
+    right: 10px;
+    height: 30px;
+    position: absolute;
+}
+
+#menu{
+    position: relative;
+    left: 10px;
+}
+
+.fa{
+    color: white;
+}
+
+.md-form{
+    position: relative;
+    left: 50px;
+    width: 40%;
+}
+
+.sidenav {
+    height: 100%;
+    width: 0;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    background-color: #8ea83d;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 20px;
+    position: fixed;
+
+}
+
+.sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 15px;
+    color: white;
+    display: block;
+    transition: 0.3s;
+}
+
+.sidenav a:hover {
+    color: black;
+    background-color: white;
+}
+
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    float: left;
+    font-size: 10px;
+    margin-left: 50px;
+}
+
+#main {
+    transition: margin-left .5s;
+}
+
+.user-data-header{
+    background-color: #cfdda1;
+}
+
+.profile-picture{
+    width: 50px;
+    height: 50px;
+    border-radius: 30px;
+    background-color: white;
+}
+
+.profile-picture-normal{
+    width: 150px;
+    height: 150px;
+    border-radius: 20px;
+}
+
+.user-name-style{
+    margin: 10px;
+    background-color: #bbd07b;
+    position: relative;
+    width: 100%;
+}
+
+.nav-tit-rol:disabled{
+    background-color: #c2c156;
+}
+
+.ui-messages-close::after{
+    font-family: "Font Awesome 5 Free";
+    font-weight: normal;
+    content: "\f057";
+    border-radius: 20px;
+    background-color: white;
+    color: black;
+}

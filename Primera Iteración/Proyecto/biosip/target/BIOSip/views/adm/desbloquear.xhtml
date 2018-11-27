@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/views/template.xhtml">
+        <ui:define name="head">
+            <title>Desbloquear Usuario</title>
+            <link rel="stylesheet" type="text/css" href="/css/desbloquear.css"/>
+        </ui:define>
+        <ui:define name="body">
+            <div class="container">
+                <h1>Bloquear usuario</h1>
+                <!-- Estructura para ver a los usuarios-->
+
+                <h:form class="desbloquearUsr">
+                    <p:messages for="mensajes" closable="true" showDetail="true" class="mensaje-exterior mensaje"/>
+                    <p:growl for="mensajes" showDetail="true" class="mensaje-exterior mensaje" life="10000"/>
+
+               
+                </h:form>
+            </div>
+        </ui:define>
+    </ui:composition> 
+</html>

@@ -20,9 +20,7 @@ and open the template in the editor.
             <div class="container">
                 <h2>Confirmar Préstamo</h2>
                 <!-- Estructura para la presentaciónde un material-->
-                <h:form class="prestamoValido">
-                    <p:growl for="mensajes" showDetail="true" class="prestamoValido" life="10000"/>
-                </h:form>
+
                 <h:form class="escogerMateriales prestar">
                     <p:messages for="mensajes" closable="true" showDetail="true" class="mensaje-exterior mensaje"/>
                     <p:growl for="mensajes" showDetail="true" class="mensaje-exterior mensaje" life="10000"/>
@@ -55,11 +53,11 @@ and open the template in the editor.
                                         <f:attribute name="prestamo" value=""/>
                                     </button>-->
                                     <p:accordionPanel dynamic="true" style=" width: 100%" activeIndex="1">
-                                            <p:tab title="Detalle del Préstamo" titleStyle=" background-color: white; border-radius: 10px;">
-                                                <p:dataList var="material" value="${confirmarPrestamoController.mostrarDetallePrestamo(prestamo)}">
-                                                    <h:outputText value="#{material}"/>
-                                                </p:dataList>
-                                            </p:tab>
+                                        <p:tab title="Detalle del Préstamo" titleStyle=" background-color: white; border-radius: 10px; " >
+                                            <p:dataList var="material" type="definition" value="${confirmarPrestamoController.mostrarDetallePrestamo(prestamo)}">
+                                                <h:outputText value="#{material}" />
+                                            </p:dataList>
+                                        </p:tab>
                                     </p:accordionPanel>
 
                                 </h:panelGrid>

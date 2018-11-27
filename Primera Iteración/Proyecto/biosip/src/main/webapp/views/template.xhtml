@@ -16,7 +16,6 @@
         <link rel="stylesheet" type="text/css" href="/css/loading.css"></link>
         <link rel="stylesheet" type="text/css" href="/css/selectOneMenu.css"></link>
         <link rel="stylesheet" type="text/css" href="/css/grass.css"></link>
-        <link rel="shortcut icon" href="/imagenes/leaf.ico" />
         <script src="/scripts/template.js"></script>
         <p:ajaxStatus onstart="$('#loadingDivAjax').show();" onsuccess="$('#loadingDivAjax').hide();" />
         <ui:insert name="head"/>
@@ -38,8 +37,8 @@
                     <a href="/views/adm/administrar_perfiles.xhtml">Editar permisos</a>
                     <a href="/views/adm/crearcategoria.xhtml">Crear Categorías o Subcategoría</a>
                     <a href="/views/adm/confirmarprestamo.xhtml">Confirmar Préstamo</a>
-                    <a href="#">Desbloquear Usuario</a>
-                    <a href="#">Bloquear Usuario</a>
+                    <a href="/views/adm/desbloquear.xhtml">Desbloquear Usuario</a>
+                    <a href="/views/adm/bloquear.xhtml">Bloquear Usuario</a>
                     <a href="#">Cambiar Estado de Material</a>
                 </p:outputPanel>
                 <p:outputPanel  rendered="#{sessionController.profesor}" >
@@ -64,7 +63,12 @@
             <div class="btn_cerrarSesion form-inline">
                 <p:outputPanel class="btn_cerrarSesion form-inline" rendered="${not empty user}" >
                     <p:graphicImage class="profile-picture" value="${user.image}"   title="${user.nombreCompleto}"/>
-                    <p:commandButton  id="menu" class="btn btn-info" onclick="openNav()" value="Menú"  />      
+                    <p:commandButton  id="menu" class="btn btn-info" onclick="openNav()" value="Menú"  />
+
+                    <form class="md-form form-sm">
+                        <i class="fa fa-search"></i>
+                        <input class="form-control form-control-sm ml-3 w-75" type="text" placeholder="Buscar en Inventario"/>
+                    </form>      
                     <h:button class="btn btn-warning float-right" id="cerrar-sesion" value="Cerrar sesión"  outcome="/views/usr/cerrar_sesion.xhtml" />
                 </p:outputPanel>
             </div>
