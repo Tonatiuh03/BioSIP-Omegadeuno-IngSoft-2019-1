@@ -215,9 +215,11 @@ public class ReservarMaterialController implements Serializable {
     public void agregar(ActionEvent event) throws Exception {
         this.cantidad = 1;
         Material m = (Material) event.getComponent().getAttributes().get("material");
-        Integer n = this.carritoCantidades.get(m.getId());
+        Integer n = 1;
+        n = this.carritoCantidades.get(m.getId());
+        System.out.println("Cantidad actual "+n);
         if (n == null) {
-            n = 0;
+            n = 1;
         }
         if ((n + this.contarMateriales(m)) <= m.getDisponibles() && n > 0) {
             for (int i = 0; i < n; i++) {

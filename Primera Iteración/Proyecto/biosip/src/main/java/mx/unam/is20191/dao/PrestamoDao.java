@@ -24,7 +24,7 @@ public class PrestamoDao extends AbstractDao<Long, Prestamo> {
         CriteriaQuery<Prestamo> crit = createCriteriaQuery(cb);
         Root<Prestamo> r = createRoot(crit);
 
-        return this.findAll(crit, r, cb.asc(r.get("id")));
+        return this.findAll(crit, r, cb.desc(r.get("id")));
     }
 
 }

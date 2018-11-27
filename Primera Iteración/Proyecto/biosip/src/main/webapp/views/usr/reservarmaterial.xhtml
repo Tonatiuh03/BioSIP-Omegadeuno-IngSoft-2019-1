@@ -13,55 +13,60 @@
         <ui:define name="body">
             <div class="container">
 
-                <h:form class="escogerMateriales prestar">
+                <h:form onkeypress="if (event.keyCode == 13) {
+                            alert();
+                            return false;
+                        }" class="escogerMateriales prestar">
                     <p:messages for="nuevo_prestamo" closable="true" showDetail="true"/>
                     <p:messages for="prestamo_vacio" showDetail="true" closable="true"/>
                     <p:growl for="mensaje-agregar-material" showDetail="true" />
                     <p:growl for="mensaje-eliminar-material" showDetail="true" />
 
                     <br/>
-                    <h2>Reservar Material</h2>
+                    <h2 style="background-color: #56282D; color: white; padding: 15px; margin: 0px;">Reservar Material</h2>
                     <br/>
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" id="basic-addon1"><i class="fab fa-elementor"></i></span>
+                    <p:panel rendered="#{!(reservarMaterialController.estado and reservarMaterialController.listaPrestamoUnica.size()!=0)}" >
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1"><i class="fab fa-elementor"></i></span>
+                            </div>
+                            <p:inputText class="form-control"  placeholder="Nombre del material"  id="nombreMaterial" size="100"
+                                         value="${reservarMaterialController.nombreMaterial}">
+                                <p:ajax process="@this" event="keyup" update="dataMaterialList"></p:ajax>
+                            </p:inputText>
+                            <br/>
+                        </div><br/>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1"><i class="fab fa-elementor"></i></span>
+                            </div>
+                            <p:selectOneMenu id="categoria" class="form-control" value="#{reservarMaterialController.categoria}" converter="categoriaConverter"
+                                             var="categoria"  filter="true" filterMatchMode="contains">
+                                <f:selectItem itemLabel="Seleccione una categoria" itemValue="" />
+                                <f:selectItems value="#{reservarMaterialController.categorias}" var="categoria" itemLabel="#{categoria.nombre}" itemValue="#{categoria}" />
+                                <p:column>
+                                    <h:outputText value="#{categoria.nombre}" /><br/>
+                                </p:column> />
+                                <p:ajax process="@this" event="change" update="dataMaterialList"></p:ajax>
+                            </p:selectOneMenu>
                         </div>
-                        <p:inputText class="form-control"  placeholder="Nombre del material"  id="nombreMaterial" size="100"
-                                     value="${reservarMaterialController.nombreMaterial}">
-                            <p:ajax process="@this" event="keyup" update="dataMaterialList"></p:ajax>
-                        </p:inputText>
                         <br/>
-                    </div><br/>
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" id="basic-addon1"><i class="fab fa-elementor"></i></span>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1"><i class="fab fa-elementor"></i></span>
+                            </div>
+                            <p:selectOneMenu id="subcategoria" class="form-control" value="#{reservarMaterialController.subcategoria}" converter="subcategoriaConverter"
+                                             var="subcategoria"  filter="true" filterMatchMode="contains">
+                                <f:selectItem itemLabel="Seleccione una subcategoria" itemValue="" />
+                                <f:selectItems value="#{reservarMaterialController.subcategorias}" var="subcategoria" itemLabel="#{subcategoria.nombre}" itemValue="#{subcategoria}" />
+                                <p:column>
+                                    <h:outputText value="#{subcategoria.nombre}" /><br/>
+                                </p:column> />
+                                <p:ajax process="@this" event="change" update="dataMaterialList"></p:ajax>
+                            </p:selectOneMenu>
                         </div>
-                        <p:selectOneMenu id="categoria" class="form-control" value="#{reservarMaterialController.categoria}" converter="categoriaConverter"
-                                         var="categoria"  filter="true" filterMatchMode="contains">
-                            <f:selectItem itemLabel="Seleccione una categoria" itemValue="" />
-                            <f:selectItems value="#{reservarMaterialController.categorias}" var="categoria" itemLabel="#{categoria.nombre}" itemValue="#{categoria}" />
-                            <p:column>
-                                <h:outputText value="#{categoria.nombre}" /><br/>
-                            </p:column> />
-                            <p:ajax process="@this" event="change" update="dataMaterialList"></p:ajax>
-                        </p:selectOneMenu>
-                    </div>
-                    <br/>
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" id="basic-addon1"><i class="fab fa-elementor"></i></span>
-                        </div>
-                        <p:selectOneMenu id="subcategoria" class="form-control" value="#{reservarMaterialController.subcategoria}" converter="subcategoriaConverter"
-                                         var="subcategoria"  filter="true" filterMatchMode="contains">
-                            <f:selectItem itemLabel="Seleccione una subcategoria" itemValue="" />
-                            <f:selectItems value="#{reservarMaterialController.subcategorias}" var="subcategoria" itemLabel="#{subcategoria.nombre}" itemValue="#{subcategoria}" />
-                            <p:column>
-                                <h:outputText value="#{subcategoria.nombre}" /><br/>
-                            </p:column> />
-                            <p:ajax process="@this" event="change" update="dataMaterialList"></p:ajax>
-                        </p:selectOneMenu>
-                    </div>
-                    <br/>
+                        <br/>
+                    </p:panel>
                     <!-- Estructura para la presentaciónde un material-->
 
                     <p:commandButton class="btn btn-outline-success confirmarRes prestar"
@@ -131,10 +136,12 @@
                                               update="@(.prestar)"/>
                         </h:panelGrid>
                     </p:dataList>
-
+                    
                     <p:dataList class="confirmarMateriales prestar" 
                                 value="${reservarMaterialController.listaPrestamoUnica}" var="material" type="definition"
                                 rendered="#{reservarMaterialController.estado and reservarMaterialController.listaPrestamoUnica.size()!=0}">
+                        <h4 align="center" style="background-color: lightsteelblue; font-style: normal;padding: 10px; margin-bottom: 1px;">
+                            Confirmar la Reservación</h4>
                         <h:panelGrid class="panelGrid" columns="4" cellpadding = "15" >
 
                             <p:graphicImage cache="false" class="imgMaterial" value="#{imageController.listMaterialImage}" height="75px">
