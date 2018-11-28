@@ -21,9 +21,9 @@ public class Config {
             VISTA_CORREO = "views/pub/confirmacion_correo.xhtml?idc=",
             LOGIN_PAGE = "/index.xhtml",
             REGISTRO_PAGE = "/views/pub/registro.xhtml",
-            USR_PRINCIPAL_PAGE = "/views/usr/navegacion.xhtml",
-            PROF_PRINCIPAL_PAGE = "/views/prof/prof.xhtml",
-            ADM_PRINCIPAL_PAGE = "/views/adm/admin.xhtml",
+            USR_PRINCIPAL_PAGE = "/views/usr/reservarmaterial.xhtml",
+            PROF_PRINCIPAL_PAGE = "/views/usr/reservarmaterial.xhtml",
+            ADM_PRINCIPAL_PAGE = "/views/adm/confirmarprestamo.xhtml",
             URL_CORREO = DOMINIO + VISTA_CORREO;
 
 }
