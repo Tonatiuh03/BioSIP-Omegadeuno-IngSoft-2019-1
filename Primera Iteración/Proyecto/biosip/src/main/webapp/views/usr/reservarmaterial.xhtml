@@ -21,6 +21,8 @@
                     <p:messages for="prestamo_vacio" showDetail="true" closable="true"/>
                     <p:growl for="mensaje-agregar-material" showDetail="true" />
                     <p:growl for="mensaje-eliminar-material" showDetail="true" />
+                    <p:messages for="mensajes" closable="true" showDetail="true" class="mensaje-exterior mensaje"/>
+                    <p:growl for="mensajes" showDetail="true" class="mensaje-exterior mensaje" life="10000"/>
 
                     <br/>
                     <h2 style="background-color: #56282D; color: white; padding: 15px; margin: 0px;">Reservar Material</h2>
@@ -93,7 +95,7 @@
                                      action="${reservarMaterialController.crearPrestamo()}"/>
 
                     <p:commandButton class="btn btn-outline-primary nuervo-prestamo"
-                                     value="CREAR NUEVO PRÉSTAMO" icon="fa fa-plus-square" 
+                                     value="Volver al Inicio" icon="fa fa-plus-square" 
                                      update="@(.prestar)"
                                      rendered="${reservarMaterialController.exito}"
                                      actionListener="${reservarMaterialController.nuevoPrestamo()}"/>
@@ -140,8 +142,6 @@
                     <p:dataList class="confirmarMateriales prestar" 
                                 value="${reservarMaterialController.listaPrestamoUnica}" var="material" type="definition"
                                 rendered="#{reservarMaterialController.estado and reservarMaterialController.listaPrestamoUnica.size()!=0}">
-                        <h4 align="center" style="background-color: lightsteelblue; font-style: normal;padding: 10px; margin-bottom: 1px;">
-                            Confirmar la Reservación</h4>
                         <h:panelGrid class="panelGrid" columns="4" cellpadding = "15" >
 
                             <p:graphicImage cache="false" class="imgMaterial" value="#{imageController.listMaterialImage}" height="75px">

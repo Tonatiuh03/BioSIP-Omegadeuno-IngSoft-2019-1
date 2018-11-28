@@ -12,13 +12,13 @@ and open the template in the editor.
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:composition template="/views/template.xhtml">
         <ui:define name="head">
-            <title>Confirmar Préstamo</title>
+            <title>Mis Reservaciones</title>
             <link rel="stylesheet" type="text/css" href="/css/reservarmaterial.css"/>
             <link rel="stylesheet" type="text/css" href="/css/confirmarprestamo.css"/>
         </ui:define>
         <ui:define name="body">
             <div class="container">
-                <h2 style="background-color: #6B0F1A; color: white;  padding: 10px;">Aprobar Prestamos</h2>
+                <h2 style="background-color: #6B0F1A; color: white;  padding: 10px;">Mis Reservaciones</h2>
                 <!-- Estructura para la presentaciónde un material-->
                 <h:form class="prestamoValido">
                     <p:growl for="mensajes" showDetail="true" class="prestamoValido" life="10000"/>
@@ -27,13 +27,12 @@ and open the template in the editor.
                     <p:messages for="mensajes" closable="true" showDetail="true" class="mensaje-exterior mensaje"/>
                     <p:growl for="mensajes" showDetail="true" class="mensaje-exterior mensaje" life="10000"/>
 
-                    <p:dataList class="prestar" value="#{confirmarPrestamoController.listaPrestamos}" var="prestamo" type="definition" >
-
+                    <p:dataList class="prestar" value="#{misReservaciones.reservaciones}" var="prestamo" type="definition" >
                         <h:panelGrid class="panelGrid  mensaje-exterior" columns="3" cellpadding = "15" style="width: 100%">
                             <p:column style="width: 10px;">
                                 <h:outputText value="No. Préstamo: #{prestamo.id}" style="font-size: large;"/>
                                 <br/>
-                                <h:outputText  id="estado" value="Estado: ${confirmarPrestamoController.estadoPrestamo(prestamo)}"/>
+                                <h:outputText  id="estado" value="Estado: ${misReservaciones.estadoPrestamo(prestamo)}"/>
                             </p:column>
                             <p:outputPanel>
                                 <h:panelGrid class="prestar">
@@ -47,25 +46,18 @@ and open the template in the editor.
                                     <h:outputText value="#{prestamo.fechaDeDevolucion}" class="mensaje-exterior"/>
                                     <p:accordionPanel dynamic="true" style=" width: 100%" activeIndex="1">
                                             <p:tab title="Detalle del Préstamo" titleStyle=" background-color: white; border-radius: 10px;">
-                                                <p:dataList var="material" value="${confirmarPrestamoController.mostrarDetallePrestamo(prestamo)}">
+                                                <p:dataList var="material" value="${misReservaciones.mostrarDetallePrestamo(prestamo)}">
                                                     <h:outputText value="#{material}"/>
                                                 </p:dataList>
                                             </p:tab>
                                     </p:accordionPanel>
-
                                 </h:panelGrid>
                             </p:outputPanel>
 
                             <h:column>
-                                <p:commandButton  class="btn btn-sm  btn-danger" 
-                                                  value="Material Prestado" disabled="${confirmarPrestamoController.habilitarBtnMaterialPrestado(prestamo)}"
-                                                  actionListener="${confirmarPrestamoController.confirmarMaterialPrestado}"
-                                                  update="@form">
-                                    <f:attribute name="prestamo" value="#{prestamo}"/>
-                                </p:commandButton>
                                 <p:commandButton  class="btn btn-sm btn-dark" 
-                                                  value="Material Devuelto" disabled="${confirmarPrestamoController.habilitarBtnMaterialDevuelto(prestamo)}"
-                                                  actionListener="${confirmarPrestamoController.confirmarMaterialDevuelto}"
+                                                  value="Cancelar Préstamo" rendered="${misReservaciones.posibleCancelacion(prestamo)}"
+                                                  actionListener="${misReservaciones.eliminarPrestamo}"
                                                   update="@form">
                                     <f:attribute name="prestamo" value="#{prestamo}"/>
                                 </p:commandButton>                                

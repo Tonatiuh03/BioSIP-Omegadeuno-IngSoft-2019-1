@@ -53,13 +53,13 @@ public class ReservarMaterialController implements Serializable {
     private boolean exito;
     private int cantidad;
     private HashMap<Long, Integer> carritoCantidades;
-
+    private Usuario usuario;
     private String nombreMaterial;
     private Categoria categoria;
     private Subcategoria subcategoria;
-    
 
     public ReservarMaterialController() {
+        this.usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user");
         this.listaPrestamo = new ArrayList<Material>();
         this.listaPrestamoUnica = new ArrayList<Material>();
         this.confirmarPrestamo = false;
@@ -89,7 +89,6 @@ public class ReservarMaterialController implements Serializable {
         return new SubcategoriaDao().getSubcategorias();
     }
 
-    
     public String getNombreMaterial() {
         return nombreMaterial;
     }
@@ -217,27 +216,42 @@ public class ReservarMaterialController implements Serializable {
         Material m = (Material) event.getComponent().getAttributes().get("material");
         Integer n = 1;
         n = this.carritoCantidades.get(m.getId());
-        System.out.println("Cantidad actual "+n);
-        if (n == null) {
-            n = 1;
+        System.out.println("Cantidad actual " + n);
+        PrestamoDao prestamoDao = new PrestamoDao();
+        List<Prestamo> prestamosAbiertos = new ArrayList<Prestamo>();
+        for (Prestamo p : prestamoDao.getPrestamos(usuario)) {
+            if ((p.getFechaDeAprobacion() != null || p.getFechaDeAprobacion() == null) && p.getFechaDeDevolucion() == null) {
+                prestamosAbiertos.add(p);
+            }
         }
-        if ((n + this.contarMateriales(m)) <= m.getDisponibles() && n > 0) {
-            for (int i = 0; i < n; i++) {
-                this.listaPrestamo.add(m);
+        if (prestamosAbiertos.size() == 0) {
+            if (n == null) {
+                n = 1;
             }
-            if (!this.listaPrestamoUnica.contains(m)) {
-                this.listaPrestamoUnica.add(m);
+            if ((n + this.contarMateriales(m)) <= m.getDisponibles() && n > 0) {
+                for (int i = 0; i < n; i++) {
+                    this.listaPrestamo.add(m);
+                }
+                if (!this.listaPrestamoUnica.contains(m)) {
+                    this.listaPrestamoUnica.add(m);
+                }
+                FacesContext.getCurrentInstance().addMessage("mensaje-agregar-material",
+                        new FacesMessage(FacesMessage.SEVERITY_INFO,
+                                "Se ha agregado una unidad del material: -" + m.getNombre() + "- a la lista del préstamo.",
+                                "Hay " + this.contarMateriales(m) + " unidades del material en la lista del préstamo."));
+            } else {
+                FacesContext.getCurrentInstance().addMessage("mensaje-agregar-material",
+                        new FacesMessage(FacesMessage.SEVERITY_WARN,
+                                "Lo sentimos, la cantidad solicitada del material no se encuentra disponible.",
+                                "Por favor revise la cantidad de material disponible."));
             }
-            FacesContext.getCurrentInstance().addMessage("mensaje-agregar-material",
-                    new FacesMessage(FacesMessage.SEVERITY_INFO,
-                            "Se ha agregado una unidad del material: -" + m.getNombre() + "- a la lista del préstamo.",
-                            "Hay " + this.contarMateriales(m) + " unidades del material en la lista del préstamo."));
         } else {
-            FacesContext.getCurrentInstance().addMessage("mensaje-agregar-material",
+            FacesContext.getCurrentInstance().addMessage("mensajes",
                     new FacesMessage(FacesMessage.SEVERITY_WARN,
-                            "Lo sentimos, la cantidad solicitada del material no se encuentra disponible.",
-                            "Por favor revise la cantidad de material disponible."));
+                            "Actualmente cuentas con un préstamo aprobado o reservado. No puedes generar uno nuevo.",
+                            "Por favor, devuelve el material o cancela la última reservación para poder generar un nuevo préstamo."));
         }
+
     }
 
     public void eliminar(Material m) throws Exception {
@@ -272,13 +286,21 @@ public class ReservarMaterialController implements Serializable {
     public void crearPrestamo() throws Exception {
 
         Usuario usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user");
-        LocalDateTime ldt = LocalDateTime.now();
-        String fechaLimite = DateTimeFormatter.ofPattern("dd-MM-yyyy", Locale.getDefault()).format(ldt);
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        Date fechalimite = new Date();
         Calendar c = Calendar.getInstance();
-        c.setTime(sdf.parse(fechaLimite));
+        c.setTime(new Date());
         c.add(Calendar.DATE, 3);  // agregamos 3 días a la fecha actual
-        fechaLimite = sdf.format(c.getTime());  // obtenemos la fecha limite del préstamo
+        fechalimite = c.getTime();
+        if (fechalimite.getDay() == 0) {
+            c.setTime(fechalimite);//sdf.parse(fechaLimite));
+            c.add(Calendar.DATE, 1);  // agregamos 3 días a la fecha actual
+            fechalimite = c.getTime();
+        } else if (fechalimite.getDay() == 6) {
+            c.setTime(fechalimite);//sdf.parse(fechaLimite));
+            c.add(Calendar.DATE, 2);  // agregamos 3 días a la fecha actual
+            fechalimite = c.getTime();
+        }
 
         try {
             MaterialDao materialdao = new MaterialDao();
@@ -317,7 +339,7 @@ public class ReservarMaterialController implements Serializable {
             FacesContext.getCurrentInstance().addMessage("nuevo_prestamo",
                     new FacesMessage(FacesMessage.SEVERITY_INFO,
                             "Se ha generado un nuevo préstamo, No. de Préstamo: " + prestamo.getId() + ".",
-                            "Tiene hasta el día " + fechaLimite + " para recoger los materiales."));
+                            "Tiene hasta el día " + sdf.format(fechalimite) + " para recoger los materiales."));
 
         } catch (IllegalArgumentException ex) {
             FacesContext.getCurrentInstance().addMessage("nuevo_prestamo",
