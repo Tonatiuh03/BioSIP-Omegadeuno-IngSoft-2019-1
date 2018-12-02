@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f = "http://java.sun.com/jsf/core">
+    <ui:composition template="/views/template.xhtml">
+        <ui:define name="head">
+            <title>Bloquear Usuario</title>
+        </ui:define>
+        <ui:define name="body">
+            <br/>
+            <div class="container">
+                <div class="row justify-content-md-center">
+                    <div class="col-sm-6 col-md-6 col-md-offset-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading text-center">
+                                <strong>Bloquear</strong>
+                            </div>
+                            <div class="panel-body">
+                                <h:form id="myForm">
+                                    <div>
+                                        <p:messages for="messages"  />
+                                        <br/>
+                                    </div>
+                                    <fieldset>
+                                        <div class="row justify-content-md-center">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" id="basic-addon1"><i class="fas fa-user-circle"></i>&nbsp;Usuario</span>
+                                                    </div>
+                                                    <p:selectOneMenu id="usuarioObjetivo" class="form-control" value="#{bloqueoController.usuarioBloquear}"  converter="usuarioConverter"                                                                         
+                                                                     onchange="PF('statusDialog').show();" var="usuario"  filter="true" filterMatchMode="contains">
+                                                        <f:selectItem itemLabel="Seleccione una opción" itemValue="" />
+                                                        <f:selectItems value="#{bloqueoController.modificados}" var="usuario" itemLabel="#{usuario.nombreCompleto}" itemValue="#{usuario}" />
+                                                            <p:column styleClass="img-column-select-one-menu">
+                                                                <p:graphicImage cache="false" class="select-one-miniature" value="#{imageController.listUserImage}">
+                                                                    <f:param name="id" value="#{usuario.id}" />
+                                                                </p:graphicImage>
+                                                            </p:column>
+                                                            <p:column>
+                                                                @<h:outputText value="#{usuario.userName}" /><br/>
+                                                                <h:outputText value="#{usuario.nombreCompleto}" /><br/>
+                                                                &lt;<h:outputText value="#{usuario.correoCiencias}" />&gt;
+                                                            </p:column>
+                                                    </p:selectOneMenu>
+                                                    <br/>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <p:calendar value="Selecciona fecha"  showOn="button" onclick="#{bloqueoController.fecha()}" style=" background: bisque">
+                                                    
+                                                </p:calendar>
+                                            </div>
+                                            <div class="form-group">
+                                                <p:commandButton disabled="#{bloqueoController.usuarioBloquear!=null}" actionListener="#{bloqueoController.bloquearUsuario()}" ajax="true" class="btn btn-lg btn-primary btn-block" value="Bloquear usuario" update="myForm"/>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </h:form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ui:define>
+    </ui:composition> 
+</html>
