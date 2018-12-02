@@ -123,7 +123,7 @@ public class AgregaMaterialController implements Serializable {
             nuevoMaterial.setDisponibles(disponibles);
             nuevoMaterial.setDescripcion(descripcion);
             if (this.file == null) {
-                nuevoMaterial.setRutaImagen(Config.IMG_PROFILE_REPO_DEFAULT_FILE_NAME);
+                nuevoMaterial.setRutaImagen(Config.IMG_MATERIAL_REPO_DEFAULT_FILE_NAME);
             } else {
                 file.write(Config.IMG_MATERIAL_REPO + nuevoMaterial.getRutaImagen());
             }
