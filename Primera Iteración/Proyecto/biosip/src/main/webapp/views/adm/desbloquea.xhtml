@@ -7,7 +7,7 @@
       xmlns:f = "http://java.sun.com/jsf/core">
     <ui:composition template="/views/template.xhtml">
         <ui:define name="head">
-            <title>Bloquear Usuario</title>
+            <title>Desbloquear Usuario</title>
         </ui:define>
         <ui:define name="body">
             <br/>
@@ -16,7 +16,7 @@
                     <div class="col-sm-6 col-md-6 col-md-offset-6">
                         <div class="panel panel-default">
                             <div class="panel-heading text-center">
-                                <strong>Bloquear</strong>
+                                <strong>Desbloquear Usuario</strong>
                             </div>
                             <div class="panel-body">
                                 <h:form id="myForm">
@@ -52,8 +52,8 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <p:commandButton disabled="#{bloqueoController.usuarioBloquear!=null}" actionListener="#{bloqueoController.bloquearUsuario()}" ajax="true" class="btn btn-lg btn-primary btn-block" value="Desbloquear usuario" update="myForm"/>
-                                                </div>
+                                                    <p:commandButton disabled="#{bloqueoController.usuarioBloquear!=null}" actionListener="#{bloqueoController.desbloquearUsuario()}" ajax="true" class="btn btn-lg btn-primary btn-block" value="Desbloquear usuario" update="myForm"/>
+                                            </div>
                                             </div>
                                         </div>
                                     </fieldset>
