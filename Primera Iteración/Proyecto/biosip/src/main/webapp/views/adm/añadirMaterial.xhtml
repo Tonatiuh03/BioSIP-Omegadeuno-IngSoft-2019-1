@@ -58,8 +58,7 @@
                                                         </div>
                                                         <p:inputText class="form-control" required="true" placeholder="Cantidad de material" id="disponibles" size="50"
                                                                      value="${agregaMaterialController.disponibles}" 
-                                                                     requiredMessage="Debe haber al menos una pieza de este material" 
-                                                                     validator="${registroController.validateUniqueUserName}" >
+                                                                     requiredMessage="Debe haber al menos una pieza de este material">
                                                             <p:ajax event="blur" update="mDisponibles" process="@this" />
                                                         </p:inputText>
                                                         <br/>
