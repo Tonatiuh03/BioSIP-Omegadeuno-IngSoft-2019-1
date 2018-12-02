@@ -95,7 +95,7 @@ public class AgregaMaterialController implements Serializable {
         this.file = e.getFile();
     }
     /**
-     * Método para obtener la imagen del usuario en el formulario, muetra la
+     * Método para obtener la imagen del material, muestra la
      * default si no sube alguna o se muestra la que el usuario pase como
      * parámetro.
      *
@@ -113,7 +113,7 @@ public class AgregaMaterialController implements Serializable {
         }
     }
     /**
-     * Método que registra al usuario con el formulario ya validado.
+     * Método que registra el material con el formulario ya validado.
      *
      */
     public void registerMaterial() {
@@ -125,18 +125,23 @@ public class AgregaMaterialController implements Serializable {
             if (this.file == null) {
                 nuevoMaterial.setRutaImagen(Config.IMG_PROFILE_REPO_DEFAULT_FILE_NAME);
             } else {
-                //file.write(Config.IMG_PROFILE_REPO + nuevoMaterial.getRutaImagen());
+                file.write(Config.IMG_MATERIAL_REPO + nuevoMaterial.getRutaImagen());
             }
             MaterialDao materialDao = new MaterialDao();
+            materialDao.getEntityManager().getTransaction().begin();
             nuevoMaterial = materialDao.update(nuevoMaterial);
 
             materialDao.save(nuevoMaterial);
             materialDao.getEntityManager().getTransaction().commit();
             
+            FacesContext.getCurrentInstance().addMessage("messages",
+                    new FacesMessage(FacesMessage.SEVERITY_INFO,
+                            "Se ha registrado el material con éxito",
+                            "Se ha registrado el material con éxito"));
+            
             FacesContext context = FacesContext.getCurrentInstance();
             context.getExternalContext().getFlash().setKeepMessages(true);
             ExternalContext eContext = context.getExternalContext();
-            eContext.redirect(eContext.getRequestContextPath() + Config.LOGIN_PAGE);
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage("messages",
                     new FacesMessage(FacesMessage.SEVERITY_FATAL,
