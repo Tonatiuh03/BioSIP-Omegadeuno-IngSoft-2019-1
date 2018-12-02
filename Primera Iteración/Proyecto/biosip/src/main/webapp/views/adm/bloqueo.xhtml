@@ -16,7 +16,7 @@
                     <div class="col-sm-6 col-md-6 col-md-offset-6">
                         <div class="panel panel-default">
                             <div class="panel-heading text-center">
-                                <strong>Bloquear</strong>
+                                <strong>Bloquear Usuario</strong>
                             </div>
                             <div class="panel-body">
                                 <h:form id="myForm">
@@ -35,24 +35,22 @@
                                                                      onchange="PF('statusDialog').show();" var="usuario"  filter="true" filterMatchMode="contains">
                                                         <f:selectItem itemLabel="Seleccione una opción" itemValue="" />
                                                         <f:selectItems value="#{bloqueoController.modificados}" var="usuario" itemLabel="#{usuario.nombreCompleto}" itemValue="#{usuario}" />
-                                                            <p:column styleClass="img-column-select-one-menu">
-                                                                <p:graphicImage cache="false" class="select-one-miniature" value="#{imageController.listUserImage}">
-                                                                    <f:param name="id" value="#{usuario.id}" />
-                                                                </p:graphicImage>
-                                                            </p:column>
-                                                            <p:column>
-                                                                @<h:outputText value="#{usuario.userName}" /><br/>
-                                                                <h:outputText value="#{usuario.nombreCompleto}" /><br/>
-                                                                &lt;<h:outputText value="#{usuario.correoCiencias}" />&gt;
-                                                            </p:column>
+                                                        <p:column styleClass="img-column-select-one-menu">
+                                                            <p:graphicImage cache="false" class="select-one-miniature" value="#{imageController.listUserImage}">
+                                                                <f:param name="id" value="#{usuario.id}" />
+                                                            </p:graphicImage>
+                                                        </p:column>
+                                                        <p:column>
+                                                            @<h:outputText value="#{usuario.userName}" /><br/>
+                                                            <h:outputText value="#{usuario.nombreCompleto}" /><br/>
+                                                            &lt;<h:outputText value="#{usuario.correoCiencias}" />&gt;
+                                                        </p:column>
                                                     </p:selectOneMenu>
                                                     <br/>
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <p:calendar value="Selecciona fecha"  showOn="button" onclick="#{bloqueoController.fecha()}" style=" background: bisque">
-                                                    
-                                                </p:calendar>
+                                                <p:calendar value="#{bloqueoController.fecha}" readonlyInput="true" showOn="button" style=" background: bisque"/>                                                
                                             </div>
                                             <div class="form-group">
                                                 <p:commandButton disabled="#{bloqueoController.usuarioBloquear!=null}" actionListener="#{bloqueoController.bloquearUsuario()}" ajax="true" class="btn btn-lg btn-primary btn-block" value="Bloquear usuario" update="myForm"/>
