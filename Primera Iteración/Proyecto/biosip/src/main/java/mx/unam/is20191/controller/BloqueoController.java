@@ -32,7 +32,7 @@ public class BloqueoController implements Serializable {
     //Varibable para bloquear usuario
     private Usuario usuarioBloquear;
     private Date fecha;
-    
+
     /**
      * Método que con el que se inicializan los valores que usará la vista La
      * anotación PostConstruct realiza el proceso mientras se rendiza la vista
@@ -55,7 +55,6 @@ public class BloqueoController implements Serializable {
         UsuarioDao usuarioDao = new UsuarioDao();
         usuarioDao.getEntityManager().getTransaction().begin();
         Usuario u = usuarioDao.getByKey(usuarioBloquear.getId());
-        //u.setFechaDeDesbloqueo(null);//los valores en cuno están bloqueados
         u.setFechaDeDesbloqueo(fecha);
         usuarioDao.update(u);
         usuarioDao.getEntityManager().getTransaction().commit();
@@ -64,13 +63,20 @@ public class BloqueoController implements Serializable {
         FacesContext.getCurrentInstance().addMessage("messages", new FacesMessage(FacesMessage.SEVERITY_INFO, mensaje.toString(), mensaje.toString()));
         usuarioBloquear = null;
     }
-    /*
-    *Funcion quenos dara la fecha 
-    */
-    public Date fecha(){
-        return fecha;
-    }
     
+    public void desbloquearUsuario() {
+        UsuarioDao usuarioDao = new UsuarioDao();
+        usuarioDao.getEntityManager().getTransaction().begin();
+        Usuario u = usuarioDao.getByKey(usuarioBloquear.getId());
+        u.setFechaDeDesbloqueo(null);
+        usuarioDao.update(u);
+        usuarioDao.getEntityManager().getTransaction().commit();
+        StringBuilder mensaje = new StringBuilder("Se han cambiado los privilegios del usuario ");
+        mensaje.append(usuarioBloquear.getUserName()).append(".");
+        FacesContext.getCurrentInstance().addMessage("messages", new FacesMessage(FacesMessage.SEVERITY_INFO, mensaje.toString(), mensaje.toString()));
+        usuarioBloquear = null;
+    }
+
     /*
     *Funcion que nos dice si es valido el bloquear a un usuario
      */
@@ -102,5 +108,13 @@ public class BloqueoController implements Serializable {
     public void setUsuarioBloquear(Usuario usuarioBloquear) {
         this.usuarioBloquear = usuarioBloquear;
     }
+
+    public Date getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
+    }  
 
 }
