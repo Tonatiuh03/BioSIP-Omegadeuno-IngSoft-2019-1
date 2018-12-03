@@ -74,8 +74,6 @@ public class KitController implements Serializable {
         this.confirmarCompartir = confirmarCompartir;
     }
     
-   
-   
+}      
     
-    
-}
+   
