@@ -1,0 +1,148 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/views/template.xhtml">
+        <ui:define name="head">
+            <title>Cambiar Estado de Material</title>
+            <link rel="stylesheet" type="text/css" href="/css/reservarmaterial.css"></link>
+        </ui:define>
+        <ui:define name="body">
+            <div class="container">
+
+                <h:form id="myForm" enctype="multipart/form-data" >
+                    <div class="row justify-content-md-center">
+                        <div class="col-sm-6 col-md-6 col-md-offset-6">
+                            <div class="panel panel-default">
+                                <div class="panel-heading text-center">
+                                    <br/>
+                                        <h2>Cambiar Estado de Material</h2>
+                                    <br/>
+                                </div>
+                                <div class="panel-body">
+                                    <br/>
+                                    <p:messages for="messages"  />
+                                    <br/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p:panel rendered="#{!(cambiarEstadoController.estado and cambiarEstadoController.listaMateriales.size()!=0)}">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1"><i class="fab fa-elementor"></i></span>
+                            </div>
+                            <p:inputText class="form-control"  placeholder="Nombre del material a editar"  id="nombreMaterial" size="100"
+                                         value="${cambiaEstadoController.nombre}">
+                                <p:ajax process="@this" event="keyup" update="dataMaterialList"></p:ajax>
+                            </p:inputText>
+                            <br/>
+                        </div>
+                        <br/>
+                    </p:panel>
+                    <p:dataList id="dataMaterialList" class="prestar" value="#{cambiaEstadoController.materiales}" var="material" type="definition" 
+                                rendered="#{!cambiaEstadoController.estado}" emptyMessage="No se encontraron materiales con esa búsqueda.">
+
+                            <p:graphicImage cache="false" class="imgMaterial" value="#{imageController.listMaterialImage}" height="100px">
+                                <f:param name="id" value="#{material.id}" />
+                            </p:graphicImage>
+                    </p:dataList>
+
+                    <div class="row justify-content-md-center">
+                        <div class="col-sm-7 col-md-7 col-md-offset-7">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <fieldset>
+                                        <div class="row justify-content-md-center">
+                                            <div class="col-sm-12 col-md-10  col-md-offset-1 ">
+                                                <br/>
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="basic-addon1"></span>
+                                                        </div>
+                                                        <p:inputText class="form-control" value="#{material.nombre}" required="true" placeholder="Nuevo nombre del material" id="nombre" size="210"
+                                                                     requiredMessage="El nombre no puede estar vacío." >
+                                                            <p:ajax event="blur" update="mNombre" process="@this" /> 
+                                                        </p:inputText><br/>
+                                                    </div>
+                                                    <p:message for="nombre" id="mNombre"/>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="basic-addon1"></span>
+                                                        </div>
+                                                        <p:inputText class="form-control" required="true" placeholder="Nueva cantidad de material" id="disponibles" size="50"
+                                                                     value="#{material.disponibles}" 
+                                                                     requiredMessage="Debe haber al menos una pieza de este material">
+                                                            <p:ajax event="blur" update="mDisponibles" process="@this" />
+                                                        </p:inputText>
+                                                        <br/>
+                                                    </div>
+                                                    <p:message for="disponibles" id="mDisponibles" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="basic-addon1"></span>
+                                                        </div>
+                                                        <p:inputText class="form-control"  placeholder="Nueva descripcion" required="true" id="descripcion" size="500"
+                                                                     requiredMessage="Debe haber una descripcion breve"
+                                                                     value="#{material.descripcion}" >
+                                                            <p:ajax event="blur" update="mdescripcion" process="@this" />
+                                                        </p:inputText>
+                                                        <br/>
+                                                    </div>
+                                                    <p:message for="descripcion" id="mdescripcion" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <p:commandButton  class="btn btn-lg btn-primary btn-block"
+                                                         value="Editar otro Material" action="${cambiaEstadoController.clear()}"
+                                                        update="myForm"/>
+                                                </div>
+                                                <div>
+                                                    <div class="panel panel-default">
+                                                        <div class="panel-body text-center">
+                                                            <fieldset class="text-center">
+                                                                <p:panel id="imgPreview" style="margin-bottom:20px">
+                                                                    <p:graphicImage value="#{cambiaEstadoController.imagestream}" cache="false" width="200px" height="200px"    />
+                                                                </p:panel>
+                                                                <div  class="row justify-content-md-center text-center">
+                                                                    <div class="input-group-prepend">
+                                                                        <span class="input-group-text" id="basic-addon1"><i class="fas fa-camera-retro"></i></span>
+                                                                    </div>
+                                                                    <p:fileUpload 
+                                                                        allowTypes="/(\.|\/)(png|jpeg|JPEG|jpg|JPG)$/"
+                                                                        invalidFileMessage="El archivo no es una imagen válida."
+                                                                        class="btn btn-sm btn-primary" label="Selecciona una nueva imagen del material"
+                                                                        value="#{cambiaEstadoController.file}" mode="advanced"  auto="true"
+                                                                        fileUploadListener="#{cambiaEstadoController.uploadImg}"
+                                                                        update="imgPreview" >
+                                                                    </p:fileUpload><br/>
+                                                                </div>
+                                                            </fieldset>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-md-center">
+                        <div class="form-group">
+                            <br/>
+                            <p:commandButton actionListener="#{cambiaEstadoController.registerMaterial}" class="btn btn-lg btn-primary btn-block" value="Registra cambios del material"  update="myForm"/>
+                        </div>
+                    </div>
+                </h:form>
+            </div>
+        </ui:define>
+    </ui:composition> 
+</html>
