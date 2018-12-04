@@ -27,7 +27,8 @@ and open the template in the editor.
                     <p:messages for="mensajes" closable="true" showDetail="true" class="mensaje-exterior mensaje"/>
                     <p:growl for="mensajes" showDetail="true" class="mensaje-exterior mensaje" life="10000"/>
 
-                    <p:dataList class="prestar" value="#{confirmarPrestamoController.listaPrestamos}" var="prestamo" type="definition" >
+                    <p:dataList class="prestar" value="#{confirmarPrestamoController.listaPrestamos}" var="prestamo" type="definition" 
+                                emptyMessage="No hay confirmaciones pendientes." >
 
                         <h:panelGrid class="panelGrid  mensaje-exterior" columns="3" cellpadding = "15" style="width: 100%">
                             <p:column style="width: 10px;">
