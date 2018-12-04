@@ -1,0 +1,130 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f = "http://java.sun.com/jsf/core">
+    <ui:composition template="/views/template.xhtml">
+        <ui:define name="head">
+            <link rel="stylesheet" type="text/css" href="/css/frm/registro.css"></link>
+            <title>Agregar Material</title>
+        </ui:define>
+        <ui:define name="body">
+            <br/><br/>
+            <div class="container">
+                <h:form id="myForm" enctype="multipart/form-data">
+                    <f:metadata>
+                        <f:viewAction action="#{agregaMaterialController.clear}" />
+                    </f:metadata>
+                    <div class="row justify-content-md-center">
+                        <div class="col-sm-6 col-md-6 col-md-offset-6">
+                            <div class="panel panel-default">
+                                <div class="panel-heading text-center">
+                                    <br/>
+                                        <h2>Agregar Material</h2>
+                                    <br/>
+                                </div>
+                                <div class="panel-body">
+                                    <br/>
+                                    <p:messages for="messages"  />
+                                    <br/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-md-center">
+                        <div class="col-sm-7 col-md-7 col-md-offset-7">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <fieldset>
+                                        <div class="row justify-content-md-center">
+                                            <div class="col-sm-12 col-md-10  col-md-offset-1 ">
+                                                <br/>
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="basic-addon1"></span>
+                                                        </div>
+                                                        <p:inputText class="form-control" value="${agregaMaterialController.nombre}" required="true" placeholder="Nombre del material" id="nombre" size="210"
+                                                                     requiredMessage="El nombre no puede estar vacío." >
+                                                            <p:ajax event="blur" update="mNombre" process="@this" /> 
+                                                        </p:inputText><br/>
+                                                    </div>
+                                                    <p:message for="nombre" id="mNombre"/>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="basic-addon1"></span>
+                                                        </div>
+                                                        <p:inputText class="form-control" required="true" placeholder="Cantidad de material" id="disponibles" size="50"
+                                                                     value="${agregaMaterialController.disponibles}" 
+                                                                     requiredMessage="Debe haber al menos una pieza de este material">
+                                                            <p:ajax event="blur" update="mDisponibles" process="@this" />
+                                                        </p:inputText>
+                                                        <br/>
+                                                    </div>
+                                                    <p:message for="disponibles" id="mDisponibles" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="basic-addon1"></span>
+                                                        </div>
+                                                        <p:inputText class="form-control"  placeholder="Descripcion" required="true" id="descripcion" size="500"
+                                                                     requiredMessage="Debe haber una descripcion breve"
+                                                                     value="${agregaMaterialController.descripcion}" >
+                                                            <p:ajax event="blur" update="mdescripcion" process="@this" />
+                                                        </p:inputText>
+                                                        <br/>
+                                                    </div>
+                                                    <p:message for="descripcion" id="mdescripcion" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <p:commandButton  class="btn btn-lg btn-primary btn-block"
+                                                         value="Registrar Nuevo Material" action="${agregaMaterialController.clear()}"
+                                                        update="myForm"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4 col-md-4 col-md-offset-4">
+                            <div class="panel panel-default">
+                                <div class="panel-body text-center">
+                                    <fieldset class="text-center">
+                                        <p:panel id="imgPreview" style="margin-bottom:20px">
+                                            <p:graphicImage value="#{agregaMaterialController.imagestream}" cache="false" width="200px" height="200px"    />
+                                        </p:panel>
+                                        <div  class="row justify-content-md-center text-center">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="basic-addon1"><i class="fas fa-camera-retro"></i></span>
+                                            </div>
+                                            <p:fileUpload 
+                                                allowTypes="/(\.|\/)(png|jpeg|JPEG|jpg|JPG)$/"
+                                                invalidFileMessage="El archivo no es una imagen válida."
+                                                class="btn btn-sm btn-primary" label="Seleccionar imagen del material"
+                                                value="#{agregaMaterialController.file}" mode="advanced"  auto="true"
+                                                fileUploadListener="#{agregaMaterialController.uploadImg}"
+                                                update="imgPreview" >
+                                            </p:fileUpload><br/>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-md-center">
+                        <div class="form-group">
+                            <br/>
+                            <p:commandButton actionListener="#{agregaMaterialController.registerMaterial}" class="btn btn-lg btn-primary btn-block" value="Registrar material"  update="myForm"/>
+                        </div>
+                    </div>
+                </h:form>
+            </div>
+        </ui:define>
+    </ui:composition> 
+</html>
