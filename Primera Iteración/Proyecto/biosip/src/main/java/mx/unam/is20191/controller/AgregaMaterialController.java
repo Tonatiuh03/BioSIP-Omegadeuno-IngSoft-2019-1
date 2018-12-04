@@ -142,6 +142,7 @@ public class AgregaMaterialController implements Serializable {
             FacesContext context = FacesContext.getCurrentInstance();
             context.getExternalContext().getFlash().setKeepMessages(true);
             ExternalContext eContext = context.getExternalContext();
+            this.clear();
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage("messages",
                     new FacesMessage(FacesMessage.SEVERITY_FATAL,
