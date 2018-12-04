@@ -16,7 +16,9 @@
                     <div class="col-sm-6 col-md-6 col-md-offset-6">
                         <div class="panel panel-default">
                             <div class="panel-heading text-center">
-                                <strong>Bloquear Usuario</strong>
+                                <br/>
+                                <h2>Bloquear Usuario</h2>
+                                <br/>
                             </div>
                             <div class="panel-body">
                                 <h:form id="myForm">
@@ -48,9 +50,14 @@
                                                     </p:selectOneMenu>
                                                     <br/>
                                                 </div>
+                                                <br/>
                                             </div>
-                                            <div class="form-group">
-                                                <p:calendar value="#{bloqueoController.fecha}" readonlyInput="true" showOn="button" style=" background: bisque"/>                                                
+                                            <div class="input-group">
+                                                <div class="form-group">
+                                                    <div class="row justify-content-md-center">
+                                                        <p:calendar value="#{bloqueoController.fecha}" mode="popup"/>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <div class="form-group">
                                                 <p:commandButton disabled="#{bloqueoController.usuarioBloquear!=null}" actionListener="#{bloqueoController.bloquearUsuario()}" ajax="true" class="btn btn-lg btn-primary btn-block" value="Bloquear usuario" update="myForm"/>
