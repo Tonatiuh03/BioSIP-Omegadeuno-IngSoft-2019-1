@@ -33,8 +33,11 @@
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text" id="basic-addon1"><i class="fas fa-user-circle"></i>&nbsp;Usuario</span>
                                                     </div>
-                                                    <p:selectOneMenu id="usuarioObjetivo" class="form-control" value="#{bloqueoController.usuarioBloquear}"  converter="usuarioConverter"                                                                         
-                                                                     onchange="PF('statusDialog').show();" var="usuario"  filter="true" filterMatchMode="contains">
+                                                    <p:selectOneMenu id="usuarioObjetivo" class="form-control" value="#{bloqueoController.usuarioBloquear}"
+                                                                     required="true"
+                                                                     requiredMessage="Debe seleccionar un usuario para continuar"
+                                                                     converter="usuarioConverter"         
+                                                                     var="usuario"  filter="true" filterMatchMode="contains">
                                                         <f:selectItem itemLabel="Seleccione una opción" itemValue="" />
                                                         <f:selectItems value="#{bloqueoController.modificados}" var="usuario" itemLabel="#{usuario.nombreCompleto}" itemValue="#{usuario}" />
                                                         <p:column styleClass="img-column-select-one-menu">
@@ -48,19 +51,20 @@
                                                             &lt;<h:outputText value="#{usuario.correoCiencias}" />&gt;
                                                         </p:column>
                                                     </p:selectOneMenu>
+                                                    <p:message for="usuarioObjetivo" id="mUsuarioObjetivo"/>
                                                     <br/>
                                                 </div>
                                                 <br/>
-                                            </div>
-                                            <div class="input-group">
-                                                <div class="form-group">
-                                                    <div class="row justify-content-md-center">
-                                                        <p:calendar value="#{bloqueoController.fecha}" mode="popup"/>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" id="basic-addon1"><i class="fas fa-user-circle"></i>&nbsp;Fecha&nbsp;&nbsp;&nbsp;&nbsp;</span>
                                                     </div>
+                                                    <p:calendar value="#{bloqueoController.fecha}" mode="popup"/>
                                                 </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <p:commandButton disabled="#{bloqueoController.usuarioBloquear!=null}" actionListener="#{bloqueoController.bloquearUsuario()}" ajax="true" class="btn btn-lg btn-primary btn-block" value="Bloquear usuario" update="myForm"/>
+                                                <br/>
+                                                <div class="input-group">
+                                                    <p:commandButton disabled="#{bloqueoController.usuarioBloquear!=null}" actionListener="#{bloqueoController.bloquearUsuario()}" ajax="true" class="btn btn-lg btn-primary btn-block" value="Bloquear usuario" update="myForm"/>
+                                                </div>
                                             </div>
                                         </div>
                                     </fieldset>
