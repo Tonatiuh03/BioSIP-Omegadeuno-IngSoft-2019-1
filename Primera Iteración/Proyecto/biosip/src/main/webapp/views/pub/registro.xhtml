@@ -75,7 +75,7 @@
                                                                      requiredMessage="El correo no puede estar vacío."
                                                                      value="${registroController.correo}" 
                                                                      validator="${registroController.validateUniqueEmail}"
-                                                                     validatorMessage="El formato del email es inválido">
+                                                                     validatorMessage="El formato del email es inválido o ya está dado de alta en el sistema">
                                                             <p:ajax event="blur" update="mCorreo" process="@this" />
                                                             <f:validateRegex
                                                                 pattern="^([a-zA-Z0-9_\-\.]+)$"
