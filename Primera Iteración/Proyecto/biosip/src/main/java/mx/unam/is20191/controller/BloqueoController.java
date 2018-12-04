@@ -58,12 +58,12 @@ public class BloqueoController implements Serializable {
         u.setFechaDeDesbloqueo(fecha);
         usuarioDao.update(u);
         usuarioDao.getEntityManager().getTransaction().commit();
-        StringBuilder mensaje = new StringBuilder("Se han cambiado los privilegios del usuario ");
-        mensaje.append(usuarioBloquear.getUserName()).append(".");
+        StringBuilder mensaje = new StringBuilder("Se ha bloqueado al usuario ");
+        mensaje.append(usuarioBloquear.getUserName()).append(" con éxito.");
         FacesContext.getCurrentInstance().addMessage("messages", new FacesMessage(FacesMessage.SEVERITY_INFO, mensaje.toString(), mensaje.toString()));
         usuarioBloquear = null;
     }
-    
+
     public void desbloquearUsuario() {
         UsuarioDao usuarioDao = new UsuarioDao();
         usuarioDao.getEntityManager().getTransaction().begin();
@@ -71,8 +71,8 @@ public class BloqueoController implements Serializable {
         u.setFechaDeDesbloqueo(null);
         usuarioDao.update(u);
         usuarioDao.getEntityManager().getTransaction().commit();
-        StringBuilder mensaje = new StringBuilder("Se han cambiado los privilegios del usuario ");
-        mensaje.append(usuarioBloquear.getUserName()).append(".");
+        StringBuilder mensaje = new StringBuilder("Se ha desbloqueado al usuario ");
+        mensaje.append(usuarioBloquear.getUserName()).append(" con éxito.");
         FacesContext.getCurrentInstance().addMessage("messages", new FacesMessage(FacesMessage.SEVERITY_INFO, mensaje.toString(), mensaje.toString()));
         usuarioBloquear = null;
     }
@@ -115,6 +115,6 @@ public class BloqueoController implements Serializable {
 
     public void setFecha(Date fecha) {
         this.fecha = fecha;
-    }  
+    }
 
 }

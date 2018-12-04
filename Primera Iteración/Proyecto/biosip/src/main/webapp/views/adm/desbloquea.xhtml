@@ -17,7 +17,7 @@
                         <div class="panel panel-default">
                             <div class="panel-heading text-center">
                                 <br/>
-                                    <h2>Desbloquear Usuario</h2>
+                                <h2>Desbloquear Usuario</h2>
                                 <br/>
                             </div>
                             <div class="panel-body">
@@ -34,7 +34,9 @@
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i class="fas fa-user-circle"></i>&nbsp;Usuario</span>
                                                         </div>
-                                                        <p:selectOneMenu id="usuarioObjetivo" class="form-control" value="#{bloqueoController.usuarioBloquear}"  converter="usuarioConverter"                                                                         
+                                                        <p:selectOneMenu id="usuarioObjetivo" class="form-control" value="#{bloqueoController.usuarioBloquear}"  converter="usuarioConverter"                 
+                                                                         required="true"
+                                                                         requiredMessage="Debe seleccionar un usuario para continuar"
                                                                          onchange="PF('statusDialog').show();" var="usuario"  filter="true" filterMatchMode="contains">
                                                             <f:selectItem itemLabel="Seleccione una opción" itemValue="" />
                                                             <f:selectItems value="#{bloqueoController.modificados}" var="usuario" itemLabel="#{usuario.nombreCompleto}" itemValue="#{usuario}" />
@@ -50,12 +52,13 @@
                                                                 &lt;<h:outputText value="#{usuario.correoCiencias}" />&gt;
                                                             </p:column>
                                                         </p:selectOneMenu>
+                                                         <p:message for="usuarioObjetivo" id="mUsuarioObjetivo"/>
                                                         <br/>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <p:commandButton disabled="#{bloqueoController.usuarioBloquear!=null}" actionListener="#{bloqueoController.desbloquearUsuario()}" ajax="true" class="btn btn-lg btn-primary btn-block" value="Desbloquear usuario" update="myForm"/>
-                                            </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </fieldset>
