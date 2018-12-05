@@ -67,18 +67,24 @@ public class Material implements Serializable {
     @JoinTable(name = "material_subcategoria", joinColumns = {
         @JoinColumn(name = "material_id", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {
         @JoinColumn(name = "subcategoria_id", referencedColumnName = "id", nullable = false)})
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(cascade = {
+        CascadeType.PERSIST,
+        CascadeType.MERGE
+    })
     private Set<Subcategoria> subcategoriaSet;
     @JoinTable(name = "material_categoria", joinColumns = {
         @JoinColumn(name = "material_id", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {
         @JoinColumn(name = "categoria_id", referencedColumnName = "id", nullable = false)})
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(cascade = {
+        CascadeType.PERSIST,
+        CascadeType.MERGE
+    })
     private Set<Categoria> categoriaSet;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "material", fetch = FetchType.LAZY)
     private Set<PrestamoMaterial> prestamoMaterialSet;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "material", fetch = FetchType.LAZY)
     private Set<KitMaterial> kitMaterialSet;
-    
+
     public Material() {
     }
 

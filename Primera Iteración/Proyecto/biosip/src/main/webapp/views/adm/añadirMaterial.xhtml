@@ -22,7 +22,7 @@
                             <div class="panel panel-default">
                                 <div class="panel-heading text-center">
                                     <br/>
-                                        <h2>Agregar Material</h2>
+                                    <h2>Agregar Material</h2>
                                     <br/>
                                 </div>
                                 <div class="panel-body">
@@ -50,6 +50,7 @@
                                                                      requiredMessage="El nombre no puede estar vacío." >
                                                             <p:ajax event="blur" update="mNombre" process="@this" /> 
                                                         </p:inputText><br/>
+
                                                     </div>
                                                     <p:message for="nombre" id="mNombre"/>
                                                 </div>
@@ -80,6 +81,46 @@
                                                         <br/>
                                                     </div>
                                                     <p:message for="descripcion" id="mdescripcion" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="basic-addon1">Seleccione una Categoría:</span>
+                                                        </div>                                          
+                                                        <p:selectOneMenu id="advanced" value="#{agregaMaterialController.categoria}" converter="categoriaConverter" 
+                                                                         effect="fade" var="c" filter="true" filterMatchMode="contains"
+                                                                         class="form-control form-sm">
+
+                                                            <f:selectItems value="#{agregaMaterialController.categorias}" var="categoria" 
+                                                                           itemLabel="#{categoria.nombre}" itemValue="#{categoria}"/>
+
+                                                            <p:column class="form-control" style="background-color: white; border: 0;">
+                                                                <h:outputText value="#{c.nombre}"/>
+                                                            </p:column>
+
+                                                        </p:selectOneMenu>
+
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="basic-addon1">Seleccione una Subcategoría:</span>
+                                                        </div>                                          
+                                                        <p:selectOneMenu id="subcategorias" value="#{agregaMaterialController.subcategoria}" converter="subcategoriaConverter" 
+                                                                         effect="fade" var="subcat" filter="true" filterMatchMode="contains"
+                                                                         class="form-control form-sm">
+
+                                                            <f:selectItems value="#{agregaMaterialController.subcategorias}" var="subcategoria" 
+                                                                           itemLabel="#{subcategoria.nombre}" itemValue="#{subcategoria}"/>
+
+                                                            <p:column class="form-control" style="background-color: white; border: 0;">
+                                                                <h:outputText value="#{subcat.nombre}"/>
+                                                            </p:column>
+
+                                                        </p:selectOneMenu>
+
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
