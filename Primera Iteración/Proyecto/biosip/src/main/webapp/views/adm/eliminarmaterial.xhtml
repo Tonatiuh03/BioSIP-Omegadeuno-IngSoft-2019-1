@@ -14,9 +14,9 @@
             <div class="container">
 
                 <h:form onkeypress="if (event.keyCode == 13) {
-            alert();
-            return false;
-        }" class="escogerMateriales prestar">
+                            alert();
+                            return false;
+                        }" class="escogerMateriales prestar">
                     <p:growl for="mensaje-agregar-material" showDetail="true" />
                     <p:growl for="mensaje-eliminar-material" showDetail="true" />
                     <p:messages for="mensajes" closable="true" showDetail="true" class="mensaje-exterior mensaje"/>
@@ -25,46 +25,45 @@
                     <br/>
                     <h2>Eliminar Material</h2>
                     <br/>
-                    <p:panel rendered="#{!(eliminarMaterialController.estado and reservarMaterialController.listaPrestamoUnica.size()!=0)}" >
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-addon1"><i class="fab fa-elementor"></i></span>
+                    
+                        <p:panel >
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1"><i class="fab fa-elementor"></i></span>
+                                </div>
+                                <p:inputText class="form-control"  placeholder="Nombre del material"  id="nombreMaterial" size="100"
+                                             value="${reservarMaterialController.nombreMaterial}">
+                                    <p:ajax process="@this" event="keyup" update="dataMaterialList"></p:ajax>
+                                </p:inputText>
+                                <br/>
                             </div>
-                            <p:inputText class="form-control" placeholder="Nombre del material" id="nombreMaterial" size="100"
-                                         value="${eliminarMaterialController.nombreMaterial}">
-                                <p:ajax process="@this" event="keyup" update="dataMaterialList"></p:ajax>
-                            </p:inputText>
-                            <br/>
-                        </div><br/>
+                        </p:panel>
+                        <!-- Estructura para la presentaciónde un material-->
+                        <p:dataList id="dataMaterialList" class="prestar" value="#{reservarMaterialController.materiales}" var="material" type="definition" 
+                                    rendered="#{!eliminarMaterialController.estado}" emptyMessage="No se encontraron materiales con esa búsqueda.">
+                            <h:panelGrid class="panelGrid" columns="4" cellpadding = "15" columnClasses="columna-imagen material-info btnAgregar btnQuitar">
 
-                        <br/>
-                    </p:panel>
-                    <!-- Estructura para la presentaciónde un material-->
-                    <p:dataList id="dataMaterialList" class="prestar" value="#{reservarMaterialController.materiales}" var="material" type="definition" 
-                                rendered="#{!eliminarMaterialController.estado}" emptyMessage="No se encontraron materiales con esa búsqueda.">
-                        <h:panelGrid class="panelGrid" columns="4" cellpadding = "15" columnClasses="columna-imagen material-info btnAgregar btnQuitar">
+                                <p:graphicImage cache="false" class="imgMaterial" value="#{imageController.listMaterialImage}" height="100px">
+                                    <f:param name="id" value="#{material.id}" />
+                                </p:graphicImage>
+                                <p:outputPanel>
+                                    <h:panelGrid columns="2" cellpadding="2px" class="prestar">
+                                        <h:outputText value="Nombre" class="info-tag"/>
+                                        <h:outputText value="#{material.nombre}" class="info"/>
+                                        <h:outputText value="Descripción:" class="info-tag"/>
+                                        <h:outputText value="#{material.descripcion}" class="info"/>
+                                        <h:outputText value="Disponibles:" class="info-tag"/>
+                                        <h:outputText value="#{material.disponibles}" class="info"/>
+                                    </h:panelGrid>
+                                </p:outputPanel>
+                                <p:commandButton class="btn btn-sm btn-outline-primary btnreservar prestar out" value="Eliminar Material"
+                                                 actionListener="#{eliminarMaterialController.eliminaMaterial}"
+                                                 update="@(.prestar)" >
+                                    <f:attribute name="material" value="#{material}"></f:attribute>
+                                </p:commandButton>
 
-                            <p:graphicImage cache="false" class="imgMaterial" value="#{imageController.listMaterialImage}" height="100px">
-                                <f:param name="id" value="#{material.id}" />
-                            </p:graphicImage>
-                            <p:outputPanel>
-                                <h:panelGrid columns="2" cellpadding="2px" class="prestar">
-                                    <h:outputText value="Nombre" class="info-tag"/>
-                                    <h:outputText value="#{material.nombre}" class="info"/>
-                                    <h:outputText value="Descripción:" class="info-tag"/>
-                                    <h:outputText value="#{material.descripcion}" class="info"/>
-                                    <h:outputText value="Disponibles:" class="info-tag"/>
-                                    <h:outputText value="#{material.disponibles}" class="info"/>
-                                </h:panelGrid>
-                            </p:outputPanel>
-                            <p:commandButton class="btn btn-sm btn-outline-primary btnreservar prestar out" value="Eliminar Material"
-                                             actionListener="#{eliminarMaterialController.eliminarMaterial}"
-                                             update="@(.prestar)" >
-                                <f:attribute name="material" value="#{material}"></f:attribute>
-                            </p:commandButton>
-
-                        </h:panelGrid>
-                    </p:dataList>
+                            </h:panelGrid>
+                        </p:dataList>
 
 
                 </h:form>

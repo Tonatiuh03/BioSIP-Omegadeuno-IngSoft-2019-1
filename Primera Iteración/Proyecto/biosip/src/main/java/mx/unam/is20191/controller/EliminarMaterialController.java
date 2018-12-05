@@ -29,15 +29,23 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import mx.unam.is20191.dao.MaterialDao;
+import mx.unam.is20191.dao.PrestamoDao;
+import mx.unam.is20191.dao.PrestamoMaterialDao;
 import mx.unam.is20191.dao.UsuarioDao;
 import mx.unam.is20191.models.Material;
+import mx.unam.is20191.models.Prestamo;
+import mx.unam.is20191.models.PrestamoMaterial;
 
-public class EliminarMaterialController {
+
+@ManagedBean
+@SessionScoped
+public class EliminarMaterialController implements Serializable{
+
     private boolean estado;
     private String nombreBtnAccion;
     private boolean exito;
     private String nombreMaterial;
-    
+
     public String getNombreMaterial() {
         return nombreMaterial;
     }
@@ -45,7 +53,7 @@ public class EliminarMaterialController {
     public void setNombreMaterial(String nombreMaterial) {
         this.nombreMaterial = nombreMaterial;
     }
-   
+
     public boolean getEstado() {
         return estado;
     }
@@ -82,12 +90,39 @@ public class EliminarMaterialController {
             return false;
         }
     }
-  
-    public void eliminaMaterial(Material material){
-            material.setNombre(null);
-            material.setDisponibles(0);
-            material.setDescripcion(null);
-            material.setRutaImagen(null);
+
+    public void eliminaMaterial(ActionEvent event) throws Exception {
+        
+        MaterialDao materialDao = new MaterialDao();
+        Material material = (Material) event.getComponent().getAttributes().get("material");
+        materialDao.getEntityManager().getTransaction().begin();
+        material = materialDao.getByKey(material.getId());
+        materialDao.delete(material);
+        materialDao.getEntityManager().getTransaction().commit();
+
+        List<Prestamo> prestamos = new ArrayList<Prestamo>();
+        List<PrestamoMaterial> prestamosMateriales = new ArrayList<PrestamoMaterial>();
+
+        PrestamoDao prestamoDao = new PrestamoDao();
+        PrestamoMaterialDao prestamoMaterialDao = new PrestamoMaterialDao();
+        prestamosMateriales = prestamoMaterialDao.getRegistros();
+        prestamos = prestamoDao.getPrestamos();
+
+        for (PrestamoMaterial pm : prestamosMateriales) {
+            prestamoMaterialDao.getEntityManager().getTransaction().begin();
+            if (pm.getMaterial().getId().equals(material.getId())) {
+                prestamoMaterialDao.delete(pm);
+                System.err.println("Se elimino un registro de los prestamos-materiales");
+            }
+            prestamoMaterialDao.getEntityManager().getTransaction().commit();
+        }
+
+        FacesContext.getCurrentInstance().addMessage("mensaje-agregar-material",
+                new FacesMessage(FacesMessage.SEVERITY_INFO,
+                        "Se ha eliminado el material: \"" + material.getNombre() + "\"",
+                        "Material eliminado."));
+
     }
-    
+
+
 }

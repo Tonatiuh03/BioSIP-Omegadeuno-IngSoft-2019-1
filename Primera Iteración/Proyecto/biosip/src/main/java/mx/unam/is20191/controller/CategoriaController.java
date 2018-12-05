@@ -24,23 +24,24 @@ import mx.unam.is20191.models.Subcategoria;
 
 @ManagedBean
 @ViewScoped
-public class CategoriaController implements Serializable{
+public class CategoriaController implements Serializable {
 
     private String nombre;
     private String descripcion;
     private boolean esSubcategoria;
     private Categoria categoria;
-    private String tipo; 
+    private Subcategoria subcategoria;
+    private String tipo;
     private boolean exito;
-    
+
     public CategoriaController() {
         this.exito = false;
     }
 
     public String getTipo() {
-        if(esSubcategoria == false){
+        if (esSubcategoria == false) {
             return "Categoría";
-        }else{
+        } else {
             return "Subcategoría";
         }
     }
@@ -48,7 +49,7 @@ public class CategoriaController implements Serializable{
     public void setTipo(String tipo) {
         this.tipo = tipo;
     }
-    
+
     public String getNombre() {
         return nombre;
     }
@@ -59,6 +60,10 @@ public class CategoriaController implements Serializable{
 
     public Categoria getCategoria() {
         return categoria;
+    }
+
+    public Subcategoria getSubcategoria() {
+        return subcategoria;
     }
 
     public void setCategoria(Categoria categoria) {
@@ -86,6 +91,11 @@ public class CategoriaController implements Serializable{
         return catdao.getCategorias();
     }
 
+    public List<Subcategoria> getSubcategorias() {
+        SubcategoriaDao catdao = new SubcategoriaDao();
+        return catdao.getSubcategorias();
+    }
+
     public boolean isExito() {
         return exito;
     }
@@ -93,7 +103,7 @@ public class CategoriaController implements Serializable{
     public void setExito(boolean exito) {
         this.exito = exito;
     }
-    
+
     /**
      * Méotodo que agrega una nueva Ctagoería a la base de datos. Y además
      * genera un mensaje informativo para notar al usuario que proceso se
@@ -187,8 +197,6 @@ public class CategoriaController implements Serializable{
 
     }
 
-
-
     /*
     * Método que agrega una Categoria o una Subcategoria,
     * dependiendo de la bandera "esSubcategoria".
@@ -203,8 +211,8 @@ public class CategoriaController implements Serializable{
         }
         this.exito = true;
     }
-    
-    public void clear(){
+
+    public void clear() {
         this.nombre = "";
         this.descripcion = "";
         this.esSubcategoria = false;
