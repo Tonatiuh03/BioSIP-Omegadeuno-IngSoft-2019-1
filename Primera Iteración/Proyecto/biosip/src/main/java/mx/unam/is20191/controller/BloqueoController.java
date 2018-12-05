@@ -62,6 +62,7 @@ public class BloqueoController implements Serializable {
         mensaje.append(usuarioBloquear.getUserName()).append(" con éxito.");
         FacesContext.getCurrentInstance().addMessage("messages", new FacesMessage(FacesMessage.SEVERITY_INFO, mensaje.toString(), mensaje.toString()));
         usuarioBloquear = null;
+        this.fecha = null;
     }
 
     public void desbloquearUsuario() {
@@ -75,6 +76,7 @@ public class BloqueoController implements Serializable {
         mensaje.append(usuarioBloquear.getUserName()).append(" con éxito.");
         FacesContext.getCurrentInstance().addMessage("messages", new FacesMessage(FacesMessage.SEVERITY_INFO, mensaje.toString(), mensaje.toString()));
         usuarioBloquear = null;
+        this.fecha = null;
     }
 
     /*

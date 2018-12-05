@@ -127,3 +127,29 @@
     background-color: white;
     color: black;
 }
+
+.ui-datepicker{
+    background: white;
+}
+
+.ui-datepicker-header{
+    background: #bbd07b;
+}
+
+.ui-datepicker-next::after{
+    font-family: "Font Awesome 5 Free";
+    font-weight: bold;
+    content: "\f0a9";
+    border-radius: 20px;
+    background-color: white;
+    color: black;
+}
+
+.ui-datepicker-prev::after{
+    font-family: "Font Awesome 5 Free";
+    font-weight: bold;
+    content: "\f0a8";
+    border-radius: 20px;
+    background-color: white;
+    color: black;
+}
